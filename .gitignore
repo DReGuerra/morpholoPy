@@ -1,2 +1,3 @@
 # Jupyter Notebook
-sand*.ipynb_checkpoints
+.ipynb_checkpoints
+sand*.ipynb
