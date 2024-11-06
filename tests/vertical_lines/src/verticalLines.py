@@ -98,4 +98,11 @@ axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
 axs[2,1].set_xlim([0,0.08])
 
 f.tight_layout()
-f.savefig("figures/verticalLines.png")
+f.savefig("figures/verticalLines_summary.png")
+
+NROWS = 1; NCOLS = 1
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+axs.imshow(img, cmap='gray')
+axs.axis("off")
+f.savefig("images/vertical_lines.png")
