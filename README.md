@@ -26,7 +26,7 @@ This test reproduces the results from Stimpson et al., 2020 for the vertical lin
 Source: https://chemrxiv.org/engage/chemrxiv/article-details/60c74e50f96a009895287acf<br>
 Figure 1<br>
 
-![Stimpson et al 2020 Figure 1](stimpsonetal2020_fig1.png)
+![Stimpson et al 2020 Figure 1](./stimpsonetal2020_fig1.png)
 
 Vertical lines test results:<br>
 ![Vertical lines](tests/vertical_lines/figures/verticalLines_summary.png)
