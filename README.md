@@ -21,7 +21,15 @@ Figure 6J
 
 ### vertical_lines
 
-This test reproduces the results from Stimpson et al., 2020 for the vertical lines in Figure 1.<br>
+This test reproduces the results from Stimpson et al., 2020 for the vertical lines in Figure 1A first panel.<br>
 
 Source: https://chemrxiv.org/engage/chemrxiv/article-details/60c74e50f96a009895287acf<br>
 Figure 1
+
+### chevron
+
+This test reproduces the results from Stimpson et al., 2020 for the vertical lines in Figure 1A second panel.<br>
+
+Source: https://chemrxiv.org/engage/chemrxiv/article-details/60c74e50f96a009895287acf<br>
+Figure 1
+
