@@ -11,6 +11,8 @@ Source: https://pubs.acs.org/doi/full/10.1021/acsami.8b16232<br>
 ACS Appl. Mater. Interfaces 2019, 11, 6, 6325–6335<br>
 Figure 6F
 
+![KDF biaxial wrinkles](tests/kdf_biaxial_20um/figures/kdf_biaxial_20um_summary.png)
+
 ### kdf_uniaxial_20um
 
 This test uses a uniaxial wrinkled surface with a scale bar of 20 microns (um). The scale bar is 170 pixels in length.<br>
@@ -18,6 +20,8 @@ This test uses a uniaxial wrinkled surface with a scale bar of 20 microns (um). 
 Source: https://pubs.acs.org/doi/full/10.1021/acsami.8b16232<br>
 ACS Appl. Mater. Interfaces 2019, 11, 6, 6325–6335<br>
 Figure 6J
+
+![KDF uniaxial wrinkles](tests/kdf_uniaxial_20um/figures/kdf_uniaxial_20um_summary.png)
 
 ### vertical_lines
 
