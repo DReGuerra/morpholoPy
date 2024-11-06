@@ -125,3 +125,15 @@ axs.imshow(img2, cmap='gray')
 axs.axis("off")
 f.tight_layout()
 f.savefig("images/chevron.png")
+
+# summary figure
+NROWS = 1; NCOLS = 1
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+
+axs.plot(1/lam[:raspLen],rasp_norm/np.max(rasp_norm))
+axs.set_ylabel("Intensity, AU")
+axs.set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
+axs.set_xlim([0,0.08])
+f.tight_layout()
+f.savefig("figures/chevron_psd.png")
