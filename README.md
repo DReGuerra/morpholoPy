@@ -80,7 +80,7 @@ Figure 6J
 
 ![KDF uniaxial wrinkles](tests/kdf_uniaxial_20um/figures/kdf_uniaxial_20um_summary.png)
 
-## Usage
+## Workflow and usage
 
 ### `wrinkleAnalysis.py`
 
@@ -97,3 +97,12 @@ The workflow of this script is as follows:<br>
 10. High and low filters.
 11. Curve fitting of the most prominent peak in the `radPSD` to extract the feature size.
 12. Visualization of the results output to `figures/`.
+
+### Usage
+
+To run the `wrinkleAnalysis.py` script:
+1. Go to the desired test directory: `cd tests/kdf_biaxial_20um/`
+2. The image to be analyzed should be found in the `images` directory.
+3. Run the script: `python src/wrinkleAnalysis.py`
+
+The output figures will be save in the `figures/` directory.
