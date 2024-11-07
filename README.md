@@ -70,10 +70,6 @@ Figure 6F
 
 ![KDF biaxial wrinkles](tests/kdf_biaxial_20um/figures/kdf_biaxial_20um_summary.png)
 
-### xc-cnc_1-1
-
-This test demonstrates the usage of the function `measureScaleBar()` with an SEM image that is not originally square and contains an info banner at the bottom with the length scale.
-
 ### kdf_uniaxial_20um
 
 This test uses a uniaxial wrinkled surface with a scale bar of 20 microns (um). The scale bar is 170 pixels in length.<br>
@@ -83,6 +79,12 @@ ACS Appl. Mater. Interfaces 2019, 11, 6, 6325–6335<br>
 Figure 6J
 
 ![KDF uniaxial wrinkles](tests/kdf_uniaxial_20um/figures/kdf_uniaxial_20um_summary.png)
+
+### xc-cnc_1-1
+
+This test demonstrates the usage of the function `measureScaleBar()` with an SEM image that is not originally square and contains an info banner at the bottom with the length scale.
+
+![xg-cnc_1-1 wrinkles](tests/xg_cnc_1-1/figures/a1XG3p_1000x_003_summary.png)
 
 ## Workflow and usage
 
