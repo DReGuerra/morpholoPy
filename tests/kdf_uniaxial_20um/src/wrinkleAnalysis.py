@@ -55,10 +55,6 @@ radPSD, binsCount = radAvgPSD(psd2D, thetaLims=[])
 radPSDLen = len(radPSD)
 
 #############################################################################################
-# use radialProfile() to compare
-radial_prof = radialProfile(psd2D)
-
-#############################################################################################
 # frequency vector (pixels)
 k = np.arange(0,N,1)                # pixels
 # spatial frequency vector
