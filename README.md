@@ -68,7 +68,7 @@ Source: [De France et al., 2019](https://pubs.acs.org/doi/full/10.1021/acsami.8b
 ACS Appl. Mater. Interfaces 2019, 11, 6, 6325–6335<br>
 Figure 6F
 
-#### Summary figure
+#### Results summary figure
 ![KDF biaxial wrinkles](tests/kdf_biaxial_20um/figures/kdf_biaxial_20um_summary.png)
 
 ### kdf_uniaxial_20um
@@ -79,7 +79,7 @@ Source: [De France et al., 2019](https://pubs.acs.org/doi/full/10.1021/acsami.8b
 ACS Appl. Mater. Interfaces 2019, 11, 6, 6325–6335<br>
 Figure 6J
 
-#### Summary figure
+#### Results summary figure
 ![KDF uniaxial wrinkles](tests/kdf_uniaxial_20um/figures/kdf_uniaxial_20um_summary.png)
 
 ### xc-cnc_1-1
@@ -87,8 +87,9 @@ Figure 6J
 This test demonstrates the usage of the function `measureScaleBar()` with an SEM image that is not originally square and contains an info banner at the bottom with the length scale.
 
 #### Original SEM image
+![Original SEM image](tests/xg_cnc_1-1/images/a1XG3p_1000x_003.tif)
 
-#### Summary figure
+#### Rsults summary figure
 ![xg-cnc_1-1 wrinkles](tests/xg_cnc_1-1/figures/a1XG3p_1000x_003_summary.png)
 
 ## Workflow and usage
