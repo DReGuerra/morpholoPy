@@ -6,7 +6,7 @@ April, 2024 \
 andre.guerra@mail.mcgill.ca  
 
 ---
-Description: \
+<b>Description:<b> \
 This repository contains a python implementation of image analysis algorithms to examine nanostructure on material surfaces. The scripts take in image files (.png), conduct the analyses and output summary figures.
 
 ---
