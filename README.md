@@ -1,7 +1,7 @@
 # wrinkleAnalysis
 Fast Fourier Transform analysis for nanowrinkled surface feature analysis
 
-André Guerra \
+<b>André Guerra</b> \
 April, 2024 \
 andre.guerra@mail.mcgill.ca  
 
