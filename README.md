@@ -105,4 +105,4 @@ To run the `wrinkleAnalysis.py` script:
 2. The image to be analyzed should be found in the `images` directory.
 3. Run the script: `python src/wrinkleAnalysis.py`
 
-The output figures will be save in the `figures/` directory.
+The output figures will be saved in the `figures/` directory.
