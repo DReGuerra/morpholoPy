@@ -1,6 +1,26 @@
 # wrinkleAnalysis
 Fast Fourier Transform analysis for nanowrinkled surface feature analysis
 
+André Guerra \
+April, 2024 \
+andre.guerra@mail.mcgill.ca  
+
+---
+Description: \
+This repository contains a python implementation of image analysis algorithms to examine nanostructure on material surfaces. The scripts take in image files (.png), conduct the analyses and output summary figures.
+
+---
+## Core Contents
+1. `tests/` $\rightarrow$ collection of test cases to validate and demonstrate usage.
+2. `_wrinklelib.py` $\rightarrow$ contains functions to be used by `wrinkleAnalysis.py`
+3. `wrinkleAnalysis.py` $\rightarrow$ main script executing the image analyses and surface feature examinations.
+
+## References
+1. [Stimpson et al., 2020](https://chemrxiv.org/engage/chemrxiv/article-details/60c74e50f96a009895287acf)
+2. [De France et al., 2019](https://pubs.acs.org/doi/full/10.1021/acsami.8b16232)
+
+---
+
 ## Tests
 
 ### vertical_lines
