@@ -12,7 +12,7 @@ Figure 1<br>
 
 ![Stimpson et al 2020 Figure 1](./stimpsonetal2020_fig1.png)
 
-Vertical lines test results:<br>
+#### Vertical lines test results:
 ![Vertical lines](tests/vertical_lines/figures/verticalLines_summary.png)
 
 ### chevron
@@ -22,7 +22,7 @@ This test reproduces the results from Stimpson et al., 2020 for the chevron line
 Source: https://chemrxiv.org/engage/chemrxiv/article-details/60c74e50f96a009895287acf<br>
 Figure 1<br>
 
-Chevron test results:<br>
+##### Chevron test results:
 ![Chevron](tests/chevron/figures/chevron_summary.png)
 
 ### jigsaw and fragmented_jigsaw
@@ -34,10 +34,10 @@ Figure 1<br>
 
 The jigsaw and fragmented jigsaw images were made using Photopea at https://www.photopea.com/. The original vertical lines image was used to create these transformed images.<br>
 
-Jigsaw test results:<br>
+#### Jigsaw test results:
 ![Jigsaw](tests/jigsaw/figures/jigsaw_summary.png)
 
-Fragmented jigsaw test results:<br>
+#### Fragmented jigsaw test results:
 ![Fragmented jigsaw](tests/fragmented_jigsaw/figures/frag_jigsaw_summary.png)
 
 ### kdf_biaxial_20um
