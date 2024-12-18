@@ -1,5 +1,5 @@
 # wrinkleAnalysis
-Fast Fourier Transform analysis for nanowrinkled surface feature analysis
+Fast Fourier Transform analysis for nanostructured surface feature analysis
 
 <b>André Guerra</b> \
 April, 2024 \
@@ -7,7 +7,7 @@ andre.guerra@mail.mcgill.ca
 
 ---
 <b>Description:</b> \
-This repository contains a python implementation of image analysis algorithms to examine nanostructure on material surfaces. The scripts take in image files (.png), conduct the analyses and output summary figures.
+This repository contains a python implementation of image analysis algorithms for feature analysis of nanostructured material surfaces. The scripts take in image files (.png and .tif), conduct the periodic feature analyses and output a figure summarizing the results.
 
 ---
 ## Core Contents
@@ -23,19 +23,19 @@ This repository contains a python implementation of image analysis algorithms to
 
 ## Tests
 
-### vertical_lines
+### Vertical stripes
 
-This test reproduces the results from Stimpson et al., 2020 for the vertical lines in Figure 1A first panel.<br>
+This test reproduces the results from Stimpson et al., 2020 for the vertical stripes in Figure 1A first panel.<br>
 
 Source: [Stimpson et al., 2020](https://chemrxiv.org/engage/chemrxiv/article-details/60c74e50f96a009895287acf)<br>
 Figure 1<br>
 
 ![Stimpson et al 2020 Figure 1](./stimpsonetal2020_fig1.png)
 
-#### Vertical lines test results:
+#### Vertical stripes test results:
 ![Vertical lines](tests/vertical_lines/figures/verticalLines_summary.png)
 
-### chevron
+### Chevron
 
 This test reproduces the results from Stimpson et al., 2020 for the chevron lines in Figure 1A second panel.<br>
 
@@ -45,19 +45,19 @@ Figure 1<br>
 ##### Chevron test results:
 ![Chevron](tests/chevron/figures/chevron_summary.png)
 
-### jigsaw and fragmented_jigsaw
+### Vertical stripes tiled and fragmented tiles
 
-This test reproduces the results from Stimpson et al., 2020 for the jigsaw and fragmented_jigsaw lines in Figure 1A third and forth panels.<br>
+This test reproduces the results from Stimpson et al., 2020 for the jigsaw and fragmented jigsaw lines in Figure 1A third and forth panels.<br>
 
 Source: [Stimpson et al., 2020](https://chemrxiv.org/engage/chemrxiv/article-details/60c74e50f96a009895287acf)<br>
 Figure 1<br>
 
-The jigsaw and fragmented jigsaw images were made using Photopea at https://www.photopea.com/. The original vertical lines image was used to create these transformed images.<br>
+The jigsaw and fragmented jigsaw images were made using Photopea at https://www.photopea.com/. The original vertical stripes image was used to create these transformed images.<br>
 
-#### Jigsaw test results:
+#### Vertical stripes tiled (jigsaw) test results:
 ![Jigsaw](tests/jigsaw/figures/jigsaw_summary.png)
 
-#### Fragmented jigsaw test results:
+#### Fragmented tiles (fragmented jigsaw) test results:
 ![Fragmented jigsaw](tests/fragmented_jigsaw/figures/frag_jigsaw_summary.png)
 
 ### kdf_biaxial_20um
@@ -82,7 +82,7 @@ Figure 6J
 #### Results summary figure
 ![KDF uniaxial wrinkles](tests/kdf_uniaxial_20um/figures/kdf_uniaxial_20um_summary.png)
 
-### xc-cnc_1-1
+### xg-cnc_1-1
 
 This test demonstrates the usage of the function `measureScaleBar()` with an SEM image that is not originally square and contains an info banner at the bottom with the length scale.
 
