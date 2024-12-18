@@ -27,13 +27,13 @@ image = io.imread(img_file, as_gray=True)
 # enhance edges by band-pass filtering
 filtered_image = difference_of_gaussians(image,1.1)
 # Canny edge dectection
-filtrdEdges = feature.canny(filtered_image, sigma=1.4)
+filtered_edges = feature.canny(filtered_image, sigma=1.4)
 
 # resize the image to square
 N = 881
 image_sq = image[:N,:N]
 filtered_image_sq = filtered_image[:N,:N]
-filtered_edges_square = filtrdEdges[:N,:N]
+filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
 # scale_bar = measureScaleBar(image)   # pixels
