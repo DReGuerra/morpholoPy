@@ -1,7 +1,7 @@
 
 import numpy as np
 
-def measureScaleBar(image):
+def measure_scale_bar(image):
     """Identify and measure scale bar in an SEM image.tif
 
     Args:
@@ -15,7 +15,7 @@ def measureScaleBar(image):
     """
     
     # cross-hair is 7x3 pixel matrix with the following info in RGB
-    crosshair = np.array([[0,65280,0],
+    cross_hair = np.array([[0,65280,0],
                          [65280,65280,65280],
                          [65280,65280,65280],
                          [65280,65280,65280],
@@ -30,29 +30,87 @@ def measureScaleBar(image):
     # image size
     rows, cols = image.shape
     
-    # find the first crosshair
+    # find the first cross_hair
     for i in np.arange(start_y,rows-1,1):
         if i == rows-7: break
         for j in np.arange(start_x,cols-1,1):
             check = image[i:i+7,j:j+3]
-            if (check == crosshair).all():
+            if (check == cross_hair).all():
                 scale_pos_y = i
                 scale_pos_x = j
                 break
             if j == cols-3:break
     
-    # find the second crosshair horizontally
+    # find the second cross_hair horizontally
     k = 0
     for j in np.arange(scale_pos_x+1,cols-1,1):
         check = image[scale_pos_y:scale_pos_y+7,j:j+3]
-        if (check == crosshair).all():
-            # +3 to include width of crosshair
+        if (check == cross_hair).all():
+            # +3 to include width of cross_hair
             # +1 to include the starting pixel
             scale_length = k+3+1
             break
         k += 1
     
     return scale_length#, scale_pos_y, scale_pos_x
+
+def radially_averaged_PSD(psd2D, theta_lims):
+    """Identify and measure scale bar in an SEM image.tif
+
+    Args:
+        psd2D (ndarray): 2D power spectral density
+        theta_lims (ndarray): angle limits for the radial averaging
+
+    Returns:
+        rasp (ndarray): radially averaged power spectral density
+        bins_count (ndarray): number of bins per radial region
+        
+    """
+    
+    # size of PSD
+    N, M = psd2D.shape
+    # center of image
+    yo, xo = N/2, M/2
+    # max distances (corners)
+    D1 = np.floor(np.hypot(1-yo,1-xo))
+    D2 = np.floor(np.hypot(1-yo,M-xo))
+    D3 = np.floor(np.hypot(M-yo,1-xo))
+    D4 = np.floor(np.hypot(M-yo,M-xo))
+    D = int(np.floor(np.max([D1,D2,D3,D4])))
+    # initialize rasp and binCount
+    rasp = np.zeros(D)
+    bins_count = np.zeros(D)
+
+    # if limited angle
+    if theta_lims:
+        for yi in np.arange(0,N-1,1): # col
+            for xi in np.arange(0,M-1,1): # row
+                r = int(np.floor(np.hypot(yi-yo,xi-xo))) - 1
+                Theta = np.around(np.abs(np.rad2deg(np.arctan2((yi-yo),(xi-xo)))),0)
+                if r <= 0: continue
+                elif (Theta<theta_lims[0] or Theta>theta_lims[1]): continue
+                else:
+                    # update rasp
+                    rasp[r] += psd2D[yi,xi]
+                    # update bin count
+                    bins_count[r] += 1
+    # all angles
+    else:
+        for yi in np.arange(0,N-1,1):
+            for xi in np.arange(0,M-1,1):
+                r = int(np.floor(np.hypot(xi-xo,yi-yo))) - 1
+                if r <= 0: continue
+                else:
+                    # update rasp
+                    rasp[r] += psd2D[yi,xi]
+                    # update bin count
+                    bins_count[r] += 1
+        # replace nan and elementwise divide by bins_count to normalize bin radial value
+        # rasp_norm = np.nan_to_num(np.divide(rasp,bins_count))
+        
+    return rasp, bins_count
+
+# Uncommissioned and reference methods from other sources
 
 def azimuthalAverage(image, center=None):
     """
@@ -184,50 +242,3 @@ def GetRPSD(psd2D, dTheta, rMin, rMax):
     psd1D    = psd1D/pwrTotal
     
     return angF, psd1D
-
-def radAvgPSD(psd2D, thetaLims):
-    
-    # size of PSD
-    N, M = psd2D.shape
-    # center of image
-    yo, xo = N/2, M/2
-    # max distances (corners)
-    D1 = np.floor(np.hypot(1-yo,1-xo))
-    D2 = np.floor(np.hypot(1-yo,M-xo))
-    D3 = np.floor(np.hypot(M-yo,1-xo))
-    D4 = np.floor(np.hypot(M-yo,M-xo))
-    D = int(np.floor(np.max([D1,D2,D3,D4])))
-    # initialize rasp and binCount
-    rasp = np.zeros(D)
-    binsCount = np.zeros(D)
-
-    # if limited angle
-    if thetaLims:
-        for yi in np.arange(0,N-1,1): # col
-            for xi in np.arange(0,M-1,1): # row
-                r = int(np.floor(np.hypot(yi-yo,xi-xo))) - 1
-                Theta = np.around(np.abs(np.rad2deg(np.arctan2((yi-yo),(xi-xo)))),0)
-                if r <= 0: continue
-                elif (Theta<thetaLims[0] or Theta>thetaLims[1]): continue
-                else:
-                    # update rasp
-                    rasp[r] += psd2D[yi,xi]
-                    # update bin count
-                    binsCount[r] += 1
-    # all angles
-    else:
-        for yi in np.arange(0,N-1,1):
-            for xi in np.arange(0,M-1,1):
-                r = int(np.floor(np.hypot(xi-xo,yi-yo))) - 1
-                if r <= 0: continue
-                else:
-                    # update rasp
-                    rasp[r] += psd2D[yi,xi]
-                    # update bin count
-                    binsCount[r] += 1
-        # replace nan and elementwise divide by binsCount to normalize bin radial value
-        # rasp_norm = np.nan_to_num(np.divide(rasp,binsCount))
-        
-    return rasp, binsCount
-
-    
