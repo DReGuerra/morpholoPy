@@ -98,16 +98,16 @@ This test demonstrates the usage of the function `measureScaleBar()` with an SEM
 
 The workflow of this script is as follows:<br>
 1. Input parameters - to be manually changed to reflect the desired analysis, define the image file, and size parameters which depend on the scale of the image. The size parameters can be determined through trial and error by examining the curve fitting and wrinkle size estimate in the panel 6 of the summary figure produced.
-2. Input image file (`imgFile`)
+2. Input image file (`img_file`)
 3. Band-pass filtering of the image using Gaussian differences
 4. Canny edge detection - `sigma` value is modified to achieve the desired granularity in edge detection
 5. Square the image (if not already squared)
-6. Determine image scale and pixel relationship - if the image contains an SEM banner with a size scale, the function `measureScaleBar()` can be used to extract the pixel length of the scale bar. The representative physical length of the scale bar must be input manually (`barLength`).
+6. Determine image scale and pixel relationship - if the image contains an SEM banner with a size scale, the function `measure_scale_bar()` can be used to extract the pixel length of the scale bar. The representative physical length of the scale bar must be input manually (`bar_length`).
 7. Center-shifted 2D FFT (`fft2_shiftd`) of the image to obtain the 2D power spectral density (PSD) (`psd2D`) of the image.
-8. Radially averaged 2D PSD (`radPSD`).
+8. Radially averaged 2D PSD (`rasp`).
 9. Frenquency conversion from pixel to spatial length.
 10. High and low filters.
-11. Curve fitting of the most prominent peak in the `radPSD` to extract the feature size.
+11. Curve fitting of the most prominent peak in the `rasp` to extract the feature size.
 12. Visualization of the results output to `figures/`.
 
 ### Usage
