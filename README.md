@@ -87,10 +87,10 @@ Figure 6J
 This test demonstrates the usage of the function `measureScaleBar()` with an SEM image that is not originally square and contains an info banner at the bottom with the length scale.
 
 #### Original SEM image
-![Original SEM image](tests/xg_cnc_1-1/images/a1XG3p_1000x_003.png)
+![Original SEM image](tests/xg-cnc_1-1/images/a1XG3p_1000x_003.png)
 
 #### Rsults summary figure
-![xg-cnc_1-1 wrinkles](tests/xg_cnc_1-1/figures/a1XG3p_1000x_003_summary.png)
+![xg-cnc_1-1 wrinkles](tests/xg-cnc_1-1/figures/a1XG3p_1000x_003_summary.png)
 
 ## Workflow and usage
 
