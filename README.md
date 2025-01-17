@@ -1,5 +1,5 @@
 # wrinkleAnalysis
-Fast Fourier Transform analysis for nanostructured surface feature analysis
+Fast Fourier Transform analysis for nanostructured surface periodic feature characterization.
 
 <b>André Guerra</b> \
 April, 2024 \
