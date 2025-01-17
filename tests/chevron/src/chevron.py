@@ -82,19 +82,23 @@ NROWS = 2; NCOLS = 2
 f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
 axs[0,0].imshow(img_chevron, cmap='gray')
-axs[0,0].set_title("Original image")
+axs[0,0].set_title("(a)", loc='left')
+# axs[0,0].set_title("(a) Original image", loc='left')
 
 axs[0,1].imshow(psd2D)
-axs[0,1].set_title("Center-shifted 2D Power Spectral Density")
+axs[0,1].set_title("(b)", loc='left')
+# axs[0,1].set_title("(b) Center-shifted 2D Power Spectral Density", loc='left')
 
 axs[1,0].plot(rasp_norm_au)
-axs[1,0].set_title("Radially Averaged PSD (RASP)")
+axs[1,0].set_title("(c)", loc='left')
+# axs[1,0].set_title("(c) Radially Averaged PSD", loc='left')
 axs[1,0].set_ylabel("Intensity, AU")
 axs[1,0].set_xlabel("Period (T), Pixels")
 axs[1,0].set_xlim([0,50])
 
 axs[1,1].plot(1/lam[:rasp_length],rasp_norm_au)
-axs[1,1].set_title("RASP in spatial frequency")
+axs[1,1].set_title("(d)", loc='left')
+# axs[1,1].set_title("(d) Radially Averaged PSD in Spatial Frequency", loc='left')
 axs[1,1].set_ylabel("Intensity, AU")
 axs[1,1].set_xlabel("frequency (f), $\mu$m$^{-1}$")
 axs[1,1].set_xlim([0,0.08])
