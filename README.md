@@ -54,11 +54,11 @@ Figure 1<br>
 
 The jigsaw and fragmented jigsaw images were made using Photopea at https://www.photopea.com/. The original vertical stripes image was used to create these transformed images.<br>
 
-#### Vertical stripes tiled (jigsaw) test results:
-![Jigsaw](tests/jigsaw/figures/jigsaw_summary.png)
+#### Vertical stripes tiled (tessellation) test results:
+![Tessellation](tests/tessellation/figures/tessellation_summary.png)
 
-#### Fragmented tiles (fragmented jigsaw) test results:
-![Fragmented jigsaw](tests/fragmented_jigsaw/figures/frag_jigsaw_summary.png)
+#### Fragmented tiles (tessellation fragmented) test results:
+![Tessellation fragmented](tests/tessellation_fragmented/figures/tessellation_fragmented_summary.png)
 
 ### kdf_biaxial_20um
 
