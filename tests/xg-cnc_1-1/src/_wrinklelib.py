@@ -55,7 +55,7 @@ def measure_scale_bar(image):
     return scale_length#, scale_pos_y, scale_pos_x
 
 def radially_averaged_PSD(psd2D, theta_lims):
-    """Identify and measure scale bar in an SEM image.tif
+    """Calculate the radially averaged power spectral density
 
     Args:
         psd2D (ndarray): 2D power spectral density
