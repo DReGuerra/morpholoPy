@@ -11,17 +11,17 @@ import matplotlib.pyplot as plt
 from skimage import io
 from _wrinklelib import radially_averaged_PSD
 
-# import jigsaw image in gray-scale
-img_jigsaw = io.imread("images/jigsaw.png", as_gray=True)
+# import tessellation image in gray-scale
+img_tessellation = io.imread("images/tessellation.png", as_gray=True)
 
 # image pixel size
-N = np.max(np.shape(img_jigsaw)) # pixels
+N = np.max(np.shape(img_tessellation)) # pixels
 # scale
 L = N   # um
 
 # Dicrete Fourier Transfer (DFT) via FAst Fourier Transfrom (FFT)
 # 2D DFT
-fft2 = np.fft.fft2(img_jigsaw)
+fft2 = np.fft.fft2(img_tessellation)
 # center-shifted 2D DFT
 fft2_shiftd = np.fft.fftshift(fft2)
 # power spectral density (PSD)
@@ -58,7 +58,7 @@ LINEWIDTH = 3; ROLLWINDOW = 100                 # plot spec
 NROWS = 2; NCOLS = 2
 f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
-axs[0,0].imshow(img_jigsaw, cmap='gray')
+axs[0,0].imshow(img_tessellation, cmap='gray')
 axs[0,0].set_title("(a)", loc='left')
 # axs[0,0].set_title("Original image")
 
@@ -81,16 +81,16 @@ axs[1,1].set_xlabel("frequency (f), $\mu$m$^{-1}$")
 axs[1,1].set_xlim([0,0.08])
 
 f.tight_layout()
-f.savefig("figures/jigsaw_summary.png")
+f.savefig("figures/tessellation_summary.png")
 
 # 2. Original image
 NROWS = 1; NCOLS = 1
 f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
-axs.imshow(img_jigsaw, cmap='gray')
+axs.imshow(img_tessellation, cmap='gray')
 axs.axis("off")
 f.tight_layout()
-f.savefig("figures/jigsaw_out.png")
+f.savefig("figures/tessellation_out.png")
 
 # 3. Radially averaged PSD
 NROWS = 1; NCOLS = 1
@@ -103,4 +103,4 @@ axs.set_ylabel("Intensity, AU")
 axs.set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
 axs.set_xlim([0,0.08])
 f.tight_layout()
-f.savefig("figures/jigsaw_rasp.png")
+f.savefig("figures/tessellation_rasp.png")
