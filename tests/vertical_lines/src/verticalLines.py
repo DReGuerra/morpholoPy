@@ -7,6 +7,7 @@
 """
 
 import numpy as np
+from scipy.stats import kurtosis
 import matplotlib.pyplot as plt
 from _wrinklelib import radially_averaged_PSD
 
@@ -49,6 +50,9 @@ if dconv: rasp_norm = np.divide(rasp_norm,lam[:rasp_length])
 # transform to absolute units (AU) using maximum intensity
 rasp_norm_au = rasp_norm/np.max(rasp_norm)
 
+# kurtosis
+kurt = kurtosis(img.flatten(), fisher=False)
+print("kurtosis = " + str(kurt))
 
 # ---
 # Visualization

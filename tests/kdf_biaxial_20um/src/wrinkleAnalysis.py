@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.stats import kurtosis
 import matplotlib.pyplot as plt
 from skimage import feature, io
 from skimage.filters import difference_of_gaussians, sobel
@@ -80,6 +81,10 @@ if low_pass_filter: rasp_norm = np.multiply(rasp_norm,Lo)
 
 # transform to absolute value using maximum intensity
 rasp_norm_au = rasp_norm/np.max(rasp_norm)
+
+# kurtosis
+kurt = kurtosis(image.flatten(), fisher=False)
+print("kurtosis = " + str(kurt))
 
 #############################################################################################
 # curve fit
