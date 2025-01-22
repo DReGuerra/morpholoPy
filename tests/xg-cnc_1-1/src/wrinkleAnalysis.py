@@ -74,7 +74,7 @@ if dconv: rasp_norm = np.divide(rasp_norm,lam[:rasp_length])
 # high and low pass filters
 sigma = 2
 X = np.arange(0,rasp_length,1)
-Lo = np.divide(np.exp(-(X**2)),(2*sigma**2))
+Lo = np.divide(np.exp(-(X**2)), (2*sigma**2))
 Hi = 1 - Lo
 if high_pass_filter: rasp_norm = np.multiply(rasp_norm,Hi)
 if low_pass_filter: rasp_norm = np.multiply(rasp_norm,Lo)
@@ -91,10 +91,10 @@ hist, bin_edges = np.histogram(image.flatten(), bins=256, density=True)
 pdf = hist / np.sum(hist)
 # kurtosis
 kurt = kurtosis(image.flatten(), fisher=False)
-print("kurtosis = " + str(np.around(kurt,decimals=2)))
+print("kurtosis = " + str(np.around(kurt, decimals=2)))
 # skewness
 skewness = skew(image.flatten())
-print("skewness = " + str(np.around(skewness,decimals=2)))
+print("skewness = " + str(np.around(skewness, decimals=2)))
 
 # new line
 print() 
@@ -102,19 +102,19 @@ print()
 # 2. filtered image
 print("Filtered image")
 # Calculate PDF
-hist_f, bin_edges_f = np.histogram(filtered_image_sq.flatten(), bins=256, density=True)
+hist_f, bin_f = np.histogram(filtered_image_sq.flatten(), bins=256, density=True)
 pdf_f = hist_f / np.sum(hist_f)
 # kurtosis
 kurt_f = kurtosis(filtered_image_sq.flatten(), fisher=False)
-print("kurtosis = " + str(np.around(kurt_f,decimals=2)))
+print("kurtosis = " + str(np.around(kurt_f, decimals=2)))
 # skewness
 skewness_f = skew(filtered_image_sq.flatten())
-print("skewness = " + str(np.around(skewness_f,decimals=2)))
+print("skewness = " + str(np.around(skewness_f, decimals=2)))
 
 #############################################################################################
 # curve fit
 # setup params
-ind = np.where(np.logical_and((1/lam>low_length_lim),(1/lam<high_length_lim)))
+ind = np.where(np.logical_and((1/lam>low_length_lim), (1/lam<high_length_lim)))
 x = 1/lam[ind]              # 1/um
 y = rasp_norm_au[ind]       # AU
 deg = 2                     # quadratic poly
@@ -158,10 +158,10 @@ axs[2,0].set_ylabel("Intensity, AU")
 axs[2,0].set_xlabel("Frequency, pixels")
 # axs[2,0].set_xlim([0,50])
 
-axs[2,1].plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
-axs[2,1].plot(x,y,linestyle='none',marker='o',fillstyle='none',color='green')
-axs[2,1].plot(x,mdl,linestyle='--',color='green')
-axs[2,1].vlines(wrklSize,ymin=0.1,ymax=1,linestyle='--',color='red')
+axs[2,1].plot(1/lam[:rasp_length], rasp_norm_au, linestyle='none', marker='.')
+axs[2,1].plot(x, y, linestyle='none', marker='o', fillstyle='none', color='green')
+axs[2,1].plot(x, mdl, linestyle='--', color='green')
+axs[2,1].vlines(wrklSize, ymin=0.1, ymax=1, linestyle='--', color='red')
 axs[1,1].set_title("(f)", loc='left')
 # axs[2,1].set_title("RASP in spatial frequency")
 axs[2,1].set_ylabel("Intensity, AU")
@@ -195,6 +195,7 @@ f.tight_layout()
 f.savefig("figures/" + file_name + "_filtered_edges.png")
 
 # Surface histogram with skewness and kurtosis
+# 1. original image
 f = plt.figure()
 plt.hist(image.flatten(), bins=256, density=True, alpha=0.6)
 plt.title('Histogram with Skewness and Kurtosis')
@@ -208,6 +209,7 @@ plt.text(np.mean(image.flatten())*1.1, max(hist)*0.8, 'Kurtosis = {:.2f}'.format
 f.tight_layout()
 f.savefig("figures/" + file_name + "_histogram_roughness_parameters_original_image.png")
 
+# 2. filtered image
 f = plt.figure()
 plt.hist(filtered_image_sq.flatten(), bins=256, density=True, alpha=0.6)
 plt.title('Histogram with Skewness and Kurtosis')
@@ -220,3 +222,19 @@ plt.text(np.mean(filtered_image_sq.flatten())+0.05, max(hist_f)*0.8, 'Kurtosis =
 
 f.tight_layout()
 f.savefig("figures/" + file_name + "_histogram_roughness_parameters_filtered_image.png")
+
+# Probability distribution function
+# 1. original image
+
+# 2. filtered image
+NROWS = 1; NCOLS = 1
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+
+axs.plot(bin_f[:-1], pdf_f)
+axs.set_title('Probability distribution function')
+axs.set_xlabel('Pixel Intensity')
+axs.set_ylabel('Probability')
+
+f.tight_layout()
+f.savefig("figures/" + file_name + "_PDF_filtered_image.png")
