@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.stats import kurtosis
+from scipy.stats import kurtosis, skew
 import matplotlib.pyplot as plt
 from skimage import feature, io
 from skimage.filters import difference_of_gaussians, sobel
@@ -26,7 +26,7 @@ img_file = "images/" + file_name + file_type
 # import SEM image in gray-scale
 image = io.imread(img_file, as_gray=True)
 # enhance edges by band-pass filtering
-filtered_image = difference_of_gaussians(image,1.1)
+filtered_image = difference_of_gaussians(image, low_sigma=1.1, high_sigma=None)
 # Canny edge dectection
 filtered_edges = feature.canny(filtered_image, sigma=1.4)
 
@@ -82,9 +82,34 @@ if low_pass_filter: rasp_norm = np.multiply(rasp_norm,Lo)
 # transform to absolute value using maximum intensity
 rasp_norm_au = rasp_norm/np.max(rasp_norm)
 
+#############################################################################################
+# Surface roughness parameters
+# 1. original image
+print("Original image")
+# Calculate PDF
+hist, bin_edges = np.histogram(image.flatten(), bins=256, density=True)
+pdf = hist / np.sum(hist)
 # kurtosis
 kurt = kurtosis(image.flatten(), fisher=False)
-print("kurtosis = " + str(kurt))
+print("kurtosis = " + str(np.around(kurt,decimals=2)))
+# skewness
+skewness = skew(image.flatten())
+print("skewness = " + str(np.around(skewness,decimals=2)))
+
+# new line
+print() 
+
+# 2. filtered image
+print("Filtered image")
+# Calculate PDF
+hist_f, bin_edges_f = np.histogram(filtered_image_sq.flatten(), bins=256, density=True)
+pdf_f = hist_f / np.sum(hist_f)
+# kurtosis
+kurt_f = kurtosis(filtered_image_sq.flatten(), fisher=False)
+print("kurtosis = " + str(np.around(kurt_f,decimals=2)))
+# skewness
+skewness_f = skew(filtered_image_sq.flatten())
+print("skewness = " + str(np.around(skewness_f,decimals=2)))
 
 #############################################################################################
 # curve fit
@@ -148,3 +173,50 @@ axs[2,1].set_xlim([0,6])
 
 f.tight_layout()
 f.savefig("figures/" + file_name + "_summary.png")
+
+# Filtered image
+NROWS = 1; NCOLS = 1
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+
+axs.imshow(filtered_image_sq)
+
+f.tight_layout()
+f.savefig("figures/" + file_name + "_filtered.png")
+
+# Filtered edges
+NROWS = 1; NCOLS = 1
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+
+axs.imshow(filtered_edges_square)
+
+f.tight_layout()
+f.savefig("figures/" + file_name + "_filtered_edges.png")
+
+# Surface histogram with skewness and kurtosis
+f = plt.figure()
+plt.hist(image.flatten(), bins=256, density=True, alpha=0.6)
+plt.title('Histogram with Skewness and Kurtosis')
+plt.xlabel('Pixel Intensity')
+plt.ylabel('Frequency')
+plt.axvline(np.mean(image.flatten()), color='k', linestyle='dashed', linewidth=1)
+plt.text(np.mean(image.flatten())*1.1, max(hist)*0.9, 'Skewness = {:.2f}'.format(skewness))
+plt.axvline(np.mean(image.flatten()), color='k', linestyle='dashed', linewidth=1)
+plt.text(np.mean(image.flatten())*1.1, max(hist)*0.8, 'Kurtosis = {:.2f}'.format(kurt))
+
+f.tight_layout()
+f.savefig("figures/" + file_name + "_histogram_roughness_parameters_original_image.png")
+
+f = plt.figure()
+plt.hist(filtered_image_sq.flatten(), bins=256, density=True, alpha=0.6)
+plt.title('Histogram with Skewness and Kurtosis')
+plt.xlabel('Pixel Intensity')
+plt.ylabel('Frequency')
+plt.axvline(np.mean(filtered_image_sq.flatten()), color='k', linestyle='dashed', linewidth=1)
+plt.text(np.mean(filtered_image_sq.flatten())+0.05, max(hist_f)*0.9, 'Skewness = {:.2f}'.format(skewness_f))
+plt.axvline(np.mean(filtered_image_sq.flatten()), color='k', linestyle='dashed', linewidth=1)
+plt.text(np.mean(filtered_image_sq.flatten())+0.05, max(hist_f)*0.8, 'Kurtosis = {:.2f}'.format(kurt_f))
+
+f.tight_layout()
+f.savefig("figures/" + file_name + "_histogram_roughness_parameters_filtered_image.png")
