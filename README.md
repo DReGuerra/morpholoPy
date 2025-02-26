@@ -1,5 +1,5 @@
-# wrinkleAnalysis
-Fast Fourier Transform analysis for nanostructured surface periodic feature characterization.
+# morpholoPy
+A suite of morphology analyses for the characterization of nanostructured surfaces.
 
 <b>André Guerra</b> \
 April, 2024 \
@@ -7,7 +7,7 @@ andre.guerra@mail.mcgill.ca
 
 ---
 <b>Description:</b> \
-This repository contains a python implementation of image analysis algorithms for feature analysis of nanostructured material surfaces. The scripts take in image files (.png and .tif), conduct the periodic feature analyses and output a figure summarizing the results.
+This repository contains Python implementations of image analysis algorithms for feature analysis of nanostructured material surfaces. Many of the scripts take an image file (e.g., .png, .tif) as input, conduct the periodic feature analyses and output figures summarizing the results. Many of the scripts currently require manual modification for defining your system. These are normally done in the "Manual input" section at the top of the script. The scripts will be updated in the future to be more robust and require less manual input at the code level.
 
 ---
 ## Core Contents
@@ -18,6 +18,7 @@ This repository contains a python implementation of image analysis algorithms fo
 ## References
 1. [Stimpson et al., 2020](https://chemrxiv.org/engage/chemrxiv/article-details/60c74e50f96a009895287acf)
 2. [De France et al., 2019](https://pubs.acs.org/doi/full/10.1021/acsami.8b16232)
+3. [Wang-Servio-Rey, 2023](https://doi.org/10.3389/frsfm.2023.1123324)
 
 ---
 
