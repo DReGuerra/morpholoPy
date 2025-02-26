@@ -16,9 +16,9 @@ This repository contains Python implementations of image analysis algorithms for
 3. `wrinkleAnalysis.py` $\rightarrow$ main script executing the image analyses and surface feature examinations.
 
 ## References
-1. [Stimpson et al., 2020](https://chemrxiv.org/engage/chemrxiv/article-details/60c74e50f96a009895287acf)
-2. [De France et al., 2019](https://pubs.acs.org/doi/full/10.1021/acsami.8b16232)
-3. [Wang-Servio-Rey, 2023](https://doi.org/10.3389/frsfm.2023.1123324)
+1. Image Analysis of Structured Surfaces for Quantitative Topographical Characterization [(Stimpson et al., 2020)](https://doi.org/10.26434/chemrxiv.12736289.v1)
+2. 2.5D Hierarchical Structuring of Nanocomposite Hydrogel Films Containing Cellulose Nanocrystals [(De France et al., 2019)](https://doi.org/10.1021/acsami.8b16232)
+3. Pattern formation, structure and functionalities of wrinkled liquid crystal surfaces: A soft matter biomimicry platform [(Wang-Servio-Rey, 2023)](https://doi.org/10.3389/frsfm.2023.1123324)
 
 ---
 
