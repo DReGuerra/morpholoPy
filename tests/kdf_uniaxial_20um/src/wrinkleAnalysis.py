@@ -9,9 +9,6 @@ from _wrinklelib import radially_averaged_PSD, measure_scale_bar
 # inpput parameters
 # deconvolution
 dconv = True
-# Hi and Lo pass filters
-high_pass_filter = False
-low_pass_filter = False
 # SEM scale bar length
 bar_length = 20             # um
 # wrinkle size range of interest
@@ -63,21 +60,11 @@ rasp_length = len(rasp)
 # frequency vector (pixels)
 k = np.arange(0,N-1,1)      # pixels
 # spatial frequency vector
-lam = np.divide(L,k)        # un/pixel
+lam = np.divide(L,k)        # um/pixel
 # normalize rasp with bins_count
 rasp_norm = np.nan_to_num(np.divide(rasp,bins_count))
 # deconvolve
 if dconv: rasp_norm = np.divide(rasp_norm,lam[:rasp_length])
-# # transform to absolute units (AU) using maximum intensity
-# rasp_norm_au = rasp_norm/np.max(rasp_norm)
-
-# high and low pass filters
-sigma = 2
-X = np.arange(0,rasp_length,1)
-Lo = np.divide(np.exp(-(X**2)),(2*sigma**2))
-Hi = 1 - Lo
-if high_pass_filter: rasp_norm = np.multiply(rasp_norm,Hi)
-if low_pass_filter: rasp_norm = np.multiply(rasp_norm,Lo)
 
 # transform to absolute value using maximum intensity
 rasp_norm_au = rasp_norm/np.max(rasp_norm)
