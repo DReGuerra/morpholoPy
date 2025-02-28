@@ -19,6 +19,7 @@ This repository contains Python implementations of image analysis algorithms for
 1. Image Analysis of Structured Surfaces for Quantitative Topographical Characterization [(Stimpson et al., 2020)](https://doi.org/10.26434/chemrxiv.12736289.v1)
 2. 2.5D Hierarchical Structuring of Nanocomposite Hydrogel Films Containing Cellulose Nanocrystals [(De France et al., 2019)](https://doi.org/10.1021/acsami.8b16232)
 3. Pattern formation, structure and functionalities of wrinkled liquid crystal surfaces: A soft matter biomimicry platform [(Wang-Servio-Rey, 2023)](https://doi.org/10.3389/frsfm.2023.1123324)
+4. Mechanogeometry of nanowrinkling in cholesteric liquid crystal surfaces [Wang-Servio-Rey, 2020](https://doi.org/10.1103/PhysRevE.101.062705)
 
 ---
 
