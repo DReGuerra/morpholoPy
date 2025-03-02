@@ -12,7 +12,7 @@ This repository contains Python implementations of image analysis algorithms for
 ---
 ## Core Contents
 1. `tests/` $\rightarrow$ collection of test cases to validate and demonstrate usage.
-2. `_wrinklelib.py` $\rightarrow$ contains functions to be used by `wrinkleAnalysis.py`
+2. `_wrinklelib.py` $\rightarrow$ contains functions to be used by the scripts in this repo.
 3. `characteristic_length.py` $\rightarrow$ main script executing the image for feature examinations and characteristic length determination.
 
 ## References
