@@ -13,7 +13,7 @@ This repository contains Python implementations of image analysis algorithms for
 ## Core Contents
 1. `tests/` $\rightarrow$ collection of test cases to validate and demonstrate usage.
 2. `_wrinklelib.py` $\rightarrow$ contains functions to be used by `wrinkleAnalysis.py`
-3. `wrinkleAnalysis.py` $\rightarrow$ main script executing the image analyses and surface feature examinations.
+3. `characteristic_length.py` $\rightarrow$ main script executing the image for feature examinations and characteristic length determination.
 
 ## References
 1. Image Analysis of Structured Surfaces for Quantitative Topographical Characterization [(Stimpson et al., 2020)](https://doi.org/10.26434/chemrxiv.12736289.v1)
