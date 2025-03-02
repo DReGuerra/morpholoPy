@@ -29,6 +29,8 @@ Extract characteristic the length.
         EXAMPLES:
         >> python src/characteristic_length.py kdf_biaxial_20um.tif True 1 20 1.5 3.0
         >> python src/characteristic_length.py kdf_biaxial_20um.tif True 2 20 1.5 3.0 3.5 5.0
+        >> python src/characteristic_length.py 30_-C-In-Day7_thesis_poster.jpg True 1 50 0.8 1.6
+        >> python src/characteristic_length.py 30_-C-In-Day7_thesis_poster.jpg True 2 50 0.8 1.6 0.15 0.4
 """
 
 import sys
@@ -67,7 +69,7 @@ if int(POP_NUM == 2):
 # import SEM image in gray-scale
 image = io.imread(img_file, as_gray=True)
 # enhance edges by band-pass filtering
-filtered_image = difference_of_gaussians(image, low_sigma=1.1, high_sigma=None)
+filtered_image = difference_of_gaussians(image, low_sigma=3, high_sigma=12)
 # Canny edge dectection
 filtered_edges = feature.canny(filtered_image, sigma=1.4)
 
@@ -84,7 +86,7 @@ filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
 # scale_bar = measure_scale_bar(image)   # pixels
-scale_bar = 170 # hardcoded for kdf_biaxial_20um.tif
+scale_bar = 459 # hardcoded for emulsion_bubbles
 print("Scale bar: "+ str(scale_bar) + " pixels")
 X, Y = filtered_edges_square.shape  # pixels
 pxl_scale = bar_length/scale_bar    # um/pixel
@@ -191,7 +193,7 @@ if int(POP_NUM == 2):
     axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,1].annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-    axs[2,1].set_xlim([0,6])
+    axs[2,1].set_xlim([0,1.5])
     axs[2,1].set_ylim([0,1.2])
 else:
     axs[2,0].plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
@@ -212,22 +214,22 @@ f.tight_layout()
 f.savefig("figures/" + file_name + "_summary.png")
 
 # Filtered image
-NROWS = 1; NCOLS = 1
-f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+# NROWS = 1; NCOLS = 1
+# f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+#                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
 
-axs.imshow(filtered_image_sq)
+# axs.imshow(filtered_image_sq)
 
-f.tight_layout()
-f.savefig("figures/" + file_name + "_filtered.png")
+# f.tight_layout()
+# f.savefig("figures/" + file_name + "_filtered.png")
 
-# Filtered edges
-NROWS = 1; NCOLS = 1
-f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+# # Filtered edges
+# NROWS = 1; NCOLS = 1
+# f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+#                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
 
-axs.imshow(filtered_edges_square)
+# axs.imshow(filtered_edges_square)
 
-f.tight_layout()
-f.savefig("figures/" + file_name + "_filtered_edges.png")
+# f.tight_layout()
+# f.savefig("figures/" + file_name + "_filtered_edges.png")
 

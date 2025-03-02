@@ -46,7 +46,7 @@ from _wrinklelib import radially_averaged_PSD, measure_scale_bar
 # inpput parameters
 # SEM image file
 file = str(sys.argv[1])
-file_name = re.findall(r"\w+", file)[0]
+file_name = re.findall(r"([^^.\s]+)\.", file)[0]
 file_type = re.findall(r"\.\w+", file)[0]
 img_file = "images/" + file_name + file_type
 # deconvolution
