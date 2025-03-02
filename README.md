@@ -65,6 +65,17 @@ The jigsaw and fragmented jigsaw images were made using Photopea at https://www.
 ### kdf_biaxial_20um
 
 This test uses a biaxial wrinkled surface with a scale bar of 20 microns (um). The scale bar is 170 pixels in length.<br>
+The image analysis parameters below were determined based on trial and error:<br>
+|   Parameter     |    Value    |
+|:----------------|:------------|
+| dof_lo_sigma*   |  1.1        |
+| dof_hi_sigma*   |  None       |
+| canny_sigma*    |  1.4        |
+| bar_len         |  20         |
+| scale_bar**     |  170        |
+
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocStrings.<br>
+**This parameter is determined by manual examination of the scale bar in the image usig ImageJ. In cases where the image was obtained from an SEM that uses the same banner convention as Queen's University Quanta 250, `measure_scale_bar` may be used to automatically obtain the scale bar size in pixels.<br>
 
 Source: [De France et al., 2019](https://pubs.acs.org/doi/full/10.1021/acsami.8b16232)<br>
 ACS Appl. Mater. Interfaces 2019, 11, 6, 6325–6335<br>
@@ -76,6 +87,17 @@ Figure 6F
 ### kdf_uniaxial_20um
 
 This test uses a uniaxial wrinkled surface with a scale bar of 20 microns (um). The scale bar is 170 pixels in length.<br>
+The image analysis parameters below were determined based on trial and error:<br>
+|   Parameter*    |    Value    |
+|:----------------|:------------|
+| dof_lo_sigma*   |  1.1        |
+| dof_hi_sigma*   |  None       |
+| canny_sigma*    |  1.4        |
+| bar_len         |  20         |
+| scale_bar**     |  170        |
+
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocStrings.<br>
+**This parameter is determined by manual examination of the scale bar in the image usig ImageJ. In cases where the image was obtained from an SEM that uses the same banner convention as Queen's University Quanta 250, `measure_scale_bar` may be used to automatically obtain the scale bar size in pixels (see [xg-cnc_1-1](tests/xg-cnc_1-1/src/characteristic_length.py)).
 
 Source: [De France et al., 2019](https://pubs.acs.org/doi/full/10.1021/acsami.8b16232)<br>
 ACS Appl. Mater. Interfaces 2019, 11, 6, 6325–6335<br>
@@ -86,7 +108,15 @@ Figure 6J
 
 ### xg-cnc_1-1
 
-This test demonstrates the usage of the function `measureScaleBar()` with an SEM image that is not originally square and contains an info banner at the bottom with the length scale.
+This test demonstrates the usage of the function `measureScaleBar()` with an SEM image that is not originally square and contains an info banner at the bottom with the length scale.<br>
+The image analysis parameters below were determined based on trial and error:<br>
+|   Parameter*   |    Value    |
+|:---------------|:------------|
+| dof_lo_sigma   |  1          |
+| dof_hi_sigma   |  10         |
+| canny_sigma    |  2          |
+
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocStrings.
 
 #### Original SEM image
 ![Original SEM image](tests/xg-cnc_1-1/images/a1XG3p_1000x_003.png)
@@ -96,7 +126,15 @@ This test demonstrates the usage of the function `measureScaleBar()` with an SEM
 
 ### emulsion_bubbles
 
-This test analyzes bubbles in CNC emulsions to extract bubble characteristic length (diameter).
+This test analyzes bubbles in CNC emulsions to extract bubble characteristic length (diameter).<br>
+The image analysis parameters below were determined based on trial and error:<br>
+|   Parameter*   |    Value    |
+|:---------------|:------------|
+| dof_lo_sigma   |  3          |
+| dof_hi_sigma   |  12         |
+| canny_sigma    |  1.4        |
+
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocStrings.
 
 #### Original image
 ![KDF emulsion bubbles jpg](tests/emulsion_bubbles/images/30_-C-In-H-Day7.jpg)
