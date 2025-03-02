@@ -94,6 +94,13 @@ This test demonstrates the usage of the function `measureScaleBar()` with an SEM
 #### Rsults summary figure
 ![xg-cnc_1-1 wrinkles](tests/xg-cnc_1-1/figures/a1XG3p_1000x_003_summary.png)
 
+### emulsion_bubbles
+
+This test analyzes bubbles in CNC emulsions to extract bubble characteristic length (diameter).
+
+#### Results summary figure
+![KDF emulsion bubbles](tests/emulsion_bubbles/figures/30_-C-In-H-Day7_summary.png)
+
 ## Workflow and usage
 
 ### `wrinkleAnalysis.py`
