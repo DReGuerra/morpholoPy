@@ -1,3 +1,17 @@
+"""
+Description:
+Extract characteristic the length.
+
+    Usage:
+        >> python characteristic_length.py
+
+        Returns: 
+            Various plots are output to figures/
+
+        EXAMPLES:
+        >> python characteristic_length.py
+"""
+
 import numpy as np
 from scipy.stats import kurtosis, skew
 import matplotlib.pyplot as plt
