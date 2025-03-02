@@ -11,18 +11,103 @@ import matplotlib.pyplot as plt
 from skimage import feature, io, color
 from PIL import Image
 
-def pixel2length(image_gray, max_position, min_position):
-    length = max_position - min_position
-    image_length = image_gray * length
+def image_preprocess(image):
+    """Preprocess the image
+    Square the image data and convert it to grayscale.
+    
+        Parameters:
+        image   : 3D nd.array
+            Image data in RGB [0,255]
+            
+        Returns:
+        image_gray_cut: 2D nd.array
+            Image data converted to grayscale [0,1]
+    """
+    
+    # square dimension of image
+    CUT = np.min(image.shape)
+    # check if the image has 4 channels (RGBA)
+    if image.shape[2] == 4:
+        # Convert RGBA to RGB by discarding the alpha channel
+        image_rgb = image[:, :, :3]
+    else:
+        image_rgb = image
+    # cut the scale bar out of the image
+    image_rgb_cut = image_rgb[0:CUT,0:CUT]
+    # convert the cut image to grayscale
+    image_gray_cut = color.rgb2gray(image_rgb_cut)
+    
+    return image_gray_cut
+
+def pixel2length(image_gray, MAX, MIN):
+    """Convert pixel values to length values based on the scalebar
+    
+        Parameters:
+        image   : 2D nd.array
+            Image data in gray_scale [0,1]
+        MAX     : float
+            Maximum value of the scalebar
+        MIN     : float
+            Minimum value of the scalebar
+        
+        Returns:
+        image_length: 2D nd.array
+            Image data converted to length values
+    """
+    dh = MAX - MIN
+    image_length = image_gray * dh
+    
     return image_length
 
-def skewness(surface, _x, _y):
-    integral_1d = simps(surface, _x)
-    integral_2d = simps(integral_1d, _x)
-    return integral_2d
+def skewness(s, x, y):
+    """Skewness (SSk)
 
-def kurtosis(surface, _x, _y):
-    pass
+        Parameters:
+        s   : 2D nd.array
+            Surface height data [length]
+        x   : nd.array
+            x dimension of the surface [length]
+        y   : nd.array
+            y dimension of the surface [length]
+
+        Returns:
+        Ssk: 
+            Skewness of the surface
+    """ 
+    # transform the height data to dimensionless
+    _s = s / np.max(x)
+    _x = x / np.max(x)
+    _y = y / np.max(x)
+    
+    # surface integral
+    integral_1d = simps(_s, _x)
+    integral_2d = simps(integral_1d, _x)
+    
+    return integral_2d # SSk
+
+def kurtosis(s, x, y):
+    """Kurtosis (SKu)
+
+        Parameters:
+        s   : 2D nd.array
+            Surface height data [length]
+        x   : nd.array
+            x dimension of the surface [length]
+        y   : nd.array
+            y dimension of the surface [length]
+
+        Returns:
+        Sku: 
+            Kurtosis of the surface
+    """
+    # transform the height data to dimensionless
+    _s = s / np.max(x)
+    _x = x / np.max(x)
+    _y = y / np.max(x)
+    
+    # surface integral
+    
+    return 0 # SKu
 
 #############################################################################################
 # Handling image
@@ -50,8 +135,7 @@ scalebar = image_original[:,14000]
 SCALE_MAX = 7.9 # nm
 SCALE_MIN = 0.9 # nm
 # convert image pixel values from intensity to height based on scalebar
-dh = SCALE_MAX - SCALE_MIN
-surface_height = image_gray_cut * dh
+surface_height = pixel2length(image_gray_cut, SCALE_MAX, SCALE_MIN)
 # save a section to csv for verification
 df = pd.DataFrame(np.round(surface_height,decimals=4))
 df.to_csv("data/surface_height.csv", index=False)
