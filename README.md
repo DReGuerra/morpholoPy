@@ -98,6 +98,9 @@ This test demonstrates the usage of the function `measureScaleBar()` with an SEM
 
 This test analyzes bubbles in CNC emulsions to extract bubble characteristic length (diameter).
 
+#### Original image
+![KDF emulsion bubbles jpg](tests/emulsion_bubbles/images/30_-C-In-H-Day7.jpg)
+
 #### Results summary figure
 ![KDF emulsion bubbles](tests/emulsion_bubbles/figures/30_-C-In-H-Day7_summary.png)
 
