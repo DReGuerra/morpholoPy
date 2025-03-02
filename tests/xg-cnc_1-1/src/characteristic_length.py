@@ -67,9 +67,9 @@ if int(POP_NUM == 2):
 # import SEM image in gray-scale
 image = io.imread(img_file, as_gray=True)
 # enhance edges by band-pass filtering
-filtered_image = difference_of_gaussians(image, low_sigma=1.1, high_sigma=None)
+filtered_image = difference_of_gaussians(image, low_sigma=1, high_sigma=10)
 # Canny edge dectection
-filtered_edges = feature.canny(filtered_image, sigma=1.4)
+filtered_edges = feature.canny(filtered_image, sigma=2)
 
 # print size of the image
 print("Image size: " + str(image.shape))
@@ -77,14 +77,14 @@ print("Image size: " + str(image.shape))
 print("Smaller dimension: " + str(np.min(image.shape)))
 
 # resize the image to square
-N = np.min(image.shape)
+N = 881
 image_sq = image[:N,:N]
 filtered_image_sq = filtered_image[:N,:N]
 filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
-# scale_bar = measure_scale_bar(image)   # pixels
-scale_bar = 170 # hardcoded for kdf_biaxial_20um.tif
+scale_bar = measure_scale_bar(image)   # pixels
+# scale_bar = 170 # hardcoded for kdf_biaxial_20um.tif
 print("Scale bar: "+ str(scale_bar) + " pixels")
 X, Y = filtered_edges_square.shape  # pixels
 pxl_scale = bar_length/scale_bar    # um/pixel
