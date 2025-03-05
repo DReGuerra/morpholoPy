@@ -1,6 +1,6 @@
 
 import os
-os.environ["QT_QPA_PLATFORM"] = "xcb"
+# os.environ["QT_QPA_PLATFORM"] = "xcb"
 
 import numpy as np
 import pandas as pd
@@ -9,7 +9,7 @@ from scipy.integrate import simpson as simps
 import matplotlib.pyplot as plt
 
 from skimage import feature, io, color
-from PIL import Image
+# from PIL import Image
 
 def image_preprocess(image):
     """Preprocess the image
@@ -182,7 +182,7 @@ COL = 14000
 #############################################################################################
 # Handling image
 # increase the maximum image size to avoid DecompressionBombError
-Image.MAX_IMAGE_PIXELS = None
+# Image.MAX_IMAGE_PIXELS = None
 # import image
 file_name = "lyso_dia_nonso0001.png"
 image_original = io.imread("images/" + file_name)
