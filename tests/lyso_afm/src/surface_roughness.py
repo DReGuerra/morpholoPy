@@ -9,19 +9,19 @@ from scipy.integrate import simpson as simps
 import matplotlib.pyplot as plt
 
 from skimage import feature, io, color
-# from PIL import Image
+from PIL import Image
 
 def image_preprocess(image):
     """Preprocess the image
     Square the image data and convert it to grayscale.
     
-        Parameters:
-        image   : 3D nd.array
+    Args:
+    image   : 3D nd.array
             Image data in RGB [0,255]
             
-        Returns:
-        image_gray_cut: 2D nd.array
-            Image data converted to grayscale [0,1]
+    Returns:
+    image_gray_cut  : 2D nd.array
+                    Image data converted to grayscale [0,1]
     """
     
     # square dimension of image
@@ -43,10 +43,12 @@ def measure_scalebar(image):
     """Identify and measure scale bar in an AFM image.tif
 
     Args:
-        image (np.array): AFM image
+    image   : np.array
+            AFM image
 
     Returns:
-        scalebar_pixels: pixel # width of the scale
+    scalebar_pixels : int 
+                    pixel # width of the scale
     """
     
     # image size
@@ -68,74 +70,22 @@ def measure_scalebar(image):
 def pixel2length(image_gray, MAX, MIN):
     """Convert pixel values to length values based on the h_scalebar
     
-        Parameters:
-        image   : 2D nd.array
+    Args:
+    image   : 2D nd.array
             Image data in gray_scale [0,1]
-        MAX     : float
+    MAX     : float
             Maximum value of the h_scalebar
-        MIN     : float
+    MIN     : float
             Minimum value of the h_scalebar
         
-        Returns:
-        image_length: 2D nd.array
-            Image data converted to length values
+    Returns:
+    image_length: 2D nd.array
+        Image data converted to length values
     """
     dh = MAX - MIN
     image_length = image_gray * dh
     
     return image_length
-
-def skewness(s, x, y):
-    """Skewness (SSk)
-
-        Parameters:
-        s   : 2D nd.array
-            Surface height data [length]
-        x   : nd.array
-            x dimension of the surface [length]
-        y   : nd.array
-            y dimension of the surface [length]
-
-        Returns:
-        Ssk: 
-            Skewness of the surface
-    """ 
-    # transform the height data to dimensionless
-    _s = s / np.max(x)
-    _x = x / np.max(x)
-    _y = y / np.max(x)
-    
-    # surface integral
-    integral_1d = simps(_s, _x)
-    integral_2d = simps(integral_1d, _y)
-    
-    return integral_2d # SSk
-
-def kurtosis(s, x, y):
-    """Kurtosis (SKu)
-
-        Parameters:
-        s   : 2D nd.array
-            Surface height data [length]
-        x   : nd.array
-            x dimension of the surface [length]
-        y   : nd.array
-            y dimension of the surface [length]
-
-        Returns:
-        Sku: 
-            Kurtosis of the surface
-    """
-    # transform the height data to dimensionless
-    _s = s / np.max(x)
-    _x = x / np.max(x)
-    _y = y / np.max(x)
-    
-    # surface integral
-    
-    return 0 # SKu
-
-import numpy as np
 
 def get_derivatives(h, Dx, Dy):
     
@@ -157,6 +107,32 @@ def get_derivatives(h, Dx, Dy):
     return hx, hy, hxx, hxy, hyy
 
 def surface_roughness(h, hx, hy, Dx, Dy, Nx, Ny):
+    """Surface roughness analysis.
+
+    Args:
+    h   : nd.array
+        Surface height [dimensionless]
+    hx  :nd.array
+        x dimension of surface height [dimensionless]
+    hy  : nd.array
+        y dimension of surface height [dimensionless]
+    Dx  : float 
+        Difference in x dimension [dimensionless]
+    Dy  : float 
+        Total change in y dimension [dimensionless]
+    Nx  : int
+        Number of x elements
+    Ny  : int
+        Number of y elements
+
+    Returns:
+    Sq2 : float
+        Root mean square of the surface h
+    Ssk : float
+        Skewness of the surface h
+    Sku : float
+        Kurtosis of the surface h
+    """
     
     g = np.ones((Nx, Ny)) + hx ** 2 + hy ** 2
     h2 = h ** 2
@@ -164,10 +140,10 @@ def surface_roughness(h, hx, hy, Dx, Dy, Nx, Ny):
     
     Sq2 = np.sum(h2 * Dx * Dy) / Area
     
-    Skewness = np.sum(h2 * h * Dx * Dy) / (Area * Sq2 ** (3 / 2))
-    Kurtosis = np.sum(h2 * h2 * Dx * Dy) / (Area * Sq2 ** 2)
+    Ssk = np.sum(h2 * h * Dx * Dy) / (Area * Sq2 ** (3 / 2))
+    Sku = np.sum(h2 * h2 * Dx * Dy) / (Area * Sq2 ** 2)
     
-    return Sq2, Skewness, Kurtosis
+    return Sq2, Ssk, Sku
 
 #############################################################################################
 # Manual inputs
@@ -182,7 +158,7 @@ COL = 14000
 #############################################################################################
 # Handling image
 # increase the maximum image size to avoid DecompressionBombError
-# Image.MAX_IMAGE_PIXELS = None
+Image.MAX_IMAGE_PIXELS = None
 # import image
 file_name = "lyso_dia_nonso0001.png"
 image_original = io.imread("images/" + file_name)
