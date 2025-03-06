@@ -208,7 +208,7 @@ Dy = (_y[-1] - _y[0]) / NEy
 # get derivatives
 hx, hy, hxx, hxy, hyy = get_derivatives(_s, Dx, Dy)
 # surface roughness
-Sq2, Skewness, Kurtosis = surface_roughness(_s, hx, hy, Dx, Dy, Nx, Ny)
+Sq2, Ssk, Sku = surface_roughness(_s, hx, hy, Dx, Dy, Nx, Ny)
 
 #############################################################################################
 # visualization
@@ -256,6 +256,6 @@ print("surface_nm[100,100]: " + str(surface_nm[100,100]))
 print("")
 print("Surface roughness parameters:")
 print("Sq2: " + str(Sq2))
-print("Skewness: " + str(Skewness))
-print("Kurtosis: " + str(Kurtosis))
+print("Skewness: " + str(Ssk))
+print("Kurtosis: " + str(Sku))
 print("--------------------------------")
