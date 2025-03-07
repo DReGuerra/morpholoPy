@@ -1,4 +1,12 @@
+"""Surface Roughness
+This script analyzes an image of a nanostructured surface and characterizes roughness.
 
+TODO:
+- re-write in OOP
+
+    Usage:
+        >> python src/surface_roughness.py
+"""
 import os
 # os.environ["QT_QPA_PLATFORM"] = "xcb"
 
