@@ -16,12 +16,10 @@ def image_preprocess(image):
     Square the image data and convert it to grayscale.
     
     Args:
-    image   : 3D nd.array
-            Image data in RGB [0,255]
+    image (3D ndarray)          : Image data in RGB [0,255]
             
     Returns:
-    image_gray_cut  : 2D nd.array
-                    Image data converted to grayscale [0,1]
+    image_gray_cut (2D ndarray) : Image data converted to grayscale [0,1]
     """
     
     # square dimension of image
@@ -43,12 +41,10 @@ def measure_scalebar(image):
     """Identify and measure scale bar in an AFM image.tif
 
     Args:
-    image   : np.array
-            AFM image
+    image (ndarray)       : Grayscale AFM image [0,1]
 
     Returns:
-    scalebar_pixels : int 
-                    pixel # width of the scale
+    scalebar_pixels (int) : Width of the scale [pixels]
     """
     
     # image size
@@ -71,16 +67,12 @@ def pixel2length(image_gray, MAX, MIN):
     """Convert pixel values to length values based on the h_scalebar
     
     Args:
-    image   : 2D nd.array
-            Image data in gray_scale [0,1]
-    MAX     : float
-            Maximum value of the h_scalebar
-    MIN     : float
-            Minimum value of the h_scalebar
+    image (2D ndarray)  : Image data in gray_scale [0,1]
+    MAX (float)         : Maximum value of the h_scalebar
+    MIN (float)         : Minimum value of the h_scalebar
         
     Returns:
-    image_length: 2D nd.array
-        Image data converted to length values
+    image_length (2D ndarray) : Image data converted to length values
     """
     dh = MAX - MIN
     image_length = image_gray * dh
@@ -88,6 +80,20 @@ def pixel2length(image_gray, MAX, MIN):
     return image_length
 
 def get_derivatives(h, Dx, Dy):
+    """Calculate the derivatives
+
+    Args:
+        h   : Surface height data
+        Dx  : Total change in the x dimension
+        Dy  : Total change in the y dimension
+
+    Returns:
+        hx  : Derivative in x 
+        hy  : Derivative in y
+        hxx : 2nd order derivative in x
+        hxy : 2nd order cross derivative
+        hyy : 2nd order derivative in y
+    """
     
     up = np.roll(h, -1, axis=0)
     down = np.roll(h, 1, axis=0)
@@ -107,31 +113,23 @@ def get_derivatives(h, Dx, Dy):
     return hx, hy, hxx, hxy, hyy
 
 def surface_roughness(h, hx, hy, Dx, Dy, Nx, Ny):
-    """Surface roughness analysis.
+    """Surface roughness analysis
 
     Args:
-    h   : nd.array
-        Surface height [dimensionless]
-    hx  :nd.array
-        x dimension of surface height [dimensionless]
-    hy  : nd.array
-        y dimension of surface height [dimensionless]
-    Dx  : float 
-        Difference in x dimension [dimensionless]
-    Dy  : float 
-        Total change in y dimension [dimensionless]
-    Nx  : int
-        Number of x elements
-    Ny  : int
-        Number of y elements
+    h (ndarray)     : Surface height [dimensionless]
+    hx (ndarray)    : x dimension of surface height [dimensionless]
+    hy (ndarray)    : y dimension of surface height [dimensionless]
+    Dx (float)      : Total change in the x dimension [dimensionless]
+    Dy (float)      : Total change in the y dimension [dimensionless]
+    Nx (int)        : Number of x elements
+    Ny (int)        : Number of y elements
 
     Returns:
-    Sq2 : float
-        Root mean square of the surface h
-    Ssk : float
-        Skewness of the surface h
-    Sku : float
-        Kurtosis of the surface h
+    Sq2 (float) : Root mean square (second moment) of the surface h
+    Rsk (float) : Skewness (third moment) of the surface h
+    Rku (float) : Kurtosis (fourth moment) of the surface h
+    acf (float) : autocorrelation function
+    sal (float) : autocorrelation length
     """
     
     g = np.ones((Nx, Ny)) + hx ** 2 + hy ** 2
@@ -140,10 +138,13 @@ def surface_roughness(h, hx, hy, Dx, Dy, Nx, Ny):
     
     Sq2 = np.sum(h2 * Dx * Dy) / Area
     
-    Ssk = np.sum(h2 * h * Dx * Dy) / (Area * Sq2 ** (3 / 2))
-    Sku = np.sum(h2 * h2 * Dx * Dy) / (Area * Sq2 ** 2)
+    Rsk = np.sum(h2 * h * Dx * Dy) / (Area * Sq2 ** (3 / 2))
+    Rku = np.sum(h2 * h2 * Dx * Dy) / (Area * Sq2 ** 2)
     
-    return Sq2, Ssk, Sku
+    acf = np.sum(np.sqrt(g) * h )
+    sal = np.min()
+    
+    return Sq2, Rsk, Rku
 
 #############################################################################################
 # Manual inputs
@@ -208,7 +209,7 @@ Dy = (_y[-1] - _y[0]) / NEy
 # get derivatives
 hx, hy, hxx, hxy, hyy = get_derivatives(_s, Dx, Dy)
 # surface roughness
-Sq2, Ssk, Sku = surface_roughness(_s, hx, hy, Dx, Dy, Nx, Ny)
+Sq2, Rsk, Rku = surface_roughness(_s, hx, hy, Dx, Dy, Nx, Ny)
 
 #############################################################################################
 # visualization
@@ -256,6 +257,32 @@ print("surface_nm[100,100]: " + str(surface_nm[100,100]))
 print("")
 print("Surface roughness parameters:")
 print("Sq2: " + str(Sq2))
-print("Skewness: " + str(Ssk))
-print("Kurtosis: " + str(Sku))
+print("Skewness: " + str(Rsk))
+print("Kurtosis: " + str(Rku))
 print("--------------------------------")
+
+#############################################################################################
+# print summary to file 
+with open('summary.txt', 'w') as textfile:
+    textfile.write("--------------------------------")
+    textfile.write("Summary:")
+    textfile.write("")
+    textfile.write("Scalebar max: " + str(np.max(h_scalebar)) + " Min: " + str(np.min(h_scalebar)))
+    textfile.write("h_scalebar[80] = " + str(h_scalebar[80]) + " h_scalebar[-105] = " + str(h_scalebar[-105]))
+    textfile.write("")
+    textfile.write("image_gray_cut.shape: " + str(image_gray_cut.shape))
+    textfile.write("image_gray_cut pixels Max: " + str(np.max(image_gray_cut)) + " Min: " + str(np.min(image_gray_cut)))
+    textfile.write("")
+    textfile.write("image_gray_cut.shape: " + str(image_gray_cut.shape))
+    textfile.write("image_gray_cut[100,100]: " + str(image_gray_cut[100,100]))
+    textfile.write("")
+    textfile.write("surface_nm.shape: " + str(surface_nm.shape))
+    textfile.write("surface_nm pixels Max: " + str(np.max(surface_nm)) + " Min: " + str(np.min(surface_nm)))
+    textfile.write("")
+    textfile.write("surface_nm[100,100]: " + str(surface_nm[100,100]))
+    textfile.write("")
+    textfile.write("Surface roughness parameters:")
+    textfile.write("Sq2: " + str(Sq2))
+    textfile.write("Skewness: " + str(Rsk))
+    textfile.write("Kurtosis: " + str(Rku))
+    textfile.write("--------------------------------")
