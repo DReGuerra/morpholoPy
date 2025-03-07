@@ -120,7 +120,7 @@ def get_derivatives(h, Dx, Dy):
     
     return hx, hy, hxx, hxy, hyy
 
-def surface_roughness(h, hx, hy, Dx, Dy, Nx, Ny):
+def surface_roughness(h, hx, hy, Dx, Dy, Nx, Ny, delx, dely):
     """Surface roughness analysis
 
     Args:
@@ -131,6 +131,8 @@ def surface_roughness(h, hx, hy, Dx, Dy, Nx, Ny):
     Dy (float)      : Total change in the y dimension [dimensionless]
     Nx (int)        : Number of x elements
     Ny (int)        : Number of y elements
+    delx (ndarray)  : acf lag in x
+    dely (ndarray)  : acf lag in y
 
     Returns:
     Sq2 (float) : Root mean square (second moment) of the surface h
