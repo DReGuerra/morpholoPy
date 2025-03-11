@@ -8,6 +8,7 @@ TODO:
         >> python src/surface_roughness.py
 """
 import os
+import re
 # os.environ["QT_QPA_PLATFORM"] = "xcb"
 
 import numpy as np
@@ -120,7 +121,7 @@ def get_derivatives(h, Dx, Dy):
     
     return hx, hy, hxx, hxy, hyy
 
-def surface_roughness(h, hx, hy, Dx, Dy, Nx, Ny, delx, dely):
+def surface_roughness(h, hx, hy, Dx, Dy, Nx, Ny):
     """Surface roughness analysis
 
     Args:
@@ -151,10 +152,76 @@ def surface_roughness(h, hx, hy, Dx, Dy, Nx, Ny, delx, dely):
     Rsk = np.sum(h2 * h * Dx * Dy) / (Area * Sq2 ** (3 / 2))
     Rku = np.sum(h2 * h2 * Dx * Dy) / (Area * Sq2 ** 2)
     
-    acf = np.sum(np.sqrt(g) * h )
-    sal = np.min()
+    # acf = np.sum(np.sqrt(g) * h )
+    # sal = np.min()
     
     return Sq2, Rsk, Rku
+
+import scipy.stats as stats
+
+def generate_wrinkled_surface(size=801, skew_target=2, kurt_target=10):
+    """
+    Generates a 2D surface height map with periodic undulations,
+    skewness of 2, and kurtosis of 10.
+    """
+    np.random.seed(42)  # For reproducibility
+    
+    # Step 1: Generate a base sinusoidal wave pattern for periodic undulations
+    x = np.linspace(0, 4 * np.pi, size)
+    y = np.linspace(0, 4 * np.pi, size)
+    X, Y = np.meshgrid(x, y)
+    
+    base_wave = np.sin(X) * np.cos(Y)  # Base periodic structure
+
+    # Step 2: Add Gaussian noise for wrinkles
+    noise = np.random.normal(0, 0.2, (size, size))  # White noise
+
+    # Combine both
+    height_map = base_wave + noise  
+
+    # Step 3: Transform the distribution to match target skewness & kurtosis
+    height_map_flat = height_map.flatten()
+
+    # Normalize to standard normal distribution
+    height_map_flat = (height_map_flat - np.mean(height_map_flat)) / np.std(height_map_flat)
+
+    # Use a transformation to achieve desired skewness & kurtosis
+    transformed_data = stats.boxcox(height_map_flat - np.min(height_map_flat) + 1)[0]
+    
+    # Further adjust skewness and kurtosis
+    transformed_data = (transformed_data - np.mean(transformed_data)) / np.std(transformed_data)
+    transformed_data = transformed_data**3  # Introducing skew
+    
+    # Scale to match desired kurtosis
+    transformed_data = transformed_data / np.max(np.abs(transformed_data))  # Normalize to [-1, 1]
+    transformed_data = transformed_data * np.sqrt(kurt_target)  # Scale to kurtosis target
+
+    # Reshape back to 2D
+    height_map = transformed_data.reshape((size, size))
+
+    # Normalize to range [0,1]
+    height_map = (height_map - np.min(height_map)) / (np.max(height_map) - np.min(height_map))
+
+    return height_map
+
+# test surface
+test_surface = generate_wrinkled_surface()
+# mesh grid
+Nx_test, Ny_test = test_surface.shape
+x_test = np.arange(0,Nx_test,1)
+y_test = np.arange(0,Ny_test,1)
+_x_test = x_test / np.max(x_test)
+_y_test = y_test / np.max(y_test)
+# grid spacing
+Nex_test = Nx_test - 1
+Ney_test = Ny_test - 1
+Dx_test = (_x_test[-1] - _x_test[0]) / Nex_test
+Dy_test = (_y_test[-1] - _y_test[0]) / Ney_test
+# get derivatives
+hx_test, hy_test, hxx_test, hxy_test, hyy_test = get_derivatives(test_surface, Dx_test, Dy_test)
+# surface roughness
+Sq2_test, Rsk_test, Rku_test = surface_roughness(test_surface, hx_test, hy_test,
+                                                 Dx_test, Dy_test, Nx_test, Ny_test)
 
 #############################################################################################
 # Manual inputs
@@ -171,8 +238,10 @@ COL = 14000
 # increase the maximum image size to avoid DecompressionBombError
 Image.MAX_IMAGE_PIXELS = None
 # import image
-file_name = "lyso_dia_nonso0001.png"
-image_original = io.imread("images/" + file_name)
+file = "lyso_dia_nonso0001.png"
+file_name = re.findall(r"([^^.\s]+)\.", file)[0]
+file_type = re.findall(r"\.\w+", file)[0]
+image_original = io.imread("images/" + file_name + file_type)
 # square dimension of image
 CUT = image_original.shape[0]
 # check if the image has 4 channels (RGBA)
@@ -246,6 +315,18 @@ axs[1,1].axis("off")
 f.tight_layout()
 f.savefig("figures/" + file_name + "_surface_roughness_analysis.png")
 
+# Test surface for surface_roughness
+NROWS = 1; NCOLS = 1
+
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+
+axs.imshow(test_surface, cmap='gray', origin='lower')
+axs.set_title("Wrinkled Surface Map with Periodic Undulations")
+
+f.tight_layout()
+f.savefig("figures/test_surface.png")
+
 #############################################################################################
 # print summary
 print("--------------------------------")
@@ -269,6 +350,12 @@ print("Surface roughness parameters:")
 print("Sq2: " + str(Sq2))
 print("Skewness: " + str(Rsk))
 print("Kurtosis: " + str(Rku))
+print("")
+print("Test surface:")
+print("Surface roughness parameters:")
+print("Sq2: " + str(Sq2_test))
+print("Skewness: " + str(Rsk_test))
+print("Kurtosis: " + str(Rku_test))
 print("--------------------------------")
 
 #############################################################################################
