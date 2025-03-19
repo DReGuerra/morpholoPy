@@ -1,0 +1,22 @@
+--------------------------------
+Summary:
+
+Scalebar max: 255 Min: 0
+h_scalebar[80] = [252 252 128 255] h_scalebar[-105] = [  1   0   0 255]
+
+image_gray_cut.shape: (12960, 12960)
+image_gray_cut pixels Max: 1.0 Min: 0.0
+
+image_gray_cut.shape: (12960, 12960)
+image_gray_cut[100,100]: 0.22830235294117646
+
+surface_nm.shape: (12960, 12960)
+surface_nm pixels Max: 7.0 Min: 0.0
+
+surface_nm[100,100]: 1.5981164705882351
+
+Surface roughness parameters:
+Sq2: 0.057940680987137616
+Skewness: 2.0617881007906877
+Kurtosis: 5.640778173828642
+--------------------------------
