@@ -151,7 +151,7 @@ def surface_roughness(h, hx, hy, Dx, Dy, Nx, Ny):
     
     return Sq2, Rsk, Rku
 
-def surface_autocorrelations(h, hx, hy, Dx, Dy, Nx, Ny, delx, dely):
+def surface_autocorrelations(h, hx, hy, Dx, Dy, Nx, Ny, delx_range, dely_range):
     """Calculate the surface autocorrelation function
 
     Args:
@@ -162,8 +162,8 @@ def surface_autocorrelations(h, hx, hy, Dx, Dy, Nx, Ny, delx, dely):
     Dy (float)      : Total change in the y dimension [dimensionless]
     Nx (int)        : Number of x elements
     Ny (int)        : Number of y elements
-    delx (ndarray)  : Range of acf lag in x
-    dely (ndarray)  : Range of acf lag in y
+    delx_range (ndarray) : Range of acf lag in x
+    dely_range (ndarray) : Range of acf lag in y
 
     Returns:
     acf (ndarray) : 2D array of surface autocorrelation function values
@@ -176,16 +176,20 @@ def surface_autocorrelations(h, hx, hy, Dx, Dy, Nx, Ny, delx, dely):
     Sq2 = np.sum(h2 * Dx * Dy) / Area  # Root mean square of the surface height
 
     # Initialize the 2D array for acf values
-    acf = np.zeros((len(delx), len(dely)))
+    acf = np.zeros((len(delx_range), len(dely_range)))
 
     # Initialize variables for sal calculation
     sal = None
     min_distance = float('inf')
 
     # Iterate over delx and dely ranges
-    for i, delx in enumerate(delx):
-        for j, dely in enumerate(dely):
-            h_delx_dely = np.roll(np.roll(h, delx, axis=0), dely, axis=1)
+    for i, delx in enumerate(delx_range):
+        for j, dely in enumerate(dely_range):
+            # Convert delx and dely to integers for np.roll
+            int_delx = int(round(delx))
+            int_dely = int(round(dely))
+            
+            h_delx_dely = np.roll(np.roll(h, int_delx, axis=0), int_dely, axis=1)
             
             # Calculate the autocorrelation function
             acf_value = 1 / (Area * Sq2) * np.sum(np.sqrt(g) * h * h_delx_dely * Dx * Dy)
@@ -265,8 +269,8 @@ hx, hy, hxx, hxy, hyy = get_derivatives(_s, Dx, Dy)
 # surface roughness
 Sq2, Rsk, Rku = surface_roughness(_s, hx, hy, Dx, Dy, Nx, Ny)
 # surface autocorrelation
-delx = np.arange(0, 0.5, 0.05)
-dely = np.arange(0, 0.5, 0.05)
+delx = np.arange(0, 0.5, 0.01)
+dely = np.arange(0, 0.5, 0.01)
 acf, sal = surface_autocorrelations(_s, hx, hy, Dx, Dy, Nx, Ny, delx, dely)
 
 #############################################################################################
