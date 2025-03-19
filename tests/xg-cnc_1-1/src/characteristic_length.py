@@ -178,7 +178,7 @@ if int(POP_NUM == 2):
     axs[2,0].set_ylabel("Intensity, AU")
     axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
-                    xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+                      xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,0].set_xlim([0,6])
     axs[2,0].set_ylim([0,1.2])
 
@@ -190,7 +190,7 @@ if int(POP_NUM == 2):
     axs[2,1].set_ylabel("Intensity, AU")
     axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,1].annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
-                    xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+                      xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,1].set_xlim([0,6])
     axs[2,1].set_ylim([0,1.2])
 else:
@@ -202,7 +202,7 @@ else:
     axs[2,0].set_ylabel("Intensity, AU")
     axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
-                    xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+                      xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,0].set_xlim([0,6])
     axs[2,0].set_ylim([0,1.2])
     
