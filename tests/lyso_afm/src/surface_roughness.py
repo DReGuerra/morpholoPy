@@ -162,24 +162,42 @@ def surface_autocorrelations(h, hx, hy, Dx, Dy, Nx, Ny, delx, dely):
     Dy (float)      : Total change in the y dimension [dimensionless]
     Nx (int)        : Number of x elements
     Ny (int)        : Number of y elements
-    delx (ndarray)  : acf lag in x
-    dely (ndarray)  : acf lag in y
+    delx (ndarray)  : Range of acf lag in x
+    dely (ndarray)  : Range of acf lag in y
 
     Returns:
-    acf (ndarray) : Surface autocorrelation function
+    acf (ndarray) : 2D array of surface autocorrelation function values
     sal (float)   : Surface autocorrelation length
     """
     
     g = np.ones((Nx, Ny)) + hx ** 2 + hy ** 2
     Area = np.sum(np.sqrt(g) * Dx * Dy)
-    
-    h_delx_dely = np.roll(np.roll(h, delx, axis=0), dely, axis=1)
-    
-    # get the autocorrelation function
-    acf = 1 / (Area * Sq2) * np.sum(np.sqrt(g) * h * h_delx_dely * Dx * Dy)
-    # get the autocorrelation length
-    sal = np.min()
-    
+    h2 = h ** 2
+    Sq2 = np.sum(h2 * Dx * Dy) / Area  # Root mean square of the surface height
+
+    # Initialize the 2D array for acf values
+    acf = np.zeros((len(delx), len(dely)))
+
+    # Initialize variables for sal calculation
+    sal = None
+    min_distance = float('inf')
+
+    # Iterate over delx and dely ranges
+    for i, delx in enumerate(delx):
+        for j, dely in enumerate(dely):
+            h_delx_dely = np.roll(np.roll(h, delx, axis=0), dely, axis=1)
+            
+            # Calculate the autocorrelation function
+            acf_value = 1 / (Area * Sq2) * np.sum(np.sqrt(g) * h * h_delx_dely * Dx * Dy)
+            acf[i, j] = acf_value
+            
+            # Check if acf is approximately zero
+            if np.isclose(acf_value, 0, atol=1e-6):
+                distance = delx**2 + dely**2
+                if distance < min_distance:
+                    min_distance = distance
+                    sal = np.sqrt(distance)
+
     return acf, sal
 
 #############################################################################################
@@ -246,6 +264,10 @@ Dy = (_y[-1] - _y[0]) / NEy
 hx, hy, hxx, hxy, hyy = get_derivatives(_s, Dx, Dy)
 # surface roughness
 Sq2, Rsk, Rku = surface_roughness(_s, hx, hy, Dx, Dy, Nx, Ny)
+# surface autocorrelation
+delx = np.arange(0, 0.5, 0.05)
+dely = np.arange(0, 0.5, 0.05)
+acf, sal = surface_autocorrelations(_s, hx, hy, Dx, Dy, Nx, Ny, delx, dely)
 
 #############################################################################################
 # visualization
@@ -266,8 +288,9 @@ axs[0,0].imshow(image_original, cmap="gray")
 axs[0,1].imshow(image_gray_cut, cmap="gray")
 
 axs[1,0].imshow(surface_nm, cmap="gray")
-
-axs[1,1].axis("off")
+# plot the autocorrelation function with a colorbar for the delx and dely ranges. the colorbar is for the acf values and in color
+axs[1,1].imshow(acf, cmap="viridis")
+f.colorbar(axs[1,1].imshow(acf, cmap="viridis"), ax=axs[1,1], orientation='vertical', label='ACF values')
 
 f.tight_layout()
 f.savefig("figures/" + file_name + "_surface_roughness_analysis.png")
@@ -300,25 +323,25 @@ print("--------------------------------")
 #############################################################################################
 # print summary to file 
 with open('summary.txt', 'w') as textfile:
-    textfile.write("--------------------------------")
-    textfile.write("Summary:")
-    textfile.write("")
-    textfile.write("Scalebar max: " + str(np.max(h_scalebar)) + " Min: " + str(np.min(h_scalebar)))
-    textfile.write("h_scalebar[80] = " + str(h_scalebar[80]) + " h_scalebar[-105] = " + str(h_scalebar[-105]))
-    textfile.write("")
-    textfile.write("image_gray_cut.shape: " + str(image_gray_cut.shape))
-    textfile.write("image_gray_cut pixels Max: " + str(np.max(image_gray_cut)) + " Min: " + str(np.min(image_gray_cut)))
-    textfile.write("")
-    textfile.write("image_gray_cut.shape: " + str(image_gray_cut.shape))
-    textfile.write("image_gray_cut[100,100]: " + str(image_gray_cut[100,100]))
-    textfile.write("")
-    textfile.write("surface_nm.shape: " + str(surface_nm.shape))
-    textfile.write("surface_nm pixels Max: " + str(np.max(surface_nm)) + " Min: " + str(np.min(surface_nm)))
-    textfile.write("")
-    textfile.write("surface_nm[100,100]: " + str(surface_nm[100,100]))
-    textfile.write("")
-    textfile.write("Surface roughness parameters:")
-    textfile.write("Sq2: " + str(Sq2))
-    textfile.write("Skewness: " + str(Rsk))
-    textfile.write("Kurtosis: " + str(Rku))
-    textfile.write("--------------------------------")
+    textfile.write("--------------------------------\n")
+    textfile.write("Summary:\n")
+    textfile.write("\n")
+    textfile.write("Scalebar max: " + str(np.max(h_scalebar)) + " Min: " + str(np.min(h_scalebar)) + "\n")
+    textfile.write("h_scalebar[80] = " + str(h_scalebar[80]) + " h_scalebar[-105] = " + str(h_scalebar[-105]) + "\n")
+    textfile.write("\n")
+    textfile.write("image_gray_cut.shape: " + str(image_gray_cut.shape) + "\n")
+    textfile.write("image_gray_cut pixels Max: " + str(np.max(image_gray_cut)) + " Min: " + str(np.min(image_gray_cut)) + "\n")
+    textfile.write("\n")
+    textfile.write("image_gray_cut.shape: " + str(image_gray_cut.shape) + "\n")
+    textfile.write("image_gray_cut[100,100]: " + str(image_gray_cut[100,100]) + "\n")
+    textfile.write("\n")
+    textfile.write("surface_nm.shape: " + str(surface_nm.shape) + "\n")
+    textfile.write("surface_nm pixels Max: " + str(np.max(surface_nm)) + " Min: " + str(np.min(surface_nm)) + "\n")
+    textfile.write("\n")
+    textfile.write("surface_nm[100,100]: " + str(surface_nm[100,100]) + "\n")
+    textfile.write("\n")
+    textfile.write("Surface roughness parameters:\n")
+    textfile.write("Sq2: " + str(Sq2) + "\n")
+    textfile.write("Skewness: " + str(Rsk) + "\n")
+    textfile.write("Kurtosis: " + str(Rku) + "\n")
+    textfile.write("--------------------------------\n")
