@@ -74,7 +74,7 @@ The image analysis parameters below were determined based on trial and error:<br
 | bar_len         |  20         |
 | scale_bar**     |  170        |
 
-*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocStrings.<br>
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.<br>
 **This parameter is determined by manual examination of the scale bar in the image usig ImageJ. In cases where the image was obtained from an SEM that uses the same banner convention as Queen's University Quanta 250, `measure_scale_bar` may be used to automatically obtain the scale bar size in pixels.<br>
 
 Source: [De France et al., 2019](https://pubs.acs.org/doi/full/10.1021/acsami.8b16232)<br>
@@ -96,7 +96,7 @@ The image analysis parameters below were determined based on trial and error:<br
 | bar_len         |  20         |
 | scale_bar**     |  170        |
 
-*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocStrings.<br>
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.<br>
 **This parameter is determined by manual examination of the scale bar in the image usig ImageJ. In cases where the image was obtained from an SEM that uses the same banner convention as Queen's University Quanta 250, `measure_scale_bar` may be used to automatically obtain the scale bar size in pixels (see [xg-cnc_1-1](tests/xg-cnc_1-1/src/characteristic_length.py)).
 
 Source: [De France et al., 2019](https://pubs.acs.org/doi/full/10.1021/acsami.8b16232)<br>
@@ -116,7 +116,7 @@ The image analysis parameters below were determined based on trial and error:<br
 | dof_hi_sigma   |  10         |
 | canny_sigma    |  2          |
 
-*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocStrings.
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.
 
 #### Original SEM image
 ![Original SEM image](tests/xg-cnc_1-1/images/a1XG3p_1000x_003.png)
@@ -126,7 +126,7 @@ The image analysis parameters below were determined based on trial and error:<br
 
 ### emulsion_bubbles
 
-This test analyzes bubbles in CNC emulsions to extract bubble characteristic length (diameter).<br>
+The tests up to this point have examined images that exibit periodic features (e.g., synthetic patterns, or nanowrinkles). The characteristic length analysis performed can be extended to other images featuring periodic features. In this test, we analyzes an emulsion of CNC that contains dispersed bubbles of varying sizes. Here, we use `characteristic_length.py` to extract bubble characteristic length (diameter).<br>
 The image analysis parameters below were determined based on trial and error:<br>
 |   Parameter*   |    Value    |
 |:---------------|:------------|
@@ -134,7 +134,7 @@ The image analysis parameters below were determined based on trial and error:<br
 | dof_hi_sigma   |  12         |
 | canny_sigma    |  1.4        |
 
-*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocStrings.
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.
 
 #### Original image
 ![KDF emulsion bubbles jpg](tests/emulsion_bubbles/images/30_-C-In-H-Day7.jpg)
@@ -144,7 +144,8 @@ The image analysis parameters below were determined based on trial and error:<br
 
 ## Workflow and usage
 
-### `wrinkleAnalysis.py`
+### `characteristic_length.py`
+TODO: Update this section.<br>
 
 The workflow of this script is as follows:<br>
 1. Input parameters - to be manually changed to reflect the desired analysis, define the image file, and size parameters which depend on the scale of the image. The size parameters can be determined through trial and error by examining the curve fitting and wrinkle size estimate in the panel 6 of the summary figure produced.
@@ -162,9 +163,9 @@ The workflow of this script is as follows:<br>
 
 ### Usage
 
-To run the `wrinkleAnalysis.py` script:
+To run the `characteristic_length.py` script:
 1. Go to the desired test directory: `cd tests/kdf_biaxial_20um/`
 2. The image to be analyzed should be found in the `images` directory.
-3. Run the script: `python src/wrinkleAnalysis.py`
+3. Run the script: `python src/characteristic_length.py <args>`, see DocString for argument list.
 
 The output figures will be saved in the `figures/` directory.
