@@ -9,7 +9,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage import io
-from _wrinklelib import radially_averaged_PSD
+from surfacetools.periodicfeatures import radially_averaged_PSD
 
 # import tessellation image in gray-scale
 img_tessellation = io.imread("images/tessellation.png", as_gray=True)

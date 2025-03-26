@@ -8,7 +8,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from _wrinklelib import radially_averaged_PSD
+from surfacetools.periodicfeatures import radially_averaged_PSD
 
 # Generate an image of alternating black and white vertical stripes
 # aray size NxN
