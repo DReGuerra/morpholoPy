@@ -50,7 +50,8 @@ import matplotlib.pyplot as plt
 from skimage import feature, io
 from skimage.filters import difference_of_gaussians, sobel
 
-from _wrinklelib import radially_averaged_PSD, measure_scale_bar
+from surfacetools.image_processing import measure_sem_scalebar
+from surfacetools.periodicfeatures import radially_averaged_PSD
 
 parser = argparse.ArgumentParser(description='Extract characteristic the length.')
 parser.add_argument('file', type=str, help='SEM image file')
@@ -109,7 +110,7 @@ filtered_image_sq = filtered_image[:N,:N]
 filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
-# scale_bar = measure_scale_bar(image)   # pixels
+# scale_bar = measure_sem_scalebar(image)   # pixels
 scale_bar = 170 # hardcoded for emulsion_bubbles
 X, Y = filtered_edges_square.shape      # pixels
 pxl_scale = BAR_LEN/scale_bar           # um/pixel
