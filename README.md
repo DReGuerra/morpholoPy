@@ -12,8 +12,58 @@ This repository contains Python implementations of image analysis algorithms for
 ---
 ## Core Contents
 1. `tests/` $\rightarrow$ collection of test cases to validate and demonstrate usage.
-2. `_wrinklelib.py` $\rightarrow$ contains functions to be used by the scripts in this repo.
+2. `surfacetools.py` $\rightarrow$ contains functions to be used by the scripts in this repo.
 3. `characteristic_length.py` $\rightarrow$ main script executing the image for feature examinations and characteristic length determination.
+
+## Tree Structure
+<pre>
+morpholoPy/
+├── surfacetools/
+│   └── image_processing.py
+├── tests/
+│   ├── chevron/
+│   ├── emulsion_bubbles/
+│   ├── kdf_biaxial_20um/
+│   ├── kdf_uniaxial_20um/
+│   ├── lyso_afm/
+│   ├── tessellation/
+│   ├── tessellation_fragmented/
+│   ├── vertical_lines/
+│   └── xg-cnc_1-1/
+└── README.md
+
+morpholoPy
+├── surfacetools
+│   └── image_processing.py
+├── tests
+│   ├── chevron
+│   │   ├── images
+│   │   └── figures
+│   ├── emulsion_bubbles
+│   │   ├── images
+│   │   └── figures
+│   ├── kdf_biaxial_20um
+│   │   ├── images
+│   │   └── figures
+│   ├── kdf_uniaxial_20um
+│   │   ├── images
+│   │   └── figures
+│   ├── lyso_afm
+│   ├── tessellation
+│   │   ├── images
+│   │   └── figures
+│   ├── tessellation_fragmented
+│   │   ├── images
+│   │   └── figures
+│   ├── vertical_lines
+│   │   ├── images
+│   │   └── figures
+│   └── xg-cnc_1-1
+│       ├── images
+│       └── figures
+├── README.md
+
+</pre>
 
 ## References
 1. Image Analysis of Structured Surfaces for Quantitative Topographical Characterization [(Stimpson et al., 2020)](https://doi.org/10.26434/chemrxiv.12736289.v1)
@@ -22,6 +72,8 @@ This repository contains Python implementations of image analysis algorithms for
 4. Mechanogeometry of nanowrinkling in cholesteric liquid crystal surfaces [Wang-Servio-Rey, 2020](https://doi.org/10.1103/PhysRevE.101.062705)
 
 ---
+
+<pre> ```text my_project/ ├── main.py ├── requirements.txt ├── README.md ├── utils/ │ ├── __init__.py │ └── helpers.py └── data/ ├── input.csv └── output.csv ``` </pre>
 
 ## Tests
 
