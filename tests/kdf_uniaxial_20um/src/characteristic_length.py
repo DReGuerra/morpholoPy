@@ -3,36 +3,46 @@ Description:
 Extract characteristic the length.
 
     Usage:
-        >> python characteristic_length.py file_name dconv bar_len num_populations lo_len_lim_pop1 hi_len_lim_pop1 lo_len_lim_pop2 hi_len_lim_pop2
+        >> python characteristic_length.py file_name dconv bar_len num_populations LO_LEN_LIM_POP1 HI_LEN_LIM_POP1 LO_LEN_LIM_POP2 HI_LEN_LIM_POP2
         
         Paratemetrs:
-        file_name: str
+        --file_name: str
             Name of the image file with the extension.
-        dconv: bool
+        --dconv: bool
             Deconvolution flag.
-        bar_len: float
+        --bar_len: float
             SEM scale bar length. [um]
-        num_populations: int
+        --dof_lo_sigma: float
+            Lower sigma value for the difference of Gaussians filter.
+        --dof_hi_sigma: float
+            Upper sigma value for the difference of Gaussians filter.
+        --canny_sigma: float
+            Sigma value for the Canny edge detection.
+        --pop_num: int
             Number of populations to analyze.
-        lo_len_lim_pop1: float
+        --lo_len_lim_pop1: float
             Lower limit of the feature size range of interest for population 1 [1/um]
-        hi_len_lim_pop1: float
+        --hi_len_lim_pop1: float
             Upper limit of the feature size range of interest for population 1 [1/um]
-        lo_len_lim_pop2: float
+        --lo_len_lim_pop2: float
             Lower limit of the feature size range of interest for population 2 [1/um]
-        hi_len_lim_pop2: float
+        --hi_len_lim_pop1: float
             Upper limit of the feature size range of interest for population 2 [1/um]
 
         Returns: 
             Various plots are output to figures/
 
         EXAMPLES:
-        >> python src/characteristic_length.py kdf_biaxial_20um.tif True 1 20 1.5 3.0
-        >> python src/characteristic_length.py kdf_biaxial_20um.tif True 2 20 1.5 3.0 3.5 5.0
+        >> python src/characteristic_length.py kdf_biaxial_20um.tif True 2 20 1.1 None 1.4 1.5 3.0 3.5 5.0
+        >> python src/characteristic_length.py 30_-C-In-Day7_thesis_poster.jpg True 2 50 3 12 1.4 0.8 1.6 0.15 0.4
+        In order to omit parameters, use each flag.
+        >> python src/characteristic_length.py --file kdf_biaxial_20um.tif --dconv True --pop_num 1 --bar_len 20 --dof_lo_sigma 1.1 --dof_hi_sigma None --canny_sigma 1.4 --lo_len_lim_pop1 1.5 --hi_len_lim_pop1 3.0
+        >> python src/characteristic_length.py --file kdf_biaxial_20um.tif --dconv True --pop_num 1 --bar_len 20 --dof_lo_sigma 
 """
 
 import sys
 import re
+import argparse
 
 import numpy as np
 from scipy.stats import kurtosis, skew
@@ -44,38 +54,55 @@ from skimage.filters import difference_of_gaussians, sobel
 from surfacetools.image_processing import measure_sem_scalebar
 from surfacetools.periodicfeatures import radially_averaged_PSD
 
+parser = argparse.ArgumentParser(description='Extract characteristic the length.')
+parser.add_argument('--file', type=str, help='SEM image file')
+parser.add_argument('--dconv', type=bool, help='Deconvolution flag', default=True)
+parser.add_argument('--pop_num', type=int, help='Number of populations', default=1)
+parser.add_argument('--bar_len', type=float, help='SEM scale bar length')
+parser.add_argument('--dof_lo_sigma', type=float, help='Lower sigma value for the difference of Gaussians filter', default=1.5)
+parser.add_argument('--dof_hi_sigma', type=str, help='Upper sigma value for the difference of Gaussians filter')
+parser.add_argument('--canny_sigma', type=float, help='Sigma value for the Canny edge detection', default=1.4)
+parser.add_argument('--lo_len_lim_pop1', type=float, help='Lower limit of the feature size range of interest for population 1')
+parser.add_argument('--hi_len_lim_pop1', type=float, help='Upper limit of the feature size range of interest for population 1')
+parser.add_argument('--lo_len_lim_pop2', type=float, help='Lower limit of the feature size range of interest for population 2', default=1)
+parser.add_argument('--hi_len_lim_pop2', type=float, help='Upper limit of the feature size range of interest for population 2', default=1)
+
+args = parser.parse_args()
+
 # inpput parameters
 # SEM image file
-file = str(sys.argv[1])
+file = args.file
 file_name = re.findall(r"([^^.\s]+)\.", file)[0]
 file_type = re.findall(r"\.\w+", file)[0]
 img_file = "images/" + file_name + file_type
 # deconvolution
-dconv = bool(sys.argv[2])
-POP_NUM = int(sys.argv[3])                      # number of populations
+dconv = args.dconv
+POP_NUM = args.pop_num                      # number of populations
 # SEM scale bar length
-bar_length = float(sys.argv[4])                 # um
+BAR_LEN = args.bar_len                      # um
+# difference of Gaussians filter
+DOF_LO_SIGMA = args.dof_lo_sigma
+if args.dof_hi_sigma == 'None':
+    DOF_HI_SIGMA = None
+else: DOF_HI_SIGMA = float(args.dof_hi_sigma)
+# Canny edge detection
+CANNY_SIGMA = args.canny_sigma                
 # feature size range of interest
 # population 1
-lo_len_lim_pop1 = float(sys.argv[5])        # 1/um
-hi_len_lim_pop1 = float(sys.argv[6])       # 1/um
+LO_LEN_LIM_POP1 = args.lo_len_lim_pop1            # 1/um
+HI_LEN_LIM_POP1 = args.hi_len_lim_pop1            # 1/um
 # population 2
 if int(POP_NUM == 2):
-    lo_len_lim_pop2 = float(sys.argv[7])        # 1/um
-    hi_len_lim_pop2 = float(sys.argv[8])       # 1/um
+    LO_LEN_LIM_POP2 = args.lo_len_lim_pop2       # 1/um
+    HI_LEN_LIM_POP2 = args.hi_len_lim_pop2       # 1/um
 
 #############################################################################################
 # import SEM image in gray-scale
 image = io.imread(img_file, as_gray=True)
 # enhance edges by band-pass filtering
-filtered_image = difference_of_gaussians(image, low_sigma=1.1, high_sigma=None)
+filtered_image = difference_of_gaussians(image, low_sigma=DOF_LO_SIGMA, high_sigma=DOF_HI_SIGMA)
 # Canny edge dectection
-filtered_edges = feature.canny(filtered_image, sigma=1.4)
-
-# print size of the image
-print("Image size: " + str(image.shape))
-# the smaller dimension of the image
-print("Smaller dimension: " + str(np.min(image.shape)))
+filtered_edges = feature.canny(filtered_image, sigma=CANNY_SIGMA)
 
 # resize the image to square
 N = np.min(image.shape)
@@ -85,11 +112,10 @@ filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
 # scale_bar = measure_sem_scalebar(image)   # pixels
-scale_bar = 170 # hardcoded for kdf_biaxial_20um.tif
-print("Scale bar: "+ str(scale_bar) + " pixels")
-X, Y = filtered_edges_square.shape  # pixels
-pxl_scale = bar_length/scale_bar    # um/pixel
-L = X*pxl_scale                     # um
+scale_bar = 170 # hardcoded for kdf_uniaxial_20um.tif
+X, Y = filtered_edges_square.shape      # pixels
+pxl_scale = BAR_LEN/scale_bar           # um/pixel
+L = X*pxl_scale                         # um
 
 # Dicrete Fourier Transfer (DFT) via FAst Fourier Transfrom (FFT)
 # 2D DFT
@@ -122,7 +148,7 @@ rasp_norm_au = rasp_norm/np.max(rasp_norm)
 #############################################################################################
 # curve fit
 # population 1
-ind = np.where(np.logical_and((1/lam>lo_len_lim_pop1),(1/lam<hi_len_lim_pop1)))
+ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP1),(1/lam<HI_LEN_LIM_POP1)))
 x_pop1 = 1/lam[ind]              # 1/um
 y_pop1 = rasp_norm_au[ind]       # AU
 deg = 2                     # quadratic poly
@@ -133,7 +159,7 @@ pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))]      # 1/um
 
 # population 2
 if int(POP_NUM == 2):
-    ind = np.where(np.logical_and((1/lam>lo_len_lim_pop2),(1/lam<hi_len_lim_pop2)))
+    ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP2),(1/lam<HI_LEN_LIM_POP2)))
     x_pop2 = 1/lam[ind]              # 1/um
     y_pop2 = rasp_norm_au[ind]       # AU
     deg = 2                     # quadratic poly
@@ -212,23 +238,23 @@ else:
 f.tight_layout()
 f.savefig("figures/" + file_name + "_summary.png")
 
-# Filtered image
-NROWS = 1; NCOLS = 1
-f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+# # Filtered image
+# NROWS = 1; NCOLS = 1
+# f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+#                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
 
-axs.imshow(filtered_image_sq)
+# axs.imshow(filtered_image_sq)
 
-f.tight_layout()
-f.savefig("figures/" + file_name + "_filtered.png")
+# f.tight_layout()
+# f.savefig("figures/" + file_name + "_filtered.png")
 
-# Filtered edges
-NROWS = 1; NCOLS = 1
-f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+# # Filtered edges
+# NROWS = 1; NCOLS = 1
+# f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+#                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
 
-axs.imshow(filtered_edges_square)
+# axs.imshow(filtered_edges_square)
 
-f.tight_layout()
-f.savefig("figures/" + file_name + "_filtered_edges.png")
+# f.tight_layout()
+# f.savefig("figures/" + file_name + "_filtered_edges.png")
 

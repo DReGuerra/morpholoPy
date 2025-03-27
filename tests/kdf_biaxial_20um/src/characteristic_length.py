@@ -35,7 +35,7 @@ Extract characteristic the length.
         EXAMPLES:
         >> python src/characteristic_length.py kdf_biaxial_20um.tif True 2 20 1.1 None 1.4 1.5 3.0 3.5 5.0
         >> python src/characteristic_length.py 30_-C-In-Day7_thesis_poster.jpg True 2 50 3 12 1.4 0.8 1.6 0.15 0.4
-        In orderr to omit parameters, use each flag.
+        In order to omit parameters, use each flag.
         >> python src/characteristic_length.py --file kdf_biaxial_20um.tif --dconv True --pop_num 1 --bar_len 20 --dof_lo_sigma 1.1 --dof_hi_sigma None --canny_sigma 1.4 --lo_len_lim_pop1 1.5 --hi_len_lim_pop1 3.0
         >> python src/characteristic_length.py --file kdf_biaxial_20um.tif --dconv True --pop_num 1 --bar_len 20 --dof_lo_sigma 
 """
@@ -112,7 +112,7 @@ filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
 # scale_bar = measure_sem_scalebar(image)   # pixels
-scale_bar = 170 # hardcoded for emulsion_bubbles
+scale_bar = 170 # hardcoded for kdf_biaxial_20um.tif
 X, Y = filtered_edges_square.shape      # pixels
 pxl_scale = BAR_LEN/scale_bar           # um/pixel
 L = X*pxl_scale                         # um

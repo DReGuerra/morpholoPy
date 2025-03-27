@@ -6,37 +6,38 @@ Extract characteristic the length.
         >> python characteristic_length.py file_name dconv bar_len num_populations LO_LEN_LIM_POP1 HI_LEN_LIM_POP1 LO_LEN_LIM_POP2 HI_LEN_LIM_POP2
         
         Paratemetrs:
-        file_name: str
+        --file_name: str
             Name of the image file with the extension.
-        dconv: bool
+        --dconv: bool
             Deconvolution flag.
-        bar_len: float
+        --bar_len: float
             SEM scale bar length. [um]
-        dof_lo_sigma: float
+        --dof_lo_sigma: float
             Lower sigma value for the difference of Gaussians filter.
-        dof_hi_sigma: float
+        --dof_hi_sigma: float
             Upper sigma value for the difference of Gaussians filter.
-        canny_sigma: float
+        --canny_sigma: float
             Sigma value for the Canny edge detection.
-        num_populations: int
+        --pop_num: int
             Number of populations to analyze.
-        LO_LEN_LIM_POP1: float
+        --lo_len_lim_pop1: float
             Lower limit of the feature size range of interest for population 1 [1/um]
-        HI_LEN_LIM_POP1: float
+        --hi_len_lim_pop1: float
             Upper limit of the feature size range of interest for population 1 [1/um]
-        LO_LEN_LIM_POP2: float
+        --lo_len_lim_pop2: float
             Lower limit of the feature size range of interest for population 2 [1/um]
-        HI_LEN_LIM_POP2: float
+        --hi_len_lim_pop1: float
             Upper limit of the feature size range of interest for population 2 [1/um]
 
         Returns: 
             Various plots are output to figures/
 
         EXAMPLES:
-        >> python src/characteristic_length.py kdf_biaxial_20um.tif True 1 20 1.1 None 1.4 1.5 3.0
         >> python src/characteristic_length.py kdf_biaxial_20um.tif True 2 20 1.1 None 1.4 1.5 3.0 3.5 5.0
-        >> python src/characteristic_length.py 30_-C-In-Day7_thesis_poster.jpg True 1 50 3 12 1.4 0.8 1.6
         >> python src/characteristic_length.py 30_-C-In-Day7_thesis_poster.jpg True 2 50 3 12 1.4 0.8 1.6 0.15 0.4
+        In order to omit parameters, use each flag.
+        >> python src/characteristic_length.py --file kdf_biaxial_20um.tif --dconv True --pop_num 1 --bar_len 20 --dof_lo_sigma 1.1 --dof_hi_sigma None --canny_sigma 1.4 --lo_len_lim_pop1 1.5 --hi_len_lim_pop1 3.0
+        >> python src/characteristic_length.py --file kdf_biaxial_20um.tif --dconv True --pop_num 1 --bar_len 20 --dof_lo_sigma 
 """
 
 import sys
@@ -54,17 +55,17 @@ from surfacetools.image_processing import measure_sem_scalebar
 from surfacetools.periodicfeatures import radially_averaged_PSD
 
 parser = argparse.ArgumentParser(description='Extract characteristic the length.')
-parser.add_argument('file', type=str, help='SEM image file')
-parser.add_argument('dconv', type=bool, help='Deconvolution flag', default=True)
-parser.add_argument('pop_num', type=int, help='Number of populations', default=1)
-parser.add_argument('bar_len', type=float, help='SEM scale bar length')
-parser.add_argument('dof_lo_sigma', type=float, help='Lower sigma value for the difference of Gaussians filter', default=1.5)
-parser.add_argument('dof_hi_sigma', type=str, help='Upper sigma value for the difference of Gaussians filter')
-parser.add_argument('canny_sigma', type=float, help='Sigma value for the Canny edge detection', default=1.4)
-parser.add_argument('lo_len_lim_pop1', type=float, help='Lower limit of the feature size range of interest for population 1')
-parser.add_argument('hi_len_lim_pop1', type=float, help='Upper limit of the feature size range of interest for population 1')
-parser.add_argument('lo_len_lim_pop2', type=float, help='Lower limit of the feature size range of interest for population 2')
-parser.add_argument('hi_len_lim_pop2', type=float, help='Upper limit of the feature size range of interest for population 2')
+parser.add_argument('--file', type=str, help='SEM image file')
+parser.add_argument('--dconv', type=bool, help='Deconvolution flag', default=True)
+parser.add_argument('--pop_num', type=int, help='Number of populations', default=1)
+parser.add_argument('--bar_len', type=float, help='SEM scale bar length')
+parser.add_argument('--dof_lo_sigma', type=float, help='Lower sigma value for the difference of Gaussians filter', default=1.5)
+parser.add_argument('--dof_hi_sigma', type=str, help='Upper sigma value for the difference of Gaussians filter')
+parser.add_argument('--canny_sigma', type=float, help='Sigma value for the Canny edge detection', default=1.4)
+parser.add_argument('--lo_len_lim_pop1', type=float, help='Lower limit of the feature size range of interest for population 1')
+parser.add_argument('--hi_len_lim_pop1', type=float, help='Upper limit of the feature size range of interest for population 1')
+parser.add_argument('--lo_len_lim_pop2', type=float, help='Lower limit of the feature size range of interest for population 2', default=1)
+parser.add_argument('--hi_len_lim_pop2', type=float, help='Upper limit of the feature size range of interest for population 2', default=1)
 
 args = parser.parse_args()
 
