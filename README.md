@@ -46,8 +46,6 @@ morpholoPy/
 
 ---
 
-<pre> ```text my_project/ ├── main.py ├── requirements.txt ├── README.md ├── utils/ │ ├── __init__.py │ └── helpers.py └── data/ ├── input.csv └── output.csv ``` </pre>
-
 ## Tests
 
 ### Vertical stripes
