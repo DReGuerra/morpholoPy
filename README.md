@@ -7,13 +7,13 @@ andre.guerra@mail.mcgill.ca
 
 ---
 <b>Description:</b> \
-This repository contains Python implementations of image analysis algorithms for feature analysis of nanostructured material surfaces. Many of the scripts take an image file (e.g., .png, .tif) as input, conduct the periodic feature analyses and output figures summarizing the results. Many of the scripts currently require manual modification for defining your system. These are normally done in the "Manual input" section at the top of the script. The scripts will be updated in the future to be more robust and require less manual input at the code level.
+This repository contains Python implementations of image analysis algorithms for feature analysis of nanostructured material surfaces. Many of the scripts take an image file (e.g., `.png`, `.tif`) as input, conduct the periodic feature analyses and output figures summarizing the results. Many of the scripts currently require manual modification for defining your system. These are normally done in the "Manual input" section at the top of the script. The scripts will be updated in the future to be more robust and require less manual input at the code level.
 
 ---
 ## Core Contents
-1. `tests/` $\rightarrow$ collection of test cases to validate and demonstrate usage.
-2. `surfacetools.py` $\rightarrow$ contains functions to be used by the scripts in this repo.
-3. `characteristic_length.py` $\rightarrow$ main script executing the image for feature examinations and characteristic length determination.
+1. `test_cases/` $\rightarrow$ collection of test cases to validate and demonstrate usage of the analyses here.
+2. `surfacetools/` $\rightarrow$ utilities dir that contains function definitions to be used by the scripts in this repo; contains a `__init__.py` file to enable package import behavior.
+3. `characteristic_length.py` $\rightarrow$ main script executing the image for feature examinations and characteristic length determination. This script is used in all of the `experimental_surface_images/`.
 
 ## Tree Structure
 <pre>
@@ -29,7 +29,7 @@ morpholoPy/
 │   │   ├── cnc-poegma_biaxial_nanowrinkled/
 │   │   ├── cnc-poegma_uniaxial_nanowrinkled/
 │   │   ├── cnc-xg_biaxial_nanowrinkled/
-│   │   ├── lysozyme_electrospun_afm/
+│   │   └── lysozyme_electrospun_afm/
 │   └── synthetic_images/
 │       ├── chevron/
 │       ├── tessellation/
