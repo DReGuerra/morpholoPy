@@ -170,8 +170,8 @@ The image analysis parameters below were determined based on trial and error:<br
 ### `characteristic_length.py`
 TODO: Update this section.<br>
 
-The workflow of this script is as follows:<br>
-1. Input parameters - to be manually changed to reflect the desired analysis, define the image file, and size parameters which depend on the scale of the image. The size parameters can be determined through trial and error by examining the curve fitting and wrinkle size estimate in the panel 6 of the summary figure produced.
+The general workflow of this script is as follows:<br>
+1. Input parameters - to be manually changed to reflect the desired analysis, define the image file, and size parameters which depend on the scale of the image. The size parameters can be determined through trial and error by examining the curve fitting and the characteristic length estimate in panels 5 and/or 6 of the summary figure produced.
 2. Input image file (`img_file`)
 3. Band-pass filtering of the image using Gaussian differences
 4. Canny edge detection - `sigma` value is modified to achieve the desired granularity in edge detection
@@ -187,8 +187,11 @@ The workflow of this script is as follows:<br>
 ### Usage
 
 To run the `characteristic_length.py` script:
-1. Go to the desired test directory: `cd tests/kdf_biaxial_20um/`
+1. Go to the desired test directory: 
+<pre>>> $ cd test_cases/experimental_surface_images/cnc-poegma_biaxial_nanowrinkled/</pre>
+
 2. The image to be analyzed should be found in the `images` directory.
-3. Run the script: `python src/characteristic_length.py <args>`, see DocString for argument list.
+3. Run the script (see DocString for argument list):
+<pre>>> $ python src/characteristic_length.py args </pre>
 
 The output figures will be saved in the `figures/` directory.
