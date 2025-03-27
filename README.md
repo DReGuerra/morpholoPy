@@ -58,7 +58,7 @@ Figure 1<br>
 ![Stimpson et al 2020 Figure 1](./stimpsonetal2020_fig1.png)
 
 #### Vertical stripes test results:
-![Vertical lines](tests/vertical_lines/figures/verticalLines_summary.png)
+![Vertical lines](test_cases/synthetic_images/vertical_lines/figures/verticalLines_summary.png)
 
 ### Chevron
 
@@ -68,7 +68,7 @@ Source: [Stimpson et al., 2020](https://chemrxiv.org/engage/chemrxiv/article-det
 Figure 1<br>
 
 ##### Chevron test results:
-![Chevron](tests/chevron/figures/chevron_summary.png)
+![Chevron](test_cases/synthetic_images/chevron/figures/chevron_summary.png)
 
 ### Vertical stripes tiled and fragmented tiles
 
@@ -80,10 +80,10 @@ Figure 1<br>
 The jigsaw and fragmented jigsaw images were made using Photopea at https://www.photopea.com/. The original vertical stripes image was used to create these transformed images.<br>
 
 #### Vertical stripes tiled (tessellation) test results:
-![Tessellation](tests/tessellation/figures/tessellation_summary.png)
+![Tessellation](test_cases/synthetic_images/tessellation/figures/tessellation_summary.png)
 
 #### Fragmented tiles (tessellation fragmented) test results:
-![Tessellation fragmented](tests/tessellation_fragmented/figures/tessellation_fragmented_summary.png)
+![Tessellation fragmented](test_cases/synthetic_images/tessellation_fragmented/figures/tessellation_fragmented_summary.png)
 
 ### kdf_biaxial_20um
 
@@ -105,7 +105,7 @@ ACS Appl. Mater. Interfaces 2019, 11, 6, 6325–6335<br>
 Figure 6F
 
 #### Results summary figure
-![KDF biaxial wrinkles](tests/kdf_biaxial_20um/figures/kdf_biaxial_20um_summary.png)
+![KDF biaxial wrinkles](test_cases/experimental_surface_images/cnc-poegma_biaxial_nanowrinkled/figures/kdf_biaxial_20um_summary.png)
 
 ### kdf_uniaxial_20um
 
@@ -127,7 +127,7 @@ ACS Appl. Mater. Interfaces 2019, 11, 6, 6325–6335<br>
 Figure 6J
 
 #### Results summary figure
-![KDF uniaxial wrinkles](tests/kdf_uniaxial_20um/figures/kdf_uniaxial_20um_summary.png)
+![KDF uniaxial wrinkles](test_cases/experimental_surface_images/cnc-poegma_uniaxial_nanowrinkled/figures/kdf_uniaxial_20um_summary.png)
 
 ### xg-cnc_1-1
 
@@ -142,10 +142,10 @@ The image analysis parameters below were determined based on trial and error:<br
 *These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.
 
 #### Original SEM image
-![Original SEM image](tests/xg-cnc_1-1/images/a1XG3p_1000x_003.png)
+![Original SEM image](test_cases/experimental_surface_images/cnc-xg_biaxial_nanowrinkled/images/a1XG3p_1000x_003.png)
 
 #### Rsults summary figure
-![xg-cnc_1-1 wrinkles](tests/xg-cnc_1-1/figures/a1XG3p_1000x_003_summary.png)
+![xg-cnc_1-1 wrinkles](test_cases/experimental_surface_images/cnc-xg_biaxial_nanowrinkled/figures/a1XG3p_1000x_003_summary.png)
 
 ### emulsion_bubbles
 
@@ -160,10 +160,10 @@ The image analysis parameters below were determined based on trial and error:<br
 *These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.
 
 #### Original image
-![KDF emulsion bubbles jpg](tests/emulsion_bubbles/images/30_-C-In-H-Day7.jpg)
+![KDF emulsion bubbles jpg](test_cases/experimental_surface_images/cnc_emulsion_bubbles/images/30_-C-In-H-Day7.jpg)
 
 #### Results summary figure
-![KDF emulsion bubbles](tests/emulsion_bubbles/figures/30_-C-In-H-Day7_summary.png)
+![KDF emulsion bubbles](test_cases/experimental_surface_images/cnc_emulsion_bubbles/figures/30_-C-In-H-Day7_summary.png)
 
 ## Workflow and usage
 
