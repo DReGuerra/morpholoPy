@@ -19,50 +19,23 @@ This repository contains Python implementations of image analysis algorithms for
 <pre>
 morpholoPy/
 ├── surfacetools/
-│   └── image_processing.py
-├── tests/
-│   ├── chevron/
-│   ├── emulsion_bubbles/
-│   ├── kdf_biaxial_20um/
-│   ├── kdf_uniaxial_20um/
-│   ├── lyso_afm/
-│   ├── tessellation/
-│   ├── tessellation_fragmented/
-│   ├── vertical_lines/
-│   └── xg-cnc_1-1/
+│   ├── image_processing.py
+│   ├── periodicfeatures.py
+│   ├── roughness_params.py
+│   └── surface_generators.py
+├── test_cases/
+│   ├── experimental_surface_images/
+│   │   ├── cnc_emulsion_bubbles/
+│   │   ├── cnc-poegma_biaxial_nanowrinkled/
+│   │   ├── cnc-poegma_uniaxial_nanowrinkled/
+│   │   ├── cnc-xg_biaxial_nanowrinkled/
+│   │   ├── lysozyme_electrospun_afm/
+│   └── synthetic_images/
+│       ├── chevron/
+│       ├── tessellation/
+│       ├── tessellation_fragmented/
+│       └── vertical_lines/
 └── README.md
-
-morpholoPy
-├── surfacetools
-│   └── image_processing.py
-├── tests
-│   ├── chevron
-│   │   ├── images
-│   │   └── figures
-│   ├── emulsion_bubbles
-│   │   ├── images
-│   │   └── figures
-│   ├── kdf_biaxial_20um
-│   │   ├── images
-│   │   └── figures
-│   ├── kdf_uniaxial_20um
-│   │   ├── images
-│   │   └── figures
-│   ├── lyso_afm
-│   ├── tessellation
-│   │   ├── images
-│   │   └── figures
-│   ├── tessellation_fragmented
-│   │   ├── images
-│   │   └── figures
-│   ├── vertical_lines
-│   │   ├── images
-│   │   └── figures
-│   └── xg-cnc_1-1
-│       ├── images
-│       └── figures
-├── README.md
-
 </pre>
 
 ## References
