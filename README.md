@@ -170,12 +170,44 @@ The image analysis parameters below were determined based on trial and error:<br
 
 ### `lysozyme_electrospun_mats/`
 
-Original image: `images/EPO100-1,65_aligned_400.png`
+Original image: `images/EPO100-1,65_aligned_400.png`<br>
+The image analysis parameters below were determined based on trial and error:<br>
+|   Parameter*    |    Value                     |
+|:----------------|:-----------------------------|
+| file            | EPO100-1,65_aligned_400.png  |
+| dconv           | True                         |
+| pop_num         | 2                            |
+| bar_len         | 10                           |
+| dof_lo_sigma    | 1.5                          |
+| dof_hi_sigma    | None                         |
+| canny_sigma     | 0.3                          |
+| lo_len_lim_pop1 | 1.2                          |
+| hi_len_lim_pop1 | 3                            |
+| lo_len_lim_pop2 | 3.4                          |
+| lo_len_lim_oop2 | 5.5                          |
+
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.
 
 #### Results summary figure
 ![KDF EPO100-1,65_aligned_400](test_cases/experimental_surface_images/lysozyme_electrospun_mats/figures/EPO100-1,65_aligned_400_summary.png)
 
-Original image: `images/cnc_electrospun_0,2wtpct.tif`
+Original image: `images/cnc_electrospun_0,2wtpct.tif`<br>
+The image analysis parameters below were determined based on trial and error:<br>
+|   Parameter*    |    Value                     |
+|:----------------|:-----------------------------|
+| file            | cnc_electrospun_0,2wtpct.tif |
+| dconv           | True                         |
+| pop_num         | 2                            |
+| bar_len         | 5                            |
+| dof_lo_sigma    | 1.5                          |
+| dof_hi_sigma    | 6                            |
+| canny_sigma     | 0.2                          |
+| lo_len_lim_pop1 | 5                            |
+| hi_len_lim_pop1 | 15                           |
+| lo_len_lim_pop2 | 0                            |
+| lo_len_lim_oop2 | 4                            |
+
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.
 
 #### Results summary figure
 ![KDF cnc_electrospun_0,2wtpct](test_cases/experimental_surface_images/lysozyme_electrospun_mats/figures/cnc_electrospun_0,2wtpct_summary.png)
