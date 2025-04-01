@@ -29,7 +29,8 @@ morpholoPy/
 │   │   ├── cnc-poegma_biaxial_nanowrinkled/
 │   │   ├── cnc-poegma_uniaxial_nanowrinkled/
 │   │   ├── cnc-xg_biaxial_nanowrinkled/
-│   │   └── lysozyme_electrospun_afm/
+│   │   ├── lysozyme_electrospun_afm/
+│   │   └── lysozyme_electrospun_mats/
 │   └── synthetic_images/
 │       ├── chevron/
 │       ├── tessellation/
