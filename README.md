@@ -47,7 +47,7 @@ morpholoPy/
 
 ---
 
-## Tests
+## Validation by Synthetic Images
 
 ### Vertical stripes
 
@@ -85,6 +85,8 @@ The jigsaw and fragmented jigsaw images were made using Photopea at https://www.
 
 #### Fragmented tiles (tessellation fragmented) test results:
 ![Tessellation fragmented](test_cases/synthetic_images/tessellation_fragmented/figures/tessellation_fragmented_summary.png)
+
+## Experimental Test Cases
 
 ### `cnc-poegma_biaxial_nanowrinkled/`
 
