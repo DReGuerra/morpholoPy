@@ -238,20 +238,20 @@ The general workflow of this script is as follows:<br>
 ### Usage
 
 Install the package using pip:
-<pre>>> $ cd morpholoPy
->> $ pip install --user .</pre>
+<pre>cd morpholoPy
+pip install --user .</pre>
 This will install the repository as a package in the currently active Python environment, which will allow for import and calling of the functions wherever necessary.<br>
 <br>
 If you would prefer to have a "live" package that automatically updates as files are modified, you can install it as follows:
-<pre>>> $ cd morpholoPy
->> $ pip install -e .</pre>
+<pre>cd morpholoPy
+pip install -e .</pre>
 
 To run the `characteristic_length.py` script:
 1. Go to the desired test directory: 
-<pre>>> $ cd test_cases/experimental_surface_images/cnc-poegma_biaxial_nanowrinkled/</pre>
+<pre>cd test_cases/experimental_surface_images/cnc-poegma_biaxial_nanowrinkled/</pre>
 
 2. The image to be analyzed should be found in the `images` directory.
 3. Run the script (see DocString for argument list):
-<pre>>> $ python src/characteristic_length.py args </pre>
+<pre>python src/characteristic_length.py args </pre>
 
 The output figures will be saved in the `figures/` directory.
