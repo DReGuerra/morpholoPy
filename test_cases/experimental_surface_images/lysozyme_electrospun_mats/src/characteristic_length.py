@@ -28,6 +28,8 @@ Extract characteristic the length.
             Lower limit of the feature size range of interest for population 2 [1/um]
         --hi_len_lim_pop1: float
             Upper limit of the feature size range of interest for population 2 [1/um]
+        --theta_lims: list
+            Angle limits for the radial averaging [degrees].
 
         Returns: 
             Various plots are output to figures/
@@ -37,7 +39,7 @@ Extract characteristic the length.
         >> python src/characteristic_length.py 30_-C-In-Day7_thesis_poster.jpg True 2 50 3 12 1.4 0.8 1.6 0.15 0.4
         In order to omit parameters, use each flag.
         >> python src/characteristic_length.py --file kdf_biaxial_20um.tif --dconv True --pop_num 1 --bar_len 20 --dof_lo_sigma 1.1 --dof_hi_sigma None --canny_sigma 1.4 --lo_len_lim_pop1 1.5 --hi_len_lim_pop1 3.0
-        >> python src/characteristic_length.py --file kdf_biaxial_20um.tif --dconv True --pop_num 1 --bar_len 20 --dof_lo_sigma 
+
 """
 
 import sys
@@ -66,6 +68,7 @@ parser.add_argument('--lo_len_lim_pop1', type=float, help='Lower limit of the fe
 parser.add_argument('--hi_len_lim_pop1', type=float, help='Upper limit of the feature size range of interest for population 1')
 parser.add_argument('--lo_len_lim_pop2', type=float, help='Lower limit of the feature size range of interest for population 2', default=1)
 parser.add_argument('--hi_len_lim_pop2', type=float, help='Upper limit of the feature size range of interest for population 2', default=1)
+parser.add_argument('--theta_lims', nargs='+', type=int, help='Angle limits for the radial averaging', default=None)
 
 args = parser.parse_args()
 
@@ -89,12 +92,14 @@ else: DOF_HI_SIGMA = float(args.dof_hi_sigma)
 CANNY_SIGMA = args.canny_sigma                
 # feature size range of interest
 # population 1
-LO_LEN_LIM_POP1 = args.lo_len_lim_pop1            # 1/um
-HI_LEN_LIM_POP1 = args.hi_len_lim_pop1            # 1/um
+LO_LEN_LIM_POP1 = args.lo_len_lim_pop1           # 1/um
+HI_LEN_LIM_POP1 = args.hi_len_lim_pop1           # 1/um
 # population 2
 if int(POP_NUM == 2):
     LO_LEN_LIM_POP2 = args.lo_len_lim_pop2       # 1/um
     HI_LEN_LIM_POP2 = args.hi_len_lim_pop2       # 1/um
+
+THETAS = args.theta_lims
 
 #############################################################################################
 # import SEM image in gray-scale
@@ -112,7 +117,7 @@ filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
 # scale_bar = measure_sem_scalebar(image)   # pixels
-scale_bar = 82.625 # hardcoded for kdf_biaxial_20um.tif
+scale_bar = 247 # hardcoded
 X, Y = filtered_edges_square.shape      # pixels
 pxl_scale = BAR_LEN/scale_bar           # um/pixel
 L = X*pxl_scale                         # um
@@ -124,11 +129,9 @@ fft2 = np.fft.fft2(filtered_edges_square)
 fft2_shiftd = np.fft.fftshift(fft2)
 # power spectral density (PSD)
 psd2D = np.abs(fft2_shiftd)**2
-# angle limits for radial averaging the 2D PSD
-theta_lims = []
 
 # radially averaged PSD with angle limits
-rasp, bins_count = radially_averaged_PSD(psd2D, theta_lims=[45,135])
+rasp, bins_count = radially_averaged_PSD(psd2D, theta_lims=THETAS)
 # length of rasp vector
 rasp_length = len(rasp)
 
@@ -139,8 +142,6 @@ k = np.arange(0,N-1,1)      # pixels
 lam = np.divide(L,k)        # um/pixel
 # normalize rasp with bins_count
 rasp_norm = np.nan_to_num(np.divide(rasp,bins_count))
-print("len(rasp) = " + str(len(rasp)))
-print("len(bins_count) = " + str(len(bins_count)))
 # deconvolve
 if dconv: rasp_norm = np.divide(rasp_norm,lam[:rasp_length])
 
@@ -150,11 +151,8 @@ rasp_norm_au = rasp_norm/np.max(rasp_norm)
 #############################################################################################
 # curve fit
 # population 1
-print("1/lam = " + str(1/lam[:rasp_length]))
 ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP1),(1/lam<HI_LEN_LIM_POP1)))
 x_pop1 = 1/lam[ind]              # 1/um
-print("len(ind) = " + str(len(ind)))
-print("len(rasp_norm_au)" + str(len(rasp_norm_au)))
 y_pop1 = rasp_norm_au[ind]       # AU
 deg = 2                     # quadratic poly
 z = np.polyfit(x_pop1,y_pop1,deg)     # polynomial coeff
@@ -211,7 +209,7 @@ if int(POP_NUM == 2):
     axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-    axs[2,0].set_xlim([0,6])
+    axs[2,0].set_xlim([1/lam[0],1/lam[rasp_length+1]])
     axs[2,0].set_ylim([0,1.2])
 
     axs[2,1].plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
@@ -223,7 +221,7 @@ if int(POP_NUM == 2):
     axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,1].annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-    axs[2,1].set_xlim([0,6])
+    axs[2,1].set_xlim([1/lam[0],1/lam[rasp_length+1]])
     axs[2,1].set_ylim([0,1.2])
 else:
     axs[2,0].plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
@@ -235,31 +233,8 @@ else:
     axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-    axs[2,0].set_xlim([0,6])
+    axs[2,0].set_xlim([1/lam[0],1/lam[rasp_length+1]])
     axs[2,0].set_ylim([0,1.2])
-    
-#     axs[2,1].axis('off')
     
 f.tight_layout()
 f.savefig("figures/" + file_name + "_summary.png")
-
-# Filtered image
-# NROWS = 1; NCOLS = 1
-# f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-#                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
-
-# axs.imshow(filtered_image_sq)
-
-# f.tight_layout()
-# f.savefig("figures/" + file_name + "_filtered.png")
-
-# # Filtered edges
-# NROWS = 1; NCOLS = 1
-# f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-#                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
-
-# axs.imshow(filtered_edges_square)
-
-# f.tight_layout()
-# f.savefig("figures/" + file_name + "_filtered_edges.png")
-
