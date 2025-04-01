@@ -85,7 +85,7 @@ The jigsaw and fragmented jigsaw images were made using Photopea at https://www.
 #### Fragmented tiles (tessellation fragmented) test results:
 ![Tessellation fragmented](test_cases/synthetic_images/tessellation_fragmented/figures/tessellation_fragmented_summary.png)
 
-### kdf_biaxial_20um
+### `cnc-poegma_biaxial_nanowrinkled/`
 
 This test uses a biaxial wrinkled surface with a scale bar of 20 microns (um). The scale bar is 170 pixels in length.<br>
 The image analysis parameters below were determined based on trial and error:<br>
@@ -107,7 +107,7 @@ Figure 6F
 #### Results summary figure
 ![KDF biaxial wrinkles](test_cases/experimental_surface_images/cnc-poegma_biaxial_nanowrinkled/figures/kdf_biaxial_20um_summary.png)
 
-### kdf_uniaxial_20um
+### `cnc-poegma_uniaxial_nanowrinkled/`
 
 This test uses a uniaxial wrinkled surface with a scale bar of 20 microns (um). The scale bar is 170 pixels in length.<br>
 The image analysis parameters below were determined based on trial and error:<br>
@@ -129,7 +129,7 @@ Figure 6J
 #### Results summary figure
 ![KDF uniaxial wrinkles](test_cases/experimental_surface_images/cnc-poegma_uniaxial_nanowrinkled/figures/kdf_uniaxial_20um_summary.png)
 
-### xg-cnc_1-1
+### `cnc-xg_biaxial_nanowrinkled/`
 
 This test demonstrates the usage of the function `measureScaleBar()` with an SEM image that is not originally square and contains an info banner at the bottom with the length scale.<br>
 The image analysis parameters below were determined based on trial and error:<br>
@@ -144,10 +144,10 @@ The image analysis parameters below were determined based on trial and error:<br
 #### Original SEM image
 ![Original SEM image](test_cases/experimental_surface_images/cnc-xg_biaxial_nanowrinkled/images/a1XG3p_1000x_003.png)
 
-#### Rsults summary figure
+#### Results summary figure
 ![xg-cnc_1-1 wrinkles](test_cases/experimental_surface_images/cnc-xg_biaxial_nanowrinkled/figures/a1XG3p_1000x_003_summary.png)
 
-### emulsion_bubbles
+### `cnc_emulsion_bubbles/`
 
 The tests up to this point have examined images that exibit periodic features (e.g., synthetic patterns, or nanowrinkles). The characteristic length analysis performed can be extended to other images featuring periodic features. In this test, we analyzes an emulsion of CNC that contains dispersed bubbles of varying sizes. Here, we use `characteristic_length.py` to extract bubble characteristic length (diameter).<br>
 The image analysis parameters below were determined based on trial and error:<br>
