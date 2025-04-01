@@ -12,6 +12,8 @@ Extract characteristic the length.
             Deconvolution flag.
         --bar_len: float
             SEM scale bar length. [um]
+        --bar_pxl: float
+            SEM scale bar length in pixels.
         --dof_lo_sigma: float
             Lower sigma value for the difference of Gaussians filter.
         --dof_hi_sigma: float
@@ -57,10 +59,11 @@ from surfacetools.image_processing import measure_sem_scalebar
 from surfacetools.periodicfeatures import radially_averaged_PSD
 
 parser = argparse.ArgumentParser(description='Extract characteristic the length.')
-parser.add_argument('--file', type=str, help='SEM image file')
+parser.add_argument('--file', type=str, help='Image file')
 parser.add_argument('--dconv', type=bool, help='Deconvolution flag', default=True)
 parser.add_argument('--pop_num', type=int, help='Number of populations', default=1)
-parser.add_argument('--bar_len', type=float, help='SEM scale bar length')
+parser.add_argument('--bar_len', type=float, help='Scale bar length')
+parser.add_argument('--bar_pxl', type=float, help='Scale bar length in pixels')
 parser.add_argument('--dof_lo_sigma', type=float, help='Lower sigma value for the difference of Gaussians filter', default=1.5)
 parser.add_argument('--dof_hi_sigma', type=str, help='Upper sigma value for the difference of Gaussians filter')
 parser.add_argument('--canny_sigma', type=float, help='Sigma value for the Canny edge detection', default=1.4)
@@ -75,14 +78,15 @@ args = parser.parse_args()
 # inpput parameters
 # SEM image file
 file = args.file
-file_name = re.findall(r"([^^.\s]+)\.", file)[0]
-file_type = re.findall(r"\.\w+", file)[0]
+file_name = re.findall(r"^(.*)(\.[a-zA-Z]{3})$", file)[0][0]
+file_type = re.findall(r"^(.*)(\.[a-zA-Z]{3})$", file)[0][1]
 img_file = "images/" + file_name + file_type
 # deconvolution
 dconv = args.dconv
-POP_NUM = args.pop_num                      # number of populations
+POP_NUM = args.pop_num  # number of populations
 # SEM scale bar length
-BAR_LEN = args.bar_len                      # um
+BAR_LEN = args.bar_len  # um
+BAR_PXL = args.bar_pxl  # pixels
 # difference of Gaussians filter
 DOF_LO_SIGMA = args.dof_lo_sigma
 if args.dof_hi_sigma == 'None':
@@ -92,14 +96,14 @@ else: DOF_HI_SIGMA = float(args.dof_hi_sigma)
 CANNY_SIGMA = args.canny_sigma                
 # feature size range of interest
 # population 1
-LO_LEN_LIM_POP1 = args.lo_len_lim_pop1           # 1/um
-HI_LEN_LIM_POP1 = args.hi_len_lim_pop1           # 1/um
+LO_LEN_LIM_POP1 = args.lo_len_lim_pop1  # 1/um
+HI_LEN_LIM_POP1 = args.hi_len_lim_pop1  # 1/um
 # population 2
 if int(POP_NUM == 2):
-    LO_LEN_LIM_POP2 = args.lo_len_lim_pop2       # 1/um
-    HI_LEN_LIM_POP2 = args.hi_len_lim_pop2       # 1/um
+    LO_LEN_LIM_POP2 = args.lo_len_lim_pop2  # 1/um
+    HI_LEN_LIM_POP2 = args.hi_len_lim_pop2  # 1/um
 
-THETAS = args.theta_lims
+THETAS = args.theta_lims    # degrees
 
 #############################################################################################
 # import SEM image in gray-scale
@@ -116,8 +120,8 @@ filtered_image_sq = filtered_image[:N,:N]
 filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
-# scale_bar = measure_sem_scalebar(image)   # pixels
-scale_bar = 247 # hardcoded
+# scale_bar = measure_sem_scalebar(image) # pixels
+scale_bar = BAR_PXL                     # hardcoded
 X, Y = filtered_edges_square.shape      # pixels
 pxl_scale = BAR_LEN/scale_bar           # um/pixel
 L = X*pxl_scale                         # um
@@ -154,22 +158,22 @@ rasp_norm_au = rasp_norm/np.max(rasp_norm)
 ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP1),(1/lam<HI_LEN_LIM_POP1)))
 x_pop1 = 1/lam[ind]              # 1/um
 y_pop1 = rasp_norm_au[ind]       # AU
-deg = 2                     # quadratic poly
-z = np.polyfit(x_pop1,y_pop1,deg)     # polynomial coeff
-p = np.poly1d(z)            # 
+deg = 2 # quadratic poly
+z = np.polyfit(x_pop1,y_pop1,deg) # polynomial coeff
+p = np.poly1d(z)
 mdl_pop1 = p(x_pop1)
-pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))]      # 1/um
+pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))] # 1/um
 
 # population 2
 if int(POP_NUM == 2):
     ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP2),(1/lam<HI_LEN_LIM_POP2)))
     x_pop2 = 1/lam[ind]              # 1/um
     y_pop2 = rasp_norm_au[ind]       # AU
-    deg = 2                     # quadratic poly
-    z = np.polyfit(x_pop2,y_pop2,deg)     # polynomial coeff
-    p = np.poly1d(z)            # 
+    deg = 2 # quadratic poly
+    z = np.polyfit(x_pop2,y_pop2,deg) # polynomial coeff
+    p = np.poly1d(z)
     mdl_pop2 = p(x_pop2)
-    pop2_feature_size = x_pop2[np.where(mdl_pop2 == np.max(mdl_pop2))]      # 1/um
+    pop2_feature_size = x_pop2[np.where(mdl_pop2 == np.max(mdl_pop2))] # 1/um
 
 #############################################################################################
 # visualization 
