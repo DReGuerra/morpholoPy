@@ -168,6 +168,22 @@ The image analysis parameters below were determined based on trial and error:<br
 #### Results summary figure
 ![KDF emulsion bubbles](test_cases/experimental_surface_images/cnc_emulsion_bubbles/figures/30_-C-In-H-Day7_summary.png)
 
+### `lysozyme_electrospun_mats/`
+
+Original image: `images/EPO100-1,65_aligned_400.png`
+
+#### Results summary figure
+![KDF EPO100-1,65_aligned_400](test_cases/experimental_surface_images/lysozyme_electrospun_mats/figures/EPO100-1,65_aligned_400_summary.png)
+
+Original image: `images/cnc_electrospun_0,2wtpct.tif`
+
+#### Results summary figure
+![KDF cnc_electrospun_0,2wtpct](test_cases/experimental_surface_images/lysozyme_electrospun_mats/figures/cnc_electrospun_0,2wtpct_summary.png)
+
+### `lysozyme_electrospun_afm/`
+
+TODO: Update this section
+
 ## Workflow and usage
 
 ### `characteristic_length.py`
