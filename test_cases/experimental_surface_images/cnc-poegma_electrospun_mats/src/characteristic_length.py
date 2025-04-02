@@ -242,3 +242,35 @@ else:
     
 f.tight_layout()
 f.savefig("figures/" + file_name + "_summary.png")
+
+# input parameters listed figure
+NROWS = 1; NCOLS = 1
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+axs.axis('off')
+axs.annotate("file: " + file,
+             xy=(0.05,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+axs.annotate("dconv: " + str(dconv),
+             xy=(0.05,0.8), xycoords='axes fraction', fontsize=TEXTFONT)
+axs.annotate("SEM scale bar length: " + str(BAR_LEN) + " um",
+             xy=(0.05,0.7), xycoords='axes fraction', fontsize=TEXTFONT)
+axs.annotate("SEM scale bar length in pixels: " + str(scale_bar) + " pxl",
+             xy=(0.05,0.6), xycoords='axes fraction', fontsize=TEXTFONT)
+axs.annotate("Diff. of Gaussians filter: [Low=" + str(DOF_LO_SIGMA) + 
+             ", High=" + str(DOF_HI_SIGMA) + "] pxl",
+             xy=(0.05,0.5), xycoords='axes fraction', fontsize=TEXTFONT)
+axs.annotate("Canny edge detection sigma: " + str(CANNY_SIGMA) + " pxl",
+             xy=(0.05,0.4), xycoords='axes fraction', fontsize=TEXTFONT)
+axs.annotate("Feature size range pop. 1: [" + str(LO_LEN_LIM_POP1) + 
+             ", " + str(HI_LEN_LIM_POP1) + "] um",
+             xy=(0.05,0.3), xycoords='axes fraction', fontsize=TEXTFONT)
+if int(POP_NUM == 2):
+    axs.annotate("Feature size range pop 2: [" + str(LO_LEN_LIM_POP2) + 
+                 ", " + str(HI_LEN_LIM_POP2) + "] um",
+                 xy=(0.05,0.2), xycoords='axes fraction', fontsize=TEXTFONT)
+if THETAS is not None:
+    axs.annotate("Angle limits for the radial averaging: " + str(THETAS) + " degrees",
+                 xy=(0.05,0.2), xycoords='axes fraction', fontsize=TEXTFONT)
+
+f.tight_layout()
+f.savefig("figures/" + file_name + "_input_parameters.png")
