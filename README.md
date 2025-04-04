@@ -88,6 +88,9 @@ The jigsaw and fragmented jigsaw images were made using Photopea at https://www.
 
 ## Experimental Test Cases
 
+
+
+
 ### `cnc-poegma_biaxial_nanowrinkled/`
 
 This test uses a biaxial wrinkled surface with a scale bar of 20 microns (um). The scale bar is 170 pixels in length.<br>
@@ -109,6 +112,10 @@ Figure 6F
 
 #### Results summary figure
 ![KDF biaxial wrinkles](test_cases/experimental_surface_images/cnc-poegma_biaxial_nanowrinkled/figures/kdf_biaxial_20um_summary.png)
+
+
+
+
 
 ### `cnc-poegma_uniaxial_nanowrinkled/`
 
@@ -132,6 +139,10 @@ Figure 6J
 #### Results summary figure
 ![KDF uniaxial wrinkles](test_cases/experimental_surface_images/cnc-poegma_uniaxial_nanowrinkled/figures/kdf_uniaxial_20um_summary.png)
 
+
+
+
+
 ### `cnc-xg_biaxial_nanowrinkled/`
 
 This test demonstrates the usage of the function `measureScaleBar()` with an SEM image that is not originally square and contains an info banner at the bottom with the length scale.<br>
@@ -150,6 +161,9 @@ The image analysis parameters below were determined based on trial and error:<br
 #### Results summary figure
 ![xg-cnc_1-1 wrinkles](test_cases/experimental_surface_images/cnc-xg_biaxial_nanowrinkled/figures/a1XG3p_1000x_003_summary.png)
 
+
+
+
 ### `cnc_emulsion_bubbles/`
 
 The tests up to this point have examined images that exibit periodic features (e.g., synthetic patterns, or nanowrinkles). The characteristic length analysis performed can be extended to other images featuring periodic features. In this test, we analyzes an emulsion of CNC that contains dispersed bubbles of varying sizes. Here, we use `characteristic_length.py` to extract bubble characteristic length (diameter).<br>
@@ -162,15 +176,19 @@ The image analysis parameters below were determined based on trial and error:<br
 
 *These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.
 
+---
 #### Original image
 ![KDF emulsion bubbles jpg](test_cases/experimental_surface_images/cnc_emulsion_bubbles/images/30_-C-In-H-Day7.jpg)
 
 #### Results summary figure
 ![KDF emulsion bubbles](test_cases/experimental_surface_images/cnc_emulsion_bubbles/figures/30_-C-In-H-Day7_summary.png)
 
+
+
+
 ### `cnc-poegma_electrospun_mats/`
 
-#### Original image
+#### Original image poegma-cnc_0.2wtpct
 ![poegma-cnc_0.2wtpct.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/images/poegma-cnc_0.2wtpct.png)
 
 #### Input parameters
@@ -184,8 +202,8 @@ The image analysis parameters below were determined based on guided trial and er
 #### Results summary figure
 ![poegma-cnc_0.2wtpct.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/figures/poegma-cnc_0.2wtpct_summary.png)
 
-
-#### Original image
+---
+#### Original image - poegma-cnc_0.2wtpct_swollen
 ![poegma-cnc_0.2wtpct_swollen_98pct_water.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/images/poegma-cnc_0.2wtpct_swollen_98pct_water.png)
 
 #### Input parameters
@@ -197,6 +215,65 @@ The image analysis parameters below were determined based on guided trial and er
 
 #### Results summary figure
 ![poegma-cnc_0.2wtpct_swollen_98pct_water.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/figures/poegma-cnc_0.2wtpct_swollen_98pct_water_summary.png)
+
+---
+#### Original image - poegma-cnc_0.96wtpct
+![poegma-cnc_0.96wtpct.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/images/poegma-cnc_0.96wtpct.png)
+
+#### Input parameters
+The image analysis parameters below were determined based on guided trial and error. By visualizing the images, the user can modify the input parameters to improve the analysis results.<br>
+
+![poegma-cnc_0.96wtpct_input_parameters.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/figures/poegma-cnc_0.96wtpct_input_parameters.png)
+
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.
+
+#### Results summary figure
+![poegma-cnc_0.96wtpct_summary.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/figures/poegma-cnc_0.96wtpct_summary.png)
+
+---
+#### Original image - poegma-cnc_0.96wtpct_swollen
+![poegma-cnc_0.96wtpct_swollen_98pct_water.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/images/poegma-cnc_0.96wtpct_swollen_98pct_water.png)
+
+#### Input parameters
+The image analysis parameters below were determined based on guided trial and error. By visualizing the images, the user can modify the input parameters to improve the analysis results.<br>
+
+![poegma-cnc_0.96wtpct_swollen_98pct_water_input_parameters.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/figures/poegma-cnc_0.96wtpct_swollen_98pct_water_input_parameters.png)
+
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.
+
+#### Results summary figure
+![poegma-cnc_0.96wtpct_swollen_98pct_water_summary.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/figures/poegma-cnc_0.96wtpct_swollen_98pct_water_summary.png)
+
+
+---
+#### Original image - poegma-cnc_1.65wtpct
+![poegma-cnc_1.65wtpct.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/images/poegma-cnc_1.65wtpct.png)
+
+#### Input parameters
+The image analysis parameters below were determined based on guided trial and error. By visualizing the images, the user can modify the input parameters to improve the analysis results.<br>
+
+![poegma-cnc_1.65wtpct_input_parameters.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/figures/poegma-cnc_1.65wtpct_input_parameters.png)
+
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.
+
+#### Results summary figure
+![poegma-cnc_1.65wtpct_summary.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/figures/poegma-cnc_1.65wtpct_summary.png)
+
+---
+#### Original image - poegma-cnc_1.65wtpct_swollen
+![poegma-cnc_1.65wtpct_swollen_98pct_water.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/images/poegma-cnc_1.65wtpct_swollen_98pct_water.png)
+
+#### Input parameters
+The image analysis parameters below were determined based on guided trial and error. By visualizing the images, the user can modify the input parameters to improve the analysis results.<br>
+
+![poegma-cnc_1.65wtpct_swollen_98pct_water_input_parameters.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/figures/poegma-cnc_1.65wtpct_swollen_98pct_water_input_parameters.png)
+
+*These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.
+
+#### Results summary figure
+![poegma-cnc_1.65wtpct_swollen_98pct_water_summary.png](test_cases/experimental_surface_images/cnc-poegma_electrospun_mats/figures/poegma-cnc_1.65wtpct_swollen_98pct_water_summary.png)
+
+
 
 ### `lysozyme_electrospun_afm/`
 
