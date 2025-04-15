@@ -1,9 +1,9 @@
 >>>
 Summary of Numerical Surface:
 Surface Roughness:
- Value_of_Sq2      = 3.213969250798828e-06
- Value_of_Skewness = 0.34316042579258244
- Value_of_Kurtosis = 2.124222794505541
+ Value_of_Sq2      = 3.21448429209072e-06
+ Value_of_Skewness = 0.3334069025128752
+ Value_of_Kurtosis = 2.1313770772710696
 
 Summary of Analytical Surface:
 Surface Roughness:
