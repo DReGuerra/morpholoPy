@@ -7,7 +7,7 @@ TODO:
     Usage:
         >> python src/surface_roughness.py
 """
-import os
+import re
 # os.environ["QT_QPA_PLATFORM"] = "xcb"
 
 import numpy as np
@@ -27,8 +27,8 @@ from surfacetools.roughness_params import get_derivatives, surface_roughness, su
 # scale bar real length
 BAR = 2 # um
 # manual h_scalebar values from image
-SCALE_MAX = 7.9 # nm
-SCALE_MIN = 0.9 # nm
+SCALE_MAX = 7.8  # nm
+SCALE_MIN = 0.9  # nm
 # column location of h_sclaebar
 COL = 14000
 
@@ -37,8 +37,10 @@ COL = 14000
 # increase the maximum image size to avoid DecompressionBombError
 Image.MAX_IMAGE_PIXELS = None
 # import image
-file_name = "lyso_dia_nonso0001.png"
-image_original = io.imread("images/" + file_name)
+file = "lyso_dia_nonso0001.png"
+file_name = re.findall(r"^(.*)(\.[a-zA-Z]{3})$", file)[0][0]
+file_type = re.findall(r"^(.*)(\.[a-zA-Z]{3})$", file)[0][1]
+image_original = io.imread("images/" + file)
 # square dimension of image
 CUT = image_original.shape[0]
 # check if the image has 4 channels (RGBA)
@@ -55,6 +57,9 @@ h_scalebar = image_original[:,COL]
 scalebar_pixels = measure_afm_scalebar(image_gray_cut) # pixels
 # pixel to length conversion factor
 um_pxl = BAR/scalebar_pixels # um/pixel
+# cut scalebar out of the image
+CUT = 11000
+image_gray_cut = image_gray_cut[0:CUT,0:CUT]
 
 #############################################################################################
 # Surface roughness parameters
@@ -89,7 +94,7 @@ Sq2, Rsk, Rku = surface_roughness(_s, hx, hy, Dx, Dy, Nx, Ny)
 # surface autocorrelation
 delx = np.arange(0, 0.5, 0.01)
 dely = np.arange(0, 0.5, 0.01)
-acf, sal = surface_autocorrelations(_s, hx, hy, Dx, Dy, Nx, Ny, delx, dely)
+# acf, sal = surface_autocorrelations(_s, hx, hy, Dx, Dy, Nx, Ny, delx, dely)
 
 #############################################################################################
 # visualization
@@ -111,8 +116,9 @@ axs[0,1].imshow(image_gray_cut, cmap="gray")
 
 axs[1,0].imshow(surface_nm, cmap="gray")
 # plot the autocorrelation function with a colorbar for the delx and dely ranges. the colorbar is for the acf values and in color
-axs[1,1].imshow(acf, cmap="viridis")
-f.colorbar(axs[1,1].imshow(acf, cmap="viridis"), ax=axs[1,1], orientation='vertical', label='ACF values')
+axs[1,1].axis('off')
+# axs[1,1].imshow(acf, cmap="viridis")
+# f.colorbar(axs[1,1].imshow(acf, cmap="viridis"), ax=axs[1,1], orientation='vertical', label='ACF values')
 
 f.tight_layout()
 f.savefig("figures/" + file_name + "_surface_roughness_analysis.png")
@@ -122,6 +128,8 @@ f.savefig("figures/" + file_name + "_surface_roughness_analysis.png")
 print("--------------------------------")
 print("Summary:")
 print("")
+print("Length of scalebar: " + str(scalebar_pixels) + " pixels")
+print("Pixel to length conversion factor: " + str(um_pxl) + " um/pixel")
 print("Scalebar max: " + str(np.max(h_scalebar)) + " Min: " + str(np.min(h_scalebar)))
 print("h_scalebar[80] = " + str(h_scalebar[80]) + " h_scalebar[-105] = " + str(h_scalebar[-105]))
 print("")
@@ -144,10 +152,12 @@ print("--------------------------------")
 
 #############################################################################################
 # print summary to file 
-with open('summary.txt', 'w') as textfile:
+with open("surf_rough_summary_" + file_name + ".txt", 'w') as textfile:
     textfile.write("--------------------------------\n")
     textfile.write("Summary:\n")
     textfile.write("\n")
+    textfile.write("Length of scalebar: " + str(scalebar_pixels) + " pixels\n")
+    textfile.write("Pixel to length conversion factor: " + str(um_pxl) + " um/pixel\n")
     textfile.write("Scalebar max: " + str(np.max(h_scalebar)) + " Min: " + str(np.min(h_scalebar)) + "\n")
     textfile.write("h_scalebar[80] = " + str(h_scalebar[80]) + " h_scalebar[-105] = " + str(h_scalebar[-105]) + "\n")
     textfile.write("\n")
