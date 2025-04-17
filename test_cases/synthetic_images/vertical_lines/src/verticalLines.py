@@ -70,7 +70,7 @@ axs[0,0].imshow(img, cmap='gray')
 axs[0,0].set_title("(a)", loc='left')
 # axs[0,0].set_title("(a) Original image", loc='left')
 
-axs[0,1].imshow(psd2D)
+axs[0,1].imshow(np.log(1 + psd2D))
 axs[0,1].set_title("(b)", loc='left')
 # axs[0,1].set_title("(b) Center-shifted 2D Power Spectral Density", loc='left')
 
