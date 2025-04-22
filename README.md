@@ -298,7 +298,7 @@ The general workflow of this script is as follows:<br>
 11. Curve fitting of the most prominent peak in the `rasp` to extract the feature size.
 12. Visualization of the results output to `figures/`.
 
-### Usage
+### Installation
 
 Install the package using pip:
 <pre>cd morpholoPy
@@ -308,6 +308,8 @@ This will install the repository as a package in the currently active Python env
 If you would prefer to have a "live" package that automatically updates as files are modified, you can install it as follows:
 <pre>cd morpholoPy
 pip install -e .</pre>
+
+### Usage
 
 To run the `characteristic_length.py` script:
 1. Go to the desired test directory: 
