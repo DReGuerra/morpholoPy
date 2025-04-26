@@ -54,7 +54,7 @@ from skimage import feature, io
 from skimage.filters import difference_of_gaussians
 
 from surfacetools.image_processing import measure_sem_scalebar
-from surfacetools.periodicfeatures import radially_averaged_PSD
+from surfacetools.periodicfeatures import radially_averaged_PSD, full_width_half_max, peak_quality_factor
 
 parser = argparse.ArgumentParser(description='Extract characteristic the length.')
 parser.add_argument('--file', type=str, help='Image file')
@@ -161,6 +161,11 @@ z = np.polyfit(x_pop1,y_pop1,deg)   # polynomial coeff
 p = np.poly1d(z)
 mdl_pop1 = p(x_pop1)
 pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))]  # 1/um
+
+fwhm = full_width_half_max(x_pop1,y_pop1)
+print("FWHM = " + str(fwhm))
+pqf = peak_quality_factor(y_pop1, fwhm)
+print("PQF = " + str(pqf))
 
 # population 2
 if int(POP_NUM == 2):
