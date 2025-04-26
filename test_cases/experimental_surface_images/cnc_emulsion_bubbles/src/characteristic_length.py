@@ -40,19 +40,17 @@ Extract characteristic the length.
         >> python src/characteristic_length.py --file kdf_biaxial_20um.tif --dconv True --pop_num 1 --bar_len 20 --dof_lo_sigma 
 """
 
-import sys
 import re
 import argparse
 
 import numpy as np
-from scipy.stats import kurtosis, skew
 
 import matplotlib.pyplot as plt
 from skimage import feature, io
-from skimage.filters import difference_of_gaussians, sobel
+from skimage.filters import difference_of_gaussians
 
 from surfacetools.image_processing import measure_sem_scalebar
-from surfacetools.periodicfeatures import radially_averaged_PSD
+from surfacetools.periodicfeatures import radially_averaged_PSD, full_width_half_max, peak_quality_factor
 
 parser = argparse.ArgumentParser(description='Extract characteristic the length.')
 parser.add_argument('--file', type=str, help='SEM image file')
@@ -112,7 +110,7 @@ filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
 # scale_bar = measure_sem_scalebar(image)   # pixels
-scale_bar = 170 # hardcoded for emulsion_bubbles
+scale_bar = 459 # hardcoded for emulsion_bubbles
 X, Y = filtered_edges_square.shape      # pixels
 pxl_scale = BAR_LEN/scale_bar           # um/pixel
 L = X*pxl_scale                         # um
@@ -149,24 +147,31 @@ rasp_norm_au = rasp_norm/np.max(rasp_norm)
 # curve fit
 # population 1
 ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP1),(1/lam<HI_LEN_LIM_POP1)))
-x_pop1 = 1/lam[ind]              # 1/um
-y_pop1 = rasp_norm_au[ind]       # AU
-deg = 2                     # quadratic poly
-z = np.polyfit(x_pop1,y_pop1,deg)     # polynomial coeff
-p = np.poly1d(z)            # 
+x_pop1 = 1/lam[ind]                 # 1/um
+y_pop1 = rasp_norm_au[ind]          # AU
+
+deg = 2                             # quadratic poly
+z = np.polyfit(x_pop1,y_pop1,deg)   # polynomial coeff
+p = np.poly1d(z)
 mdl_pop1 = p(x_pop1)
-pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))]      # 1/um
+pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))]  # 1/um
+
+fwhm = full_width_half_max(x_pop1,y_pop1)
+print("FWHM = " + str(fwhm))
+pqf = peak_quality_factor(y_pop1, fwhm)
+print("PQF = " + str(pqf))
 
 # population 2
 if int(POP_NUM == 2):
     ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP2),(1/lam<HI_LEN_LIM_POP2)))
-    x_pop2 = 1/lam[ind]              # 1/um
-    y_pop2 = rasp_norm_au[ind]       # AU
-    deg = 2                     # quadratic poly
-    z = np.polyfit(x_pop2,y_pop2,deg)     # polynomial coeff
-    p = np.poly1d(z)            # 
+    x_pop2 = 1/lam[ind]                 # 1/um
+    y_pop2 = rasp_norm_au[ind]          # AU
+
+    deg = 2                             # quadratic poly
+    z = np.polyfit(x_pop2,y_pop2,deg)   # polynomial coeff
+    p = np.poly1d(z)
     mdl_pop2 = p(x_pop2)
-    pop2_feature_size = x_pop2[np.where(mdl_pop2 == np.max(mdl_pop2))]      # 1/um
+    pop2_feature_size = x_pop2[np.where(mdl_pop2 == np.max(mdl_pop2))]  # 1/um
 
 #############################################################################################
 # visualization 
@@ -218,7 +223,7 @@ if int(POP_NUM == 2):
     axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,1].annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-    axs[2,1].set_xlim([0,6])
+    axs[2,1].set_xlim([0,1.5])
     axs[2,1].set_ylim([0,1.2])
 else:
     axs[2,0].plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
