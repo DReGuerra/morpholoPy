@@ -48,11 +48,10 @@ import re
 import argparse
 
 import numpy as np
-from scipy.stats import kurtosis, skew
 
 import matplotlib.pyplot as plt
 from skimage import feature, io
-from skimage.filters import difference_of_gaussians, sobel
+from skimage.filters import difference_of_gaussians
 
 from surfacetools.image_processing import measure_sem_scalebar
 from surfacetools.periodicfeatures import radially_averaged_PSD
