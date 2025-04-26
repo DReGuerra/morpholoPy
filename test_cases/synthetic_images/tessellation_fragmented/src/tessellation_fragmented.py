@@ -9,7 +9,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage import io
-from surfacetools.periodicfeatures import radially_averaged_PSD
+from surfacetools.periodicfeatures import radially_averaged_PSD, full_width_half_max, peak_quality_factor
 
 # import fragmented tessellation image in gray-scale
 img_tessellation_fragmented = io.imread("images/tessellation_fragmented.png", as_gray=True)
@@ -45,6 +45,23 @@ if dconv: rasp_norm = np.divide(rasp_norm,lam[:rasp_length])
 # transform to absolute units (AU) using maximum intensity
 rasp_norm_au = rasp_norm/np.max(rasp_norm)
 
+#############################################################################################
+# curve fit
+# population 1
+ind = np.where(np.logical_and((1/lam>0.005),(1/lam<0.015)))
+x_pop1 = 1/lam[ind]                 # 1/um
+y_pop1 = rasp_norm_au[ind]          # AU
+
+deg = 2                             # quadratic poly
+z = np.polyfit(x_pop1,y_pop1,deg)   # polynomial coeff
+p = np.poly1d(z)
+mdl_pop1 = p(x_pop1)
+pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))]  # 1/um
+
+fwhm = full_width_half_max(x_pop1,y_pop1)
+print("FWHM = " + str(fwhm))
+pqf = peak_quality_factor(y_pop1, fwhm)
+print("PQF = " + str(pqf))
 
 # ---
 # Visualization
@@ -74,11 +91,20 @@ axs[1,0].set_xlabel("Period (T), Pixels")
 axs[1,0].set_xlim([0,50])
 
 axs[1,1].plot(1/lam[:rasp_length],rasp_norm_au)
+axs[1,1].plot(x_pop1,y_pop1,linestyle='none',marker='o',fillstyle='none',color='green')
+axs[1,1].plot(x_pop1,mdl_pop1,linestyle='--',color='green')
+axs[1,1].vlines(pop1_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
 axs[1,1].set_title("(d)", loc='left')
 # axs[1,1].set_title("RASP in spatial frequency")
 axs[1,1].set_ylabel("Intensity, AU")
 axs[1,1].set_xlabel("frequency (f), $\mu$m$^{-1}$")
 axs[1,1].set_xlim([0,0.08])
+axs[1,1].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=0)) + ' $\mu$m',
+                xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+axs[1,1].annotate('FWHM = ' + str(np.around(fwhm,decimals=3)) + ' $\mu$m$^{-1}$',
+                xy=(0.45,0.825), xycoords='axes fraction', fontsize=TEXTFONT)
+axs[1,1].annotate('PQF = ' + str(np.around(pqf,decimals=0)),
+                xy=(0.45,0.75), xycoords='axes fraction', fontsize=TEXTFONT)
 
 f.tight_layout()
 f.savefig("figures/tessellation_fragmented_summary.png")
