@@ -1,7 +1,7 @@
 #!/bin/bash
 
 python src/characteristic_length.py \
---file kdf_uniaxial_20um.tif \
+--file kdf_biaxial_20um.tif \
 --dconv True \
 --pop_num 1 \
 --bar_len 20 \
