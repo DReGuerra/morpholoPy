@@ -44,16 +44,14 @@ Extract characteristic the length.
 
 """
 
-import sys
 import re
 import argparse
 
 import numpy as np
-from scipy.stats import kurtosis, skew
 
 import matplotlib.pyplot as plt
 from skimage import feature, io
-from skimage.filters import difference_of_gaussians, sobel
+from skimage.filters import difference_of_gaussians
 
 from surfacetools.image_processing import measure_sem_scalebar
 from surfacetools.periodicfeatures import radially_averaged_PSD
@@ -120,10 +118,9 @@ filtered_image_sq = filtered_image[:N,:N]
 filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
-# scale_bar = measure_sem_scalebar(image) # pixels
-scale_bar = BAR_PXL                     # hardcoded
+# scale_bar = measure_sem_scalebar(image)   # pixels
 X, Y = filtered_edges_square.shape      # pixels
-pxl_scale = BAR_LEN/scale_bar           # um/pixel
+pxl_scale = BAR_LEN/BAR_PXL           # um/pixel
 L = X*pxl_scale                         # um
 
 # Dicrete Fourier Transfer (DFT) via FAst Fourier Transfrom (FFT)
@@ -156,24 +153,30 @@ rasp_norm_au = rasp_norm/np.max(rasp_norm)
 # curve fit
 # population 1
 ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP1),(1/lam<HI_LEN_LIM_POP1)))
-x_pop1 = 1/lam[ind]              # 1/um
-y_pop1 = rasp_norm_au[ind]       # AU
-deg = 2 # quadratic poly
-z = np.polyfit(x_pop1,y_pop1,deg) # polynomial coeff
+x_pop1 = 1/lam[ind]                 # 1/um
+y_pop1 = rasp_norm_au[ind]          # AU
+mean_pop1 = np.mean(y_pop1)         # mean
+std_pop1 = np.std(y_pop1)           # standard deviation
+
+deg = 2                             # quadratic poly
+z = np.polyfit(x_pop1,y_pop1,deg)   # polynomial coeff
 p = np.poly1d(z)
 mdl_pop1 = p(x_pop1)
-pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))] # 1/um
+pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))]  # 1/um
 
 # population 2
 if int(POP_NUM == 2):
     ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP2),(1/lam<HI_LEN_LIM_POP2)))
-    x_pop2 = 1/lam[ind]              # 1/um
-    y_pop2 = rasp_norm_au[ind]       # AU
-    deg = 2 # quadratic poly
-    z = np.polyfit(x_pop2,y_pop2,deg) # polynomial coeff
+    x_pop2 = 1/lam[ind]                 # 1/um
+    y_pop2 = rasp_norm_au[ind]          # AU
+    mean_pop2 = np.mean(y_pop2)         # mean
+    std_pop2 = np.std(y_pop2)           # standard deviation
+
+    deg = 2                             # quadratic poly
+    z = np.polyfit(x_pop2,y_pop2,deg)   # polynomial coeff
     p = np.poly1d(z)
     mdl_pop2 = p(x_pop2)
-    pop2_feature_size = x_pop2[np.where(mdl_pop2 == np.max(mdl_pop2))] # 1/um
+    pop2_feature_size = x_pop2[np.where(mdl_pop2 == np.max(mdl_pop2))]  # 1/um
 
 #############################################################################################
 # visualization 
@@ -201,7 +204,7 @@ axs[1,0].set_title("(c)", loc='left')
 
 axs[1,1].imshow(np.log(psd2D))
 axs[1,1].set_title("(d)", loc='left')
-axs[1,1].set_title("Center-shifted 2D Power Spectral Density")
+# axs[1,1].set_title("Center-shifted 2D Power Spectral Density")
 
 if int(POP_NUM == 2):
     axs[2,0].plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
@@ -213,7 +216,9 @@ if int(POP_NUM == 2):
     axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-    axs[2,0].set_xlim([1/lam[0],1/lam[rasp_length+1]])
+    axs[2,0].annotate('$\sigma$ = ' + str(np.around(std_pop1,decimals=3)),
+                    xy=(0.7,0.825), xycoords='axes fraction', fontsize=TEXTFONT)
+    axs[2,0].set_xlim([0,6])
     axs[2,0].set_ylim([0,1.2])
 
     axs[2,1].plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
@@ -225,7 +230,9 @@ if int(POP_NUM == 2):
     axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,1].annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-    axs[2,1].set_xlim([1/lam[0],1/lam[rasp_length+1]])
+    axs[2,1].annotate('$\sigma$ = ' + str(np.around(std_pop2,decimals=3)),
+                    xy=(0.7,0.825), xycoords='axes fraction', fontsize=TEXTFONT)
+    axs[2,1].set_xlim([0,6])
     axs[2,1].set_ylim([0,1.2])
 else:
     axs[2,0].plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
@@ -237,40 +244,12 @@ else:
     axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-    axs[2,0].set_xlim([1/lam[0],1/lam[rasp_length+1]])
+    axs[2,0].annotate('$\sigma$ = ' + str(np.around(std_pop1,decimals=3)),
+                    xy=(0.685,0.825), xycoords='axes fraction', fontsize=TEXTFONT)
+    axs[2,0].set_xlim([0,6])
     axs[2,0].set_ylim([0,1.2])
+    
+    axs[2,1].axis('off')
     
 f.tight_layout()
 f.savefig("figures/" + file_name + "_summary.png")
-
-# input parameters listed figure
-NROWS = 1; NCOLS = 1
-f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
-axs.axis('off')
-axs.annotate("file: " + file,
-             xy=(0.05,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-axs.annotate("dconv: " + str(dconv),
-             xy=(0.05,0.8), xycoords='axes fraction', fontsize=TEXTFONT)
-axs.annotate("SEM scale bar length: " + str(BAR_LEN) + " um",
-             xy=(0.05,0.7), xycoords='axes fraction', fontsize=TEXTFONT)
-axs.annotate("SEM scale bar length in pixels: " + str(scale_bar) + " pxl",
-             xy=(0.05,0.6), xycoords='axes fraction', fontsize=TEXTFONT)
-axs.annotate("Diff. of Gaussians filter: [Low=" + str(DOF_LO_SIGMA) + 
-             ", High=" + str(DOF_HI_SIGMA) + "] pxl",
-             xy=(0.05,0.5), xycoords='axes fraction', fontsize=TEXTFONT)
-axs.annotate("Canny edge detection sigma: " + str(CANNY_SIGMA) + " pxl",
-             xy=(0.05,0.4), xycoords='axes fraction', fontsize=TEXTFONT)
-axs.annotate("Feature size range pop. 1: [" + str(LO_LEN_LIM_POP1) + 
-             ", " + str(HI_LEN_LIM_POP1) + "] um",
-             xy=(0.05,0.3), xycoords='axes fraction', fontsize=TEXTFONT)
-if int(POP_NUM == 2):
-    axs.annotate("Feature size range pop 2: [" + str(LO_LEN_LIM_POP2) + 
-                 ", " + str(HI_LEN_LIM_POP2) + "] um",
-                 xy=(0.05,0.2), xycoords='axes fraction', fontsize=TEXTFONT)
-if THETAS is not None:
-    axs.annotate("Angle limits for the radial averaging: " + str(THETAS) + " degrees",
-                 xy=(0.05,0.2), xycoords='axes fraction', fontsize=TEXTFONT)
-
-f.tight_layout()
-f.savefig("figures/" + file_name + "_input_parameters.png")
