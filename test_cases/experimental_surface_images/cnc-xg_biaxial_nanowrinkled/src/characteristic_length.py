@@ -47,8 +47,8 @@ from surfacetools.periodicfeatures import radially_averaged_PSD
 # inpput parameters
 # SEM image file
 file = str(sys.argv[1])
-file_name = re.findall(r"([^^.\s]+)\.", file)[0]
-file_type = re.findall(r"\.\w+", file)[0]
+file_name = re.findall(r"^(.*)(\.[a-zA-Z]{3})$", file)[0][0]
+file_type = re.findall(r"^(.*)(\.[a-zA-Z]{3})$", file)[0][1]
 img_file = "images/" + file_name + file_type
 # deconvolution
 dconv = bool(sys.argv[2])
@@ -57,12 +57,12 @@ POP_NUM = int(sys.argv[3])                      # number of populations
 bar_length = float(sys.argv[4])                 # um
 # feature size range of interest
 # population 1
-lo_len_lim_pop1 = float(sys.argv[5])        # 1/um
-hi_len_lim_pop1 = float(sys.argv[6])       # 1/um
+LO_LEN_LIM_POP1 = float(sys.argv[5])        # 1/um
+HI_LEN_LIM_POP1 = float(sys.argv[6])       # 1/um
 # population 2
 if int(POP_NUM == 2):
-    lo_len_lim_pop2 = float(sys.argv[7])        # 1/um
-    hi_len_lim_pop2 = float(sys.argv[8])       # 1/um
+    LO_LEN_LIM_POP2 = float(sys.argv[7])        # 1/um
+    HI_LEN_LIM_POP2 = float(sys.argv[8])       # 1/um
 
 #############################################################################################
 # import SEM image in gray-scale
@@ -122,25 +122,27 @@ rasp_norm_au = rasp_norm/np.max(rasp_norm)
 #############################################################################################
 # curve fit
 # population 1
-ind = np.where(np.logical_and((1/lam>lo_len_lim_pop1),(1/lam<hi_len_lim_pop1)))
-x_pop1 = 1/lam[ind]              # 1/um
-y_pop1 = rasp_norm_au[ind]       # AU
-deg = 2                     # quadratic poly
-z = np.polyfit(x_pop1,y_pop1,deg)     # polynomial coeff
-p = np.poly1d(z)            # 
+ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP1),(1/lam<HI_LEN_LIM_POP1)))
+x_pop1 = 1/lam[ind]                 # 1/um
+y_pop1 = rasp_norm_au[ind]          # AU
+
+deg = 2                             # quadratic poly
+z = np.polyfit(x_pop1,y_pop1,deg)   # polynomial coeff
+p = np.poly1d(z)
 mdl_pop1 = p(x_pop1)
-pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))]      # 1/um
+pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))]  # 1/um
 
 # population 2
 if int(POP_NUM == 2):
-    ind = np.where(np.logical_and((1/lam>lo_len_lim_pop2),(1/lam<hi_len_lim_pop2)))
-    x_pop2 = 1/lam[ind]              # 1/um
-    y_pop2 = rasp_norm_au[ind]       # AU
-    deg = 2                     # quadratic poly
-    z = np.polyfit(x_pop2,y_pop2,deg)     # polynomial coeff
-    p = np.poly1d(z)            # 
+    ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP2),(1/lam<HI_LEN_LIM_POP2)))
+    x_pop2 = 1/lam[ind]                 # 1/um
+    y_pop2 = rasp_norm_au[ind]          # AU
+
+    deg = 2                             # quadratic poly
+    z = np.polyfit(x_pop2,y_pop2,deg)   # polynomial coeff
+    p = np.poly1d(z)
     mdl_pop2 = p(x_pop2)
-    pop2_feature_size = x_pop2[np.where(mdl_pop2 == np.max(mdl_pop2))]      # 1/um
+    pop2_feature_size = x_pop2[np.where(mdl_pop2 == np.max(mdl_pop2))]  # 1/um
 
 #############################################################################################
 # visualization 
@@ -179,7 +181,7 @@ if int(POP_NUM == 2):
     axs[2,0].set_ylabel("Intensity, AU")
     axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
-                      xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+                    xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,0].set_xlim([0,6])
     axs[2,0].set_ylim([0,1.2])
 
@@ -191,7 +193,7 @@ if int(POP_NUM == 2):
     axs[2,1].set_ylabel("Intensity, AU")
     axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,1].annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
-                      xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+                    xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,1].set_xlim([0,6])
     axs[2,1].set_ylim([0,1.2])
 else:
@@ -203,7 +205,7 @@ else:
     axs[2,0].set_ylabel("Intensity, AU")
     axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
-                      xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+                    xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,0].set_xlim([0,6])
     axs[2,0].set_ylim([0,1.2])
     
@@ -211,24 +213,3 @@ else:
     
 f.tight_layout()
 f.savefig("figures/" + file_name + "_summary.png")
-
-# Filtered image
-NROWS = 1; NCOLS = 1
-f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
-
-axs.imshow(filtered_image_sq)
-
-f.tight_layout()
-f.savefig("figures/" + file_name + "_filtered.png")
-
-# Filtered edges
-NROWS = 1; NCOLS = 1
-f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
-
-axs.imshow(filtered_edges_square)
-
-f.tight_layout()
-f.savefig("figures/" + file_name + "_filtered_edges.png")
-
