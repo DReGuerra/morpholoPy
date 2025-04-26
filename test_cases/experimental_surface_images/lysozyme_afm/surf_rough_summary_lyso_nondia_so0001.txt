@@ -1,0 +1,24 @@
+--------------------------------
+Summary:
+
+Length of scalebar: 5110 pixels
+Pixel to length conversion factor: 0.0003913894324853229 um/pixel
+Scalebar max: 255 Min: 0
+h_scalebar[80] = [252 252 128 255] h_scalebar[-105] = [  1   0   0 255]
+
+image_gray_cut.shape: (11000, 11000)
+image_gray_cut pixels Max: 0.9531749019607844 Min: 0.0
+
+image_gray_cut.shape: (11000, 11000)
+image_gray_cut[100,100]: 0.13149843137254902
+
+surface_nm.shape: (11000, 11000)
+surface_nm pixels Max: 6.576906823529412 Min: 0.0
+
+surface_nm[100,100]: 0.9073391764705881
+
+Surface roughness parameters:
+Sq2: 0.034898171190188364
+Skewness: 2.0944508079654645
+Kurtosis: 6.602134150051875
+--------------------------------
