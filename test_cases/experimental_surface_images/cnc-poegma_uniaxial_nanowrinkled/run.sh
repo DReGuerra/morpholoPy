@@ -5,6 +5,7 @@ python src/characteristic_length.py \
 --dconv True \
 --pop_num 1 \
 --bar_len 20 \
+--bar_pxl 170 \
 --dof_lo_sigma 1.1 \
 --dof_hi_sigma None \
 --canny_sigma 1.4 \

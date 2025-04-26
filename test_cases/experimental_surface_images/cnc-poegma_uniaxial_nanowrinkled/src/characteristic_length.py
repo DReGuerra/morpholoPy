@@ -12,6 +12,8 @@ Extract characteristic the length.
             Deconvolution flag.
         --bar_len: float
             SEM scale bar length. [um]
+        --bar_pxl: float
+            SEM scale bar length in pixels.
         --dof_lo_sigma: float
             Lower sigma value for the difference of Gaussians filter.
         --dof_hi_sigma: float
@@ -28,6 +30,8 @@ Extract characteristic the length.
             Lower limit of the feature size range of interest for population 2 [1/um]
         --hi_len_lim_pop1: float
             Upper limit of the feature size range of interest for population 2 [1/um]
+        --theta_lims: list
+            Angle limits for the radial averaging [degrees].
 
         Returns: 
             Various plots are output to figures/
@@ -37,10 +41,9 @@ Extract characteristic the length.
         >> python src/characteristic_length.py 30_-C-In-Day7_thesis_poster.jpg True 2 50 3 12 1.4 0.8 1.6 0.15 0.4
         In order to omit parameters, use each flag.
         >> python src/characteristic_length.py --file kdf_biaxial_20um.tif --dconv True --pop_num 1 --bar_len 20 --dof_lo_sigma 1.1 --dof_hi_sigma None --canny_sigma 1.4 --lo_len_lim_pop1 1.5 --hi_len_lim_pop1 3.0
-        >> python src/characteristic_length.py --file kdf_biaxial_20um.tif --dconv True --pop_num 1 --bar_len 20 --dof_lo_sigma 
+
 """
 
-import sys
 import re
 import argparse
 
@@ -55,10 +58,11 @@ from surfacetools.image_processing import measure_sem_scalebar
 from surfacetools.periodicfeatures import radially_averaged_PSD
 
 parser = argparse.ArgumentParser(description='Extract characteristic the length.')
-parser.add_argument('--file', type=str, help='SEM image file')
+parser.add_argument('--file', type=str, help='Image file')
 parser.add_argument('--dconv', type=bool, help='Deconvolution flag', default=True)
 parser.add_argument('--pop_num', type=int, help='Number of populations', default=1)
-parser.add_argument('--bar_len', type=float, help='SEM scale bar length')
+parser.add_argument('--bar_len', type=float, help='Scale bar length')
+parser.add_argument('--bar_pxl', type=float, help='Scale bar length in pixels')
 parser.add_argument('--dof_lo_sigma', type=float, help='Lower sigma value for the difference of Gaussians filter', default=1.5)
 parser.add_argument('--dof_hi_sigma', type=str, help='Upper sigma value for the difference of Gaussians filter')
 parser.add_argument('--canny_sigma', type=float, help='Sigma value for the Canny edge detection', default=1.4)
@@ -66,20 +70,22 @@ parser.add_argument('--lo_len_lim_pop1', type=float, help='Lower limit of the fe
 parser.add_argument('--hi_len_lim_pop1', type=float, help='Upper limit of the feature size range of interest for population 1')
 parser.add_argument('--lo_len_lim_pop2', type=float, help='Lower limit of the feature size range of interest for population 2', default=1)
 parser.add_argument('--hi_len_lim_pop2', type=float, help='Upper limit of the feature size range of interest for population 2', default=1)
+parser.add_argument('--theta_lims', nargs='+', type=int, help='Angle limits for the radial averaging', default=None)
 
 args = parser.parse_args()
 
 # inpput parameters
 # SEM image file
 file = args.file
-file_name = re.findall(r"([^^.\s]+)\.", file)[0]
-file_type = re.findall(r"\.\w+", file)[0]
+file_name = re.findall(r"^(.*)(\.[a-zA-Z]{3})$", file)[0][0]
+file_type = re.findall(r"^(.*)(\.[a-zA-Z]{3})$", file)[0][1]
 img_file = "images/" + file_name + file_type
 # deconvolution
 dconv = args.dconv
-POP_NUM = args.pop_num                      # number of populations
+POP_NUM = args.pop_num  # number of populations
 # SEM scale bar length
-BAR_LEN = args.bar_len                      # um
+BAR_LEN = args.bar_len  # um
+BAR_PXL = args.bar_pxl  # pixels
 # difference of Gaussians filter
 DOF_LO_SIGMA = args.dof_lo_sigma
 if args.dof_hi_sigma == 'None':
@@ -89,12 +95,14 @@ else: DOF_HI_SIGMA = float(args.dof_hi_sigma)
 CANNY_SIGMA = args.canny_sigma                
 # feature size range of interest
 # population 1
-LO_LEN_LIM_POP1 = args.lo_len_lim_pop1            # 1/um
-HI_LEN_LIM_POP1 = args.hi_len_lim_pop1            # 1/um
+LO_LEN_LIM_POP1 = args.lo_len_lim_pop1  # 1/um
+HI_LEN_LIM_POP1 = args.hi_len_lim_pop1  # 1/um
 # population 2
 if int(POP_NUM == 2):
-    LO_LEN_LIM_POP2 = args.lo_len_lim_pop2       # 1/um
-    HI_LEN_LIM_POP2 = args.hi_len_lim_pop2       # 1/um
+    LO_LEN_LIM_POP2 = args.lo_len_lim_pop2  # 1/um
+    HI_LEN_LIM_POP2 = args.hi_len_lim_pop2  # 1/um
+
+THETAS = args.theta_lims    # degrees
 
 #############################################################################################
 # import SEM image in gray-scale
@@ -112,9 +120,8 @@ filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
 # scale_bar = measure_sem_scalebar(image)   # pixels
-scale_bar = 170 # hardcoded for kdf_uniaxial_20um.tif
 X, Y = filtered_edges_square.shape      # pixels
-pxl_scale = BAR_LEN/scale_bar           # um/pixel
+pxl_scale = BAR_LEN/BAR_PXL           # um/pixel
 L = X*pxl_scale                         # um
 
 # Dicrete Fourier Transfer (DFT) via FAst Fourier Transfrom (FFT)
