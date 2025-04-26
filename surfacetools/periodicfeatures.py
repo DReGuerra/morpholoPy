@@ -56,3 +56,47 @@ def radially_averaged_PSD(psd2D, theta_lims):
         # rasp_norm = np.nan_to_num(np.divide(rasp,bins_count))
         
     return rasp, bins_count
+
+def full_width_half_max(f, s):
+    """Calculate the full width at half maximum (FWHM) of a 1D array
+
+    Args:
+        s (ndarray): 1D array
+        f (ndarray): frequency array
+
+    Returns:
+        fwhm (float): full width at half maximum
+    """
+    
+    # find the maximum value
+    max_val = np.max(s)
+    # find the half maximum value
+    half_max = max_val / 2
+    # find the indices where the value is greater than or equal to the half maximum
+    indices = np.where(s >= half_max)[0]
+    
+    if len(indices) == 0:
+        return 0.0
+    
+    # calculate the FWHM
+    fwhm = f[indices[-1]] - f[indices[0]]
+    
+    return fwhm
+
+def peak_quality_factor(s, fwhm):
+    """Calculate the peak quality factor (PQF) of a 1D array
+
+    Args:
+        s (ndarray): 1D array
+        fwhm (float): full width at half maximum
+
+    Returns:
+        pqf (float): peak quality factor
+    """
+    
+    # find the maximum value
+    max_val = np.max(s)
+    # calculate the PQF
+    pqf = max_val / fwhm
+    
+    return pqf
