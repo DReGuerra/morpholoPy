@@ -48,11 +48,10 @@ import re
 import argparse
 
 import numpy as np
-from scipy.stats import kurtosis, skew
 
 import matplotlib.pyplot as plt
 from skimage import feature, io
-from skimage.filters import difference_of_gaussians, sobel
+from skimage.filters import difference_of_gaussians
 
 from surfacetools.image_processing import measure_sem_scalebar
 from surfacetools.periodicfeatures import radially_averaged_PSD
@@ -131,12 +130,9 @@ fft2 = np.fft.fft2(filtered_edges_square)
 fft2_shiftd = np.fft.fftshift(fft2)
 # power spectral density (PSD)
 psd2D = np.abs(fft2_shiftd)**2
-# angle limits for radial averaging the 2D PSD
-# THETA_LIM = [45, 135]
-THETA_LIM = []
 
 # radially averaged PSD with angle limits
-rasp, bins_count = radially_averaged_PSD(psd2D, theta_lims=THETA_LIM)
+rasp, bins_count = radially_averaged_PSD(psd2D, theta_lims=THETAS)
 # length of rasp vector
 rasp_length = len(rasp)
 
@@ -257,24 +253,3 @@ else:
     
 f.tight_layout()
 f.savefig("figures/" + file_name + "_summary.png")
-
-# # Filtered image
-# NROWS = 1; NCOLS = 1
-# f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-#                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
-
-# axs.imshow(filtered_image_sq)
-
-# f.tight_layout()
-# f.savefig("figures/" + file_name + "_filtered.png")
-
-# # Filtered edges
-# NROWS = 1; NCOLS = 1
-# f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-#                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
-
-# axs.imshow(filtered_edges_square)
-
-# f.tight_layout()
-# f.savefig("figures/" + file_name + "_filtered_edges.png")
-
