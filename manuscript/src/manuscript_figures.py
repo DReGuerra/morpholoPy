@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
+np.random.seed(123456)      # for reproducibility
+
 # computational time complexity sample
 n = np.arange(1,101,1)      # number of terms
 O_2N2 = 2*n**2              # Discrete Fourier Transform
@@ -266,7 +268,7 @@ inset_axs.plot(t, sig1, color=CLRS[1])
 inset_axs.plot(t, sig2, color=CLRS[2])
 inset_axs.set_xlim([0,0.5])
     
-f.tight_layout()
+# f.tight_layout()
 f.savefig("figures/2.noisy_signal_decomposed_inset.png")
 
 # Figure 3
@@ -327,3 +329,29 @@ axs.set_ylim([0,10])
 
 f.tight_layout()
 f.savefig("figures/11.surface_roughness_map.png")
+
+from mpl_toolkits.mplot3d import Axes3D
+
+# Parameters for the 3D surface
+x = np.linspace(1, 5, 50)
+y = np.linspace(1, 5, 50)
+X, Y = np.meshgrid(x, y)
+Z = np.sin(np.sqrt(X**2 + Y**2))  # Curved surface
+z = X*0 - 2
+
+# Create a figure for the 3D plot
+f = plt.figure(figsize=(FIGWIDTH, FIGHEIGHT))
+ax = f.add_subplot(111, projection='3d')
+
+# 3D surface plot
+ax.plot_surface(X, Y, Z, cmap='viridis', edgecolor='none', alpha=0.8)
+ax.plot_surface(X, Y, z, cmap='gist_gray' , alpha=0.5)
+ax.set_xlabel("$x$")
+ax.set_ylabel("$y$")
+ax.set_zlabel("$z$")
+
+# Adjust the z-axis to make space for the projection
+ax.set_zlim(np.min(Z) - 1, np.max(Z))
+
+# f.tight_layout()
+f.savefig("figures/3D_surface_with_projection.png")
