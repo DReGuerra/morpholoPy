@@ -125,10 +125,11 @@ fft2_shiftd = np.fft.fftshift(fft2)
 # power spectral density (PSD)
 psd2D = np.abs(fft2_shiftd)**2
 # angle limits for radial averaging the 2D PSD
-theta_lims = []
+# THETA_LIM = [45, 135]
+THETA_LIM = []
 
 # radially averaged PSD with angle limits
-rasp, bins_count = radially_averaged_PSD(psd2D, theta_lims=[])
+rasp, bins_count = radially_averaged_PSD(psd2D, theta_lims=THETA_LIM)
 # length of rasp vector
 rasp_length = len(rasp)
 
@@ -149,24 +150,30 @@ rasp_norm_au = rasp_norm/np.max(rasp_norm)
 # curve fit
 # population 1
 ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP1),(1/lam<HI_LEN_LIM_POP1)))
-x_pop1 = 1/lam[ind]              # 1/um
-y_pop1 = rasp_norm_au[ind]       # AU
-deg = 2                     # quadratic poly
-z = np.polyfit(x_pop1,y_pop1,deg)     # polynomial coeff
-p = np.poly1d(z)            # 
+x_pop1 = 1/lam[ind]                 # 1/um
+y_pop1 = rasp_norm_au[ind]          # AU
+mean_pop1 = np.mean(y_pop1)         # mean
+std_pop1 = np.std(y_pop1)           # standard deviation
+
+deg = 2                             # quadratic poly
+z = np.polyfit(x_pop1,y_pop1,deg)   # polynomial coeff
+p = np.poly1d(z)
 mdl_pop1 = p(x_pop1)
-pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))]      # 1/um
+pop1_feature_size = x_pop1[np.where(mdl_pop1 == np.max(mdl_pop1))]  # 1/um
 
 # population 2
 if int(POP_NUM == 2):
     ind = np.where(np.logical_and((1/lam>LO_LEN_LIM_POP2),(1/lam<HI_LEN_LIM_POP2)))
-    x_pop2 = 1/lam[ind]              # 1/um
-    y_pop2 = rasp_norm_au[ind]       # AU
-    deg = 2                     # quadratic poly
-    z = np.polyfit(x_pop2,y_pop2,deg)     # polynomial coeff
-    p = np.poly1d(z)            # 
+    x_pop2 = 1/lam[ind]                 # 1/um
+    y_pop2 = rasp_norm_au[ind]          # AU
+    mean_pop2 = np.mean(y_pop2)         # mean
+    std_pop2 = np.std(y_pop2)           # standard deviation
+
+    deg = 2                             # quadratic poly
+    z = np.polyfit(x_pop2,y_pop2,deg)   # polynomial coeff
+    p = np.poly1d(z)
     mdl_pop2 = p(x_pop2)
-    pop2_feature_size = x_pop2[np.where(mdl_pop2 == np.max(mdl_pop2))]      # 1/um
+    pop2_feature_size = x_pop2[np.where(mdl_pop2 == np.max(mdl_pop2))]  # 1/um
 
 #############################################################################################
 # visualization 
@@ -206,6 +213,8 @@ if int(POP_NUM == 2):
     axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+    axs[2,0].annotate('$\sigma$ = ' + str(np.around(std_pop1,decimals=3)),
+                    xy=(0.7,0.825), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,0].set_xlim([0,6])
     axs[2,0].set_ylim([0,1.2])
 
@@ -218,6 +227,8 @@ if int(POP_NUM == 2):
     axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,1].annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+    axs[2,1].annotate('$\sigma$ = ' + str(np.around(std_pop2,decimals=3)),
+                    xy=(0.7,0.825), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,1].set_xlim([0,6])
     axs[2,1].set_ylim([0,1.2])
 else:
@@ -230,6 +241,8 @@ else:
     axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+    axs[2,0].annotate('$\sigma$ = ' + str(np.around(std_pop1,decimals=3)),
+                    xy=(0.685,0.825), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,0].set_xlim([0,6])
     axs[2,0].set_ylim([0,1.2])
     
