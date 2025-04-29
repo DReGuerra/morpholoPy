@@ -45,6 +45,48 @@ morpholoPy/
 3. Pattern formation, structure and functionalities of wrinkled liquid crystal surfaces: A soft matter biomimicry platform [(Wang-Servio-Rey, 2023)](https://doi.org/10.3389/frsfm.2023.1123324)
 4. Mechanogeometry of nanowrinkling in cholesteric liquid crystal surfaces [Wang-Servio-Rey, 2020](https://doi.org/10.1103/PhysRevE.101.062705)
 
+## Installation
+
+Install the package using pip:
+<pre>cd morpholoPy
+pip install --user .</pre>
+This will install the repository as a package in the currently active Python environment, which will allow for import and calling of the functions wherever necessary.<br>
+<br>
+If you would prefer to have a "live" package that automatically updates as files are modified, you can install it as follows:
+<pre>cd morpholoPy
+pip install -e .</pre>
+
+## Usage
+
+To run the `characteristic_length.py` script:
+1. Go to the desired test directory: 
+<pre>cd test_cases/experimental_surface_images/cnc-poegma_biaxial_nanowrinkled/</pre>
+
+2. The image to be analyzed should be found in the `images` directory.
+3. Run the script (see DocString for argument list):
+<pre>python src/characteristic_length.py args </pre>
+
+The output figures will be saved in the `figures/` directory.
+
+## Workflow and usage
+
+### `characteristic_length.py`
+TODO: Update this section.<br>
+
+The general workflow of this script is as follows:<br>
+1. Input parameters - to be manually changed to reflect the desired analysis, define the image file, and size parameters which depend on the scale of the image. The size parameters can be determined through trial and error by examining the curve fitting and the characteristic length estimate in panels 5 and/or 6 of the summary figure produced.
+2. Input image file (`img_file`)
+3. Band-pass filtering of the image using Gaussian differences
+4. Canny edge detection - `sigma` value is modified to achieve the desired granularity in edge detection
+5. Square the image (if not already squared)
+6. Determine image scale and pixel relationship - if the image contains an SEM banner with a size scale, the function `measure_scale_bar()` can be used to extract the pixel length of the scale bar. The representative physical length of the scale bar must be input manually (`bar_length`).
+7. Center-shifted 2D FFT (`fft2_shiftd`) of the image to obtain the 2D power spectral density (PSD) (`psd2D`) of the image.
+8. Radially averaged 2D PSD (`rasp`).
+9. Frenquency conversion from pixel to spatial length.
+10. High and low filters.
+11. Curve fitting of the most prominent peak in the `rasp` to extract the feature size.
+12. Visualization of the results output to `figures/`.
+
 ---
 
 ## Validation by Synthetic Images
@@ -278,45 +320,3 @@ The image analysis parameters below were determined based on guided trial and er
 ### `lysozyme_electrospun_afm/`
 
 TODO: Update this section
-
-## Workflow and usage
-
-### `characteristic_length.py`
-TODO: Update this section.<br>
-
-The general workflow of this script is as follows:<br>
-1. Input parameters - to be manually changed to reflect the desired analysis, define the image file, and size parameters which depend on the scale of the image. The size parameters can be determined through trial and error by examining the curve fitting and the characteristic length estimate in panels 5 and/or 6 of the summary figure produced.
-2. Input image file (`img_file`)
-3. Band-pass filtering of the image using Gaussian differences
-4. Canny edge detection - `sigma` value is modified to achieve the desired granularity in edge detection
-5. Square the image (if not already squared)
-6. Determine image scale and pixel relationship - if the image contains an SEM banner with a size scale, the function `measure_scale_bar()` can be used to extract the pixel length of the scale bar. The representative physical length of the scale bar must be input manually (`bar_length`).
-7. Center-shifted 2D FFT (`fft2_shiftd`) of the image to obtain the 2D power spectral density (PSD) (`psd2D`) of the image.
-8. Radially averaged 2D PSD (`rasp`).
-9. Frenquency conversion from pixel to spatial length.
-10. High and low filters.
-11. Curve fitting of the most prominent peak in the `rasp` to extract the feature size.
-12. Visualization of the results output to `figures/`.
-
-### Installation
-
-Install the package using pip:
-<pre>cd morpholoPy
-pip install --user .</pre>
-This will install the repository as a package in the currently active Python environment, which will allow for import and calling of the functions wherever necessary.<br>
-<br>
-If you would prefer to have a "live" package that automatically updates as files are modified, you can install it as follows:
-<pre>cd morpholoPy
-pip install -e .</pre>
-
-### Usage
-
-To run the `characteristic_length.py` script:
-1. Go to the desired test directory: 
-<pre>cd test_cases/experimental_surface_images/cnc-poegma_biaxial_nanowrinkled/</pre>
-
-2. The image to be analyzed should be found in the `images` directory.
-3. Run the script (see DocString for argument list):
-<pre>python src/characteristic_length.py args </pre>
-
-The output figures will be saved in the `figures/` directory.
