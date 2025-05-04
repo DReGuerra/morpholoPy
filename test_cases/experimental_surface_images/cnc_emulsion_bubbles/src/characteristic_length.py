@@ -224,7 +224,7 @@ if int(POP_NUM == 2):
     axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$", fontsize=TITLEFONT)
     axs[2,1].annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-    axs[2,1].set_xlim([0,6])
+    axs[2,1].set_xlim([0,1.5])
     axs[2,1].set_ylim([0,1.2])
     axs[2,1].tick_params(axis='both', which='major', labelsize=TICKSFONT)
 else:
@@ -317,7 +317,7 @@ if int(POP_NUM == 2):
     axs.set_xlabel("Spatial frequency, $\mu$m$^{-1}$", fontsize=TITLEFONT)
     axs.annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-    axs.set_xlim([0,6])
+    axs.set_xlim([0,1.5])
     axs.set_ylim([0,1.2])
     
     f.tight_layout()
