@@ -226,11 +226,12 @@ f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
 axs.plot(n, O_2N2, label="$2N^2$", color=CLRS[0])
 axs.plot(n, O_2NlgN, label="$2Nlog_2(N)$", color=CLRS[1])
 # axs.set_title("")
-axs.set_ylabel("Number of Operations")
-axs.set_xlabel("Number of terms, N")
+axs.set_ylabel("Number of Operations", fontsize=TITLEFONT)
+axs.set_xlabel("Number of terms, N", fontsize=TITLEFONT)
 ytick_values = plt.gca().get_yticks()
 axs.set_yticklabels(['{:,.0f}'.format(x) for x in ytick_values])
 axs.legend()
+axs.tick_params(axis='both', which='major', labelsize=TICKSFONT)
 
 # inset setup
 x1, x2, y1, y2 = 0, 10, 0, 300
@@ -256,13 +257,14 @@ f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
 axs.plot(t, sig_noisy, label="Noisy raw signal")
 axs.plot([],[], label="Signal 1")
 axs.plot([],[], label="Signal 2")
-axs.set_xlabel("Time, s")
-axs.set_ylabel("Amplitude")
+axs.set_xlabel("Time, s", fontsize=TITLEFONT)
+axs.set_ylabel("Amplitude", fontsize=TITLEFONT)
 axs.set_ylim([-3,8])
 axs.legend()
+axs.tick_params(axis='both', which='major', labelsize=TICKSFONT)
 
 # inset plot
-inset_axs = f.add_axes([0.2, 0.62, 0.3, 0.3])
+inset_axs = f.add_axes([0.2, 0.56, 0.3, 0.3])
 inset_axs.plot(t, sig_noisy, color=CLRS[0])
 inset_axs.plot(t, sig1, color=CLRS[1])
 inset_axs.plot(t, sig2, color=CLRS[2])
@@ -278,9 +280,10 @@ f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
 
 axs.plot(t, sig_noisy)
-axs.set_title("(a)", loc='left')
-axs.set_xlabel("Time, s")
-axs.set_ylabel("Amplitude")
+axs.set_title("(a)", loc='left', fontsize=TITLEFONT)
+axs.set_xlabel("Time, s", fontsize=TITLEFONT)
+axs.set_ylabel("Amplitude", fontsize=TITLEFONT)
+axs.tick_params(axis='both', which='major', labelsize=TICKSFONT)
 
 f.tight_layout()
 f.savefig("figures/3a.original_noisy_raw_signal.png")
@@ -291,9 +294,10 @@ f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
 
 axs.plot(frqshftd, np.abs(fftnoisyshftd))
-axs.set_title("(b)", loc='left')
-axs.set_xlabel("Frequency, Hz")
-axs.set_ylabel("Magnitude")
+axs.set_title("(b)", loc='left', fontsize=TITLEFONT)
+axs.set_xlabel("Frequency, Hz", fontsize=TITLEFONT)
+axs.set_ylabel("Magnitude", fontsize=TITLEFONT)
+axs.tick_params(axis='both', which='major', labelsize=TICKSFONT)
 
 f.tight_layout()
 f.savefig("figures/3b.normalized_magnitude_center-shifted_fft.png")
@@ -305,9 +309,10 @@ f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
 
 axs.plot(frqshftd, psd_noisy_norm)
 # justify title to the left
-axs.set_title("(c)", loc='left')
-axs.set_xlabel("Frequency, Hz")
-axs.set_ylabel("Normalized Power, AU")
+axs.set_title("(c)", loc='left', fontsize=TITLEFONT)
+axs.set_xlabel("Frequency, Hz", fontsize=TITLEFONT)
+axs.set_ylabel("Normalized Power, AU", fontsize=TITLEFONT)
+axs.tick_params(axis='both', which='major', labelsize=TICKSFONT)
 
 f.tight_layout()
 f.savefig("figures/3c.normalized_power_spctral_density.png")
