@@ -75,29 +75,29 @@ LINEWIDTH = 3; ROLLWINDOW = 100                 # plot spec
 NROWS = 2; NCOLS = 2
 f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
-axs[0,0].imshow(img_tessellation, cmap='gray')
-axs[0,0].set_title("(a)", loc='left')
-# axs[0,0].set_title("Original image")
+axs[0,0].imshow(img_tessellation, cmap='gray') # original image
+axs[0,0].set_title("(a)", loc='left', fontsize=TITLEFONT)
+axs[0,0].axis("off")
 
-axs[0,1].imshow(np.log(psd2D))
-axs[0,1].set_title("(b)", loc='left')
-# axs[0,1].set_title("Center-shifted 2D Power Spectral Density")
+axs[0,1].imshow(np.log(psd2D)) # log(2D PSD)
+axs[0,1].set_title("(b)", loc='left', fontsize=TITLEFONT)
+axs[0,1].axis("off")
 
-axs[1,0].plot(rasp_norm_au)
-axs[1,0].set_title("(c)", loc='left')
+axs[1,0].plot(rasp_norm_au) # radially averaged PSD
+axs[1,0].set_title("(c)", loc='left', fontsize=TITLEFONT)
 # axs[1,0].set_title("Radially Averaged PSD (RASP)")
-axs[1,0].set_ylabel("Intensity, AU")
-axs[1,0].set_xlabel("Period (T), Pixels")
+axs[1,0].set_ylabel("Intensity, AU", fontsize=TITLEFONT)
+axs[1,0].set_xlabel("Period (T), Pixels", fontsize=TITLEFONT)
 axs[1,0].set_xlim([0,50])
 
-axs[1,1].plot(1/lam[:rasp_length],rasp_norm_au)
+axs[1,1].plot(1/lam[:rasp_length],rasp_norm_au) # radially averaged PSD in spatial frequency
 axs[1,1].plot(x_pop1,y_pop1,linestyle='none',marker='o',fillstyle='none',color='green')
 axs[1,1].plot(x_pop1,mdl_pop1,linestyle='--',color='green')
 axs[1,1].vlines(pop1_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
-axs[1,1].set_title("(d)", loc='left')
+axs[1,1].set_title("(d)", loc='left', fontsize=TITLEFONT)
 # axs[1,1].set_title("RASP in spatial frequency")
-axs[1,1].set_ylabel("Intensity, AU")
-axs[1,1].set_xlabel("frequency (f), $\mu$m$^{-1}$")
+axs[1,1].set_ylabel("Intensity, AU", fontsize=TITLEFONT)
+axs[1,1].set_xlabel("frequency (f), $\mu$m$^{-1}$", fontsize=TITLEFONT)
 axs[1,1].set_xlim([0,0.08])
 axs[1,1].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=0)) + ' $\mu$m',
                 xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
