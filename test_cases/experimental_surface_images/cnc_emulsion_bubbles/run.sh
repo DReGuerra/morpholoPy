@@ -1,7 +1,7 @@
 #!/bin/bash
 
 python src/characteristic_length.py \
---file 30_-S-In-H-Batch1-Day7-1.jpg \
+--file 30_-C-In-H-Day7.jpg \
 --dconv True \
 --pop_num 2 \
 --bar_len 50 \

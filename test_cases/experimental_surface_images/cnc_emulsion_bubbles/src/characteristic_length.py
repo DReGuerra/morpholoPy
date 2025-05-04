@@ -185,81 +185,163 @@ LINEWIDTH = 3; ROLLWINDOW = 100                 # plot spec
 NROWS = 3; NCOLS = 2
 f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
-axs[0,0].imshow(image_sq)
-axs[0,0].set_title("(a)", loc='left')
-# axs[0,0].set_title("Squared image")
+axs[0,0].imshow(image_sq) # squared image
+axs[0,0].set_title("(a)", loc='left', fontsize=TITLEFONT)
+axs[0,0].axis('off')
 
-axs[0,1].imshow(filtered_image_sq)
-axs[0,1].set_title("(b)", loc='left')
-# axs[0,1].set_title("Squared filtered image")
+axs[0,1].imshow(filtered_image_sq) # squared DofG filtered image
+axs[0,1].set_title("(b)", loc='left', fontsize=TITLEFONT)
+axs[0,1].axis('off')
 
-axs[1,0].imshow(filtered_edges_square)
-axs[1,0].set_title("(c)", loc='left')
-# axs[1,0].set_title("Squared Canny edge detected image")
+axs[1,0].imshow(filtered_edges_square) # squared Canny edge detected image
+axs[1,0].set_title("(c)", loc='left', fontsize=TITLEFONT)
+axs[1,0].axis('off')
 
-axs[1,1].imshow(np.log(psd2D))
-axs[1,1].set_title("(d)", loc='left')
-# axs[1,1].set_title("Center-shifted 2D Power Spectral Density")
+axs[1,1].imshow(np.log(psd2D)) # squared center-shifted 2D PSD
+axs[1,1].set_title("(d)", loc='left', fontsize=TITLEFONT)
+axs[1,1].axis('off')
 
 if int(POP_NUM == 2):
     axs[2,0].plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
     axs[2,0].plot(x_pop1,y_pop1,linestyle='none',marker='o',fillstyle='none',color='green')
     axs[2,0].plot(x_pop1,mdl_pop1,linestyle='--',color='green')
     axs[2,0].vlines(pop1_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
-    axs[2,0].set_title("(e)", loc='left')
-    axs[2,0].set_ylabel("Intensity, AU")
-    axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
+    axs[2,0].set_title("(e)", loc='left', fontsize=TITLEFONT)
+    axs[2,0].set_ylabel("Intensity, AU", fontsize=TITLEFONT)
+    axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$", fontsize=TITLEFONT)
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,0].set_xlim([0,6])
     axs[2,0].set_ylim([0,1.2])
+    axs[2,0].tick_params(axis='both', which='major', labelsize=TICKSFONT)
 
     axs[2,1].plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
     axs[2,1].plot(x_pop2,y_pop2,linestyle='none',marker='o',fillstyle='none',color='green')
     axs[2,1].plot(x_pop2,mdl_pop2,linestyle='--',color='green')
     axs[2,1].vlines(pop2_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
-    axs[2,1].set_title("(f)", loc='left')
-    axs[2,1].set_ylabel("Intensity, AU")
-    axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
+    axs[2,1].set_title("(f)", loc='left', fontsize=TITLEFONT)
+    axs[2,1].set_ylabel("Intensity, AU", fontsize=TITLEFONT)
+    axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$", fontsize=TITLEFONT)
     axs[2,1].annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
-    axs[2,1].set_xlim([0,1.5])
+    axs[2,1].set_xlim([0,6])
     axs[2,1].set_ylim([0,1.2])
+    axs[2,1].tick_params(axis='both', which='major', labelsize=TICKSFONT)
 else:
     axs[2,0].plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
     axs[2,0].plot(x_pop1,y_pop1,linestyle='none',marker='o',fillstyle='none',color='green')
     axs[2,0].plot(x_pop1,mdl_pop1,linestyle='--',color='green')
     axs[2,0].vlines(pop1_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
-    axs[2,0].set_title("(e)", loc='left')
-    axs[2,0].set_ylabel("Intensity, AU")
-    axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
+    axs[2,0].set_title("(e)", loc='left', fontsize=TITLEFONT)
+    axs[2,0].set_ylabel("Intensity, AU", fontsize=TITLEFONT)
+    axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$", fontsize=TITLEFONT)
     axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,0].set_xlim([0,6])
     axs[2,0].set_ylim([0,1.2])
+    axs[2,0].tick_params(axis='both', which='major', labelsize=TICKSFONT)
     
     axs[2,1].axis('off')
     
 f.tight_layout()
 f.savefig("figures/" + file_name + "_summary.png")
 
-# Filtered image
-# NROWS = 1; NCOLS = 1
-# f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-#                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+# image analysis figure
+NROWS = 2; NCOLS = 2
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+axs[0,0].imshow(image_sq)
+axs[0,0].set_title("(a)", loc='left', fontsize=TITLEFONT)
+axs[0,0].axis('off')
+# axs[0,0].set_ylabel("Pixels", fontsize=TEXTFONT)
+# axs[0,0].set_xlabel("Pixels", fontsize=TEXTFONT)
+# axs[0,0].set_title("Squared image")
 
-# axs.imshow(filtered_image_sq)
+axs[0,1].imshow(filtered_image_sq)
+axs[0,1].set_title("(b)", loc='left', fontsize=TITLEFONT)
+axs[0,1].axis('off')
+# axs[0,1].set_ylabel("Pixels", fontsize=TEXTFONT)
+# axs[0,1].set_xlabel("Pixels", fontsize=TEXTFONT)
+# axs[0,1].set_title("Squared filtered image")
 
-# f.tight_layout()
-# f.savefig("figures/" + file_name + "_filtered.png")
+axs[1,0].imshow(filtered_edges_square)
+axs[1,0].set_title("(c)", loc='left', fontsize=TITLEFONT)
+axs[1,0].axis('off')
+# axs[1,0].set_ylabel("Pixels", fontsize=TEXTFONT)
+# axs[1,0].set_xlabel("Pixels", fontsize=TEXTFONT)
+# axs[1,0].set_title("Squared Canny edge detected image")
 
-# # Filtered edges
-# NROWS = 1; NCOLS = 1
-# f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
-#                       figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+axs[1,1].imshow(np.log(psd2D))
+axs[1,1].set_title("(d)", loc='left', fontsize=TITLEFONT)
+axs[1,1].axis('off')
+# axs[1,1].set_ylabel("Pixels", fontsize=TEXTFONT)
+# axs[1,1].set_xlabel("Pixels", fontsize=TEXTFONT)
+# axs[1,1].set_title("Center-shifted 2D Power Spectral Density")
+    
+f.tight_layout()
+f.savefig("figures/" + file_name + "_image_analysis.png")
 
-# axs.imshow(filtered_edges_square)
 
-# f.tight_layout()
-# f.savefig("figures/" + file_name + "_filtered_edges.png")
+if int(POP_NUM == 2):
+    # population 1 figure
+    NROWS = 1; NCOLS = 1
+    f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                        figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
 
+    axs.plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
+    axs.plot(x_pop1,y_pop1,linestyle='none',marker='o',fillstyle='none',color='green')
+    axs.plot(x_pop1,mdl_pop1,linestyle='--',color='green')
+    axs.vlines(pop1_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
+    axs.set_title("(e)", loc='left', fontsize=TITLEFONT)
+    axs.set_ylabel("Intensity, AU", fontsize=TITLEFONT)
+    axs.set_xlabel("Spatial frequency, $\mu$m$^{-1}$", fontsize=TITLEFONT)
+    axs.annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
+                    xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+    axs.set_xlim([0,6])
+    axs.set_ylim([0,1.2])
+    
+    f.tight_layout()
+    f.savefig("figures/" + file_name + "_pop1_rasp.png")
+    
+    # population 2 figure
+    NROWS = 1; NCOLS = 1
+    f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                        figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+
+    axs.plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
+    axs.plot(x_pop2,y_pop2,linestyle='none',marker='o',fillstyle='none',color='green')
+    axs.plot(x_pop2,mdl_pop2,linestyle='--',color='green')
+    axs.vlines(pop2_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
+    axs.set_title("(f)", loc='left', fontsize=TITLEFONT)
+    axs.set_ylabel("Intensity, AU", fontsize=TITLEFONT)
+    axs.set_xlabel("Spatial frequency, $\mu$m$^{-1}$", fontsize=TITLEFONT)
+    axs.annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
+                    xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+    axs.set_xlim([0,6])
+    axs.set_ylim([0,1.2])
+    
+    f.tight_layout()
+    f.savefig("figures/" + file_name + "_pop2_rasp.png")
+    
+else:
+    
+    # summary figure
+    NROWS = 1; NCOLS = 1
+    f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                        figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+    
+    axs.plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
+    axs.plot(x_pop1,y_pop1,linestyle='none',marker='o',fillstyle='none',color='green')
+    axs.plot(x_pop1,mdl_pop1,linestyle='--',color='green')
+    axs.vlines(pop1_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
+    axs.set_title("(e)", loc='left', fontsize=TITLEFONT)
+    axs.set_ylabel("Intensity, AU", fontsize=TITLEFONT)
+    axs.set_xlabel("Spatial frequency, $\mu$m$^{-1}$", fontsize=TITLEFONT)
+    axs.annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
+                    xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+    axs.set_xlim([0,6])
+    axs.set_ylim([0,1.2])
+    axs.tick_params(axis='both', which='major', labelsize=TICKSFONT)
+    
+    f.tight_layout()
+    f.savefig("figures/" + file_name + "_pop1_rasp.png")
