@@ -347,3 +347,52 @@ else:
     
     f.tight_layout()
     f.savefig("figures/" + file_name + "_pop1_rasp.png")
+    
+# summary figure individual pannels
+NROWS = 1; NCOLS = 1
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+axs.imshow(image_sq) # squared image
+axs.axis('off')
+f.tight_layout()
+f.savefig("figures/" + file_name + "_image.png")
+
+NROWS = 1; NCOLS = 1
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+axs.imshow(filtered_image_sq) # squared DofG filtered image
+axs.axis('off')
+f.tight_layout()
+f.savefig("figures/" + file_name + "_filtered_image.png")
+
+NROWS = 1; NCOLS = 1
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+axs.imshow(filtered_edges_square) # squared Canny edge detected image
+axs.axis('off')
+f.tight_layout()
+f.savefig("figures/" + file_name + "_canny_edges.png")
+
+NROWS = 1; NCOLS = 1
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+axs.imshow(np.log(psd2D)) # squared center-shifted 2D PSD
+axs.axis('off')
+f.tight_layout()
+f.savefig("figures/" + file_name + "_psd2D.png")
+
+NROWS = 1; NCOLS = 1
+f, axs = plt.subplots(nrows=NROWS,ncols=NCOLS,
+                      figsize=(NCOLS*FIGWIDTH,NROWS*FIGHEIGHT))
+axs.plot(1/lam[:rasp_length],rasp_norm_au,linestyle='none',marker='.')
+axs.plot(x_pop1,y_pop1,linestyle='none',marker='o',fillstyle='none',color='green')
+axs.plot(x_pop1,mdl_pop1,linestyle='--',color='green')
+axs.vlines(pop1_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
+axs.set_ylabel("Intensity, AU", fontsize=TITLEFONT)
+axs.set_xlabel("Spatial frequency, $\mu$m$^{-1}$", fontsize=TITLEFONT)
+axs.annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
+axs.set_xlim([0,6])
+axs.set_ylim([0,1.2])
+axs.tick_params(axis='both', which='major', labelsize=TICKSFONT)
+f.tight_layout()
+f.savefig("figures/" + file_name + "_pop1_rasp_individual.png")
