@@ -13,7 +13,7 @@ This repository contains Python implementations of image analysis algorithms for
 ## Core Contents
 1. `test_cases/` $\rightarrow$ collection of test cases to validate and demonstrate usage of the analyses here.
 2. `surfacetools/` $\rightarrow$ utilities dir that contains function definitions to be used by the scripts in this repo; contains a `__init__.py` file to enable package import behavior.
-3. `characteristic_length.py` $\rightarrow$ main script executing the image for feature examinations and characteristic length determination. This script is used in all of the `experimental_surface_images/`.
+3. `test_cases/**/src/characteristic_length.py` $\rightarrow$ scripts executing the image feature examinations and characteristic length determination, used throughout `experimental_surface_images/`.
 
 ## Tree Structure
 <pre>
@@ -28,11 +28,15 @@ morpholoPy/
 │   │   ├── cnc_emulsion_bubbles/
 │   │   ├── cnc-poegma_biaxial_nanowrinkled/
 │   │   ├── cnc-poegma_uniaxial_nanowrinkled/
+│   │   ├── cnc-poegma_electrospun_mats/
 │   │   ├── cnc-xg_biaxial_nanowrinkled/
-│   │   ├── lysozyme_electrospun_afm/
-│   │   └── lysozyme_electrospun_mats/
+│   │   └── lysozyme_afm/
 │   └── synthetic_images/
 │       ├── chevron/
+│       ├── egg_carton/
+│       ├── fragmented_jigsaw/
+│       ├── jigsaw/
+│       ├── porous/
 │       ├── tessellation/
 │       ├── tessellation_fragmented/
 │       └── vertical_lines/
@@ -71,7 +75,7 @@ The output figures will be saved in the `figures/` directory.
 ## Workflow and usage
 
 ### `characteristic_length.py`
-TODO: Update this section.<br>
+The `characteristic_length.py` scripts are CLI-driven; other scripts in `test_cases/` still rely on manual edits.<br>
 
 The general workflow of this script is as follows:<br>
 1. Input parameters - to be manually changed to reflect the desired analysis, define the image file, and size parameters which depend on the scale of the image. The size parameters can be determined through trial and error by examining the curve fitting and the characteristic length estimate in panels 5 and/or 6 of the summary figure produced.
@@ -79,7 +83,7 @@ The general workflow of this script is as follows:<br>
 3. Band-pass filtering of the image using Gaussian differences
 4. Canny edge detection - `sigma` value is modified to achieve the desired granularity in edge detection
 5. Square the image (if not already squared)
-6. Determine image scale and pixel relationship - if the image contains an SEM banner with a size scale, the function `measure_scale_bar()` can be used to extract the pixel length of the scale bar. The representative physical length of the scale bar must be input manually (`bar_length`).
+6. Determine image scale and pixel relationship - if the image contains an SEM banner with a size scale, the function `measure_sem_scalebar()` can be used to extract the pixel length of the scale bar. The representative physical length of the scale bar must be input manually (`bar_length`).
 7. Center-shifted 2D FFT (`fft2_shiftd`) of the image to obtain the 2D power spectral density (PSD) (`psd2D`) of the image.
 8. Radially averaged 2D PSD (`rasp`).
 9. Frenquency conversion from pixel to spatial length.
@@ -146,7 +150,7 @@ The image analysis parameters below were determined based on trial and error:<br
 | scale_bar**     |  170        |
 
 *These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.<br>
-**This parameter is determined by manual examination of the scale bar in the image usig ImageJ. In cases where the image was obtained from an SEM that uses the same banner convention as Queen's University Quanta 250, `measure_scale_bar` may be used to automatically obtain the scale bar size in pixels.<br>
+**This parameter is determined by manual examination of the scale bar in the image usig ImageJ. In cases where the image was obtained from an SEM that uses the same banner convention as Queen's University Quanta 250, `measure_sem_scalebar` may be used to automatically obtain the scale bar size in pixels.<br>
 
 Source: [De France et al., 2019](https://pubs.acs.org/doi/full/10.1021/acsami.8b16232)<br>
 ACS Appl. Mater. Interfaces 2019, 11, 6, 6325–6335<br>
@@ -172,7 +176,7 @@ The image analysis parameters below were determined based on trial and error:<br
 | scale_bar**     |  170        |
 
 *These parameters are fed as arguments to the python script `characteristic_length.py`. See DocString.<br>
-**This parameter is determined by manual examination of the scale bar in the image usig ImageJ. In cases where the image was obtained from an SEM that uses the same banner convention as Queen's University Quanta 250, `measure_scale_bar` may be used to automatically obtain the scale bar size in pixels (see [xg-cnc_1-1](tests/xg-cnc_1-1/src/characteristic_length.py)).
+**This parameter is determined by manual examination of the scale bar in the image usig ImageJ. In cases where the image was obtained from an SEM that uses the same banner convention as Queen's University Quanta 250, `measure_sem_scalebar` may be used to automatically obtain the scale bar size in pixels (see `test_cases/experimental_surface_images/cnc-xg_biaxial_nanowrinkled/src/characteristic_length.py`).
 
 Source: [De France et al., 2019](https://pubs.acs.org/doi/full/10.1021/acsami.8b16232)<br>
 ACS Appl. Mater. Interfaces 2019, 11, 6, 6325–6335<br>
