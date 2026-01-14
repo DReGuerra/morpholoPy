@@ -94,9 +94,9 @@ THETAS = args.theta_lims    # degrees
 # import SEM image in gray-scale
 image = io.imread(img_file, as_gray=True)
 # enhance edges by band-pass filtering
-filtered_image = difference_of_gaussians(image, low_sigma=1, high_sigma=10)
+filtered_image = difference_of_gaussians(image, low_sigma=DOF_LO_SIGMA, high_sigma=DOF_HI_SIGMA)
 # Canny edge dectection
-filtered_edges = feature.canny(filtered_image, sigma=2)
+filtered_edges = feature.canny(filtered_image, sigma=CANNY_SIGMA)
 
 # print size of the image
 print("Image size: " + str(image.shape))
@@ -110,8 +110,12 @@ filtered_image_sq = filtered_image[:N,:N]
 filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
-scale_bar = measure_sem_scalebar(image)   # pixels
-# scale_bar = 170 # hardcoded for kdf_biaxial_20um.tif
+if BAR_LEN is None:
+    raise ValueError("bar_len is required to compute physical scale.")
+if BAR_PXL is None:
+    scale_bar = measure_sem_scalebar(image)   # pixels
+else:
+    scale_bar = BAR_PXL
 print("Scale bar: "+ str(scale_bar) + " pixels")
 X, Y = filtered_edges_square.shape  # pixels
 pxl_scale = BAR_LEN/scale_bar    # um/pixel
@@ -124,17 +128,14 @@ fft2 = np.fft.fft2(filtered_edges_square)
 fft2_shiftd = np.fft.fftshift(fft2)
 # power spectral density (PSD)
 psd2D = np.abs(fft2_shiftd)**2
-# angle limits for radial averaging the 2D PSD
-theta_lims = []
-
 # radially averaged PSD with angle limits
-rasp, bins_count = radially_averaged_PSD(psd2D, theta_lims=[])
+rasp, bins_count = radially_averaged_PSD(psd2D, theta_lims=THETAS)
 # length of rasp vector
 rasp_length = len(rasp)
 
 #############################################################################################
 # frequency vector (pixels)
-k = np.arange(0,N-1,1)      # pixels
+k = np.arange(1, N, 1)      # pixels
 # spatial frequency vector
 lam = np.divide(L,k)        # um/pixel
 # normalize rasp with bins_count

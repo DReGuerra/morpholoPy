@@ -109,8 +109,12 @@ filtered_image_sq = filtered_image[:N,:N]
 filtered_edges_square = filtered_edges[:N,:N]
 
 # image length scale
-# scale_bar = measure_sem_scalebar(image)   # pixels
-scale_bar = 459 # hardcoded for emulsion_bubbles
+if BAR_LEN is None:
+    raise ValueError("bar_len is required to compute physical scale.")
+if BAR_PXL is None:
+    scale_bar = measure_sem_scalebar(image)   # pixels
+else:
+    scale_bar = BAR_PXL
 X, Y = filtered_edges_square.shape      # pixels
 pxl_scale = BAR_LEN/scale_bar           # um/pixel
 L = X*pxl_scale                         # um
@@ -132,7 +136,7 @@ rasp_length = len(rasp)
 
 #############################################################################################
 # frequency vector (pixels)
-k = np.arange(0,N-1,1)      # pixels
+k = np.arange(1, N, 1)      # pixels
 # spatial frequency vector
 lam = np.divide(L,k)        # um/pixel
 # normalize rasp with bins_count
