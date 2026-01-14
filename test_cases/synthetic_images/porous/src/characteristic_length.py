@@ -154,7 +154,7 @@ k = np.arange(1, N, 1)      # pixels
 # spatial frequency vector
 lam = np.divide(L,k)        # um/pixel
 # normalize rasp with bins_count
-rasp_norm = np.nan_to_num(np.divide(rasp,bins_count))
+rasp_norm = np.divide(rasp, bins_count, out=np.zeros_like(rasp), where=bins_count != 0)
 # deconvolve
 if dconv: rasp_norm = np.divide(rasp_norm,lam[:rasp_length])
 
@@ -219,8 +219,8 @@ if int(POP_NUM == 2):
     axs[2,0].vlines(pop1_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
     axs[2,0].set_title("(e)", loc='left')
     axs[2,0].set_ylabel("Intensity, AU")
-    axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
-    axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
+    axs[2,0].set_xlabel(r"Spatial frequency, $\mu$m$^{-1}$")
+    axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + r' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,0].set_xlim([1/lam[0],1/lam[rasp_length+1]])
     axs[2,0].set_ylim([0,1.2])
@@ -231,8 +231,8 @@ if int(POP_NUM == 2):
     axs[2,1].vlines(pop2_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
     axs[2,1].set_title("(f)", loc='left')
     axs[2,1].set_ylabel("Intensity, AU")
-    axs[2,1].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
-    axs[2,1].annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + ' $\mu$m',
+    axs[2,1].set_xlabel(r"Spatial frequency, $\mu$m$^{-1}$")
+    axs[2,1].annotate('charac. length = ' + str(np.around(1/pop2_feature_size[0],decimals=3)) + r' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
     axs[2,1].set_xlim([1/lam[0],1/lam[rasp_length+1]])
     axs[2,1].set_ylim([0,1.2])
@@ -243,8 +243,8 @@ else:
     axs[2,0].vlines(pop1_feature_size,ymin=0.1,ymax=1,linestyle='--',color='red')
     axs[2,0].set_title("(e)", loc='left')
     axs[2,0].set_ylabel("Intensity, AU")
-    axs[2,0].set_xlabel("Spatial frequency, $\mu$m$^{-1}$")
-    axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + ' $\mu$m',
+    axs[2,0].set_xlabel(r"Spatial frequency, $\mu$m$^{-1}$")
+    axs[2,0].annotate('charac. length = ' + str(np.around(1/pop1_feature_size[0],decimals=3)) + r' $\mu$m',
                     xy=(0.45,0.9), xycoords='axes fraction', fontsize=TEXTFONT)
     # axs[2,0].set_xlim([1/lam[0],1/lam[rasp_length+1]])
     axs[2,0].set_xlim([0,10])
