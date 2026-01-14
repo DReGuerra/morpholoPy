@@ -2,11 +2,12 @@
 import numpy as np
 from skimage import color
 
-def measure_sem_scalebar(image):
-    """Identify and measure scale bar in an SEM image.tif
+def measure_sem_scalebar(image, min_fraction=0.02):
+    """Identify and measure a scale bar in an SEM image.
 
     Args:
         image (np.array): SEM image imported skimage.io.imread("image.tif")
+        min_fraction (float): Minimum fraction of image width for valid bar.
 
     Returns:
         scale_length: pixel # width of the scale
@@ -14,46 +15,51 @@ def measure_sem_scalebar(image):
         scale_pos_y: scale start position y (row)
         scale_pos_x: scale start position x (col)
     """
-    
-    # cross-hair is 7x3 pixel matrix with the following info in RGB
-    cross_hair = np.array([[0,65280,0],
-                         [65280,65280,65280],
-                         [65280,65280,65280],
-                         [65280,65280,65280],
-                         [65280,65280,65280],
-                         [65280,65280,65280],
-                         [0,65280,0]])
-    
-    # educated search, modify based on SEM info banner location
-    # start the search at row 885 and col 577
-    start_x = 577; start_y = 885
+    def max_run_length(mask_row):
+        if not np.any(mask_row):
+            return 0
+        diff = np.diff(mask_row.astype(np.int8))
+        starts = np.flatnonzero(diff == 1) + 1
+        ends = np.flatnonzero(diff == -1) + 1
+        if mask_row[0]:
+            starts = np.r_[0, starts]
+        if mask_row[-1]:
+            ends = np.r_[ends, mask_row.size]
+        return int(np.max(ends - starts)) if starts.size else 0
 
-    # image size
-    rows, cols = image.shape
-    
-    # find the first cross_hair
-    for i in np.arange(start_y,rows-1,1):
-        if i == rows-7: break
-        for j in np.arange(start_x,cols-1,1):
-            check = image[i:i+7,j:j+3]
-            if (check == cross_hair).all():
-                scale_pos_y = i
-                scale_pos_x = j
-                break
-            if j == cols-3:break
-    
-    # find the second cross_hair horizontally
-    k = 0
-    for j in np.arange(scale_pos_x+1,cols-1,1):
-        check = image[scale_pos_y:scale_pos_y+7,j:j+3]
-        if (check == cross_hair).all():
-            # +3 to include width of cross_hair
-            # +1 to include the starting pixel
-            scale_length = k+3+1
-            break
-        k += 1
-    
-    return scale_length#, scale_pos_y, scale_pos_x
+    image_array = np.asarray(image)
+    if image_array.ndim == 3:
+        image_gray = color.rgb2gray(image_array[:, :, :3])
+    else:
+        image_gray = image_array.astype(float)
+    if image_gray.size == 0:
+        raise ValueError("Image data is empty.")
+    if image_gray.max() > 1.0:
+        image_gray = image_gray / image_gray.max()
+
+    rows, cols = image_gray.shape
+    min_len = max(8, int(cols * min_fraction))
+
+    def find_bar(region):
+        flat = region.ravel()
+        if flat.size == 0:
+            return 0
+        high = np.quantile(flat, 0.98)
+        low = np.quantile(flat, 0.02)
+        best = 0
+        for row in region:
+            best = max(best, max_run_length(row >= high))
+            best = max(best, max_run_length(row <= low))
+        return best
+
+    row_start = int(rows * 0.6)
+    scale_length = find_bar(image_gray[row_start:, :])
+    if scale_length < min_len:
+        scale_length = find_bar(image_gray)
+    if scale_length < min_len:
+        raise ValueError("Scale bar not detected; provide bar length in pixels.")
+
+    return int(scale_length)
 
 def measure_afm_scalebar(image):
     """Identify and measure scale bar in an AFM image.tif
@@ -67,6 +73,7 @@ def measure_afm_scalebar(image):
     
     # image size
     ROWS = image.shape[0]
+    scalebar_pixels = None
     
     # loop through the rows of the image
     for row in range(ROWS-1, 0, -1):
@@ -79,6 +86,9 @@ def measure_afm_scalebar(image):
             scalebar_pixels = np.sum(bar_binary)
             break
         
+    if scalebar_pixels is None:
+        raise ValueError("Scale bar not detected in AFM image.")
+
     return scalebar_pixels
 
 def pixel2length(image_gray, MAX, MIN):

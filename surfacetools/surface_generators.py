@@ -1,5 +1,6 @@
 
 import numpy as np
+from scipy import stats
 
 def generate_wrinkled_surface(size=801, skew_target=2, kurt_target=10):
     """

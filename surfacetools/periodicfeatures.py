@@ -21,8 +21,8 @@ def radially_averaged_PSD(psd2D, theta_lims):
     # max distances (corners)
     D1 = np.floor(np.hypot(1-yo,1-xo))
     D2 = np.floor(np.hypot(1-yo,M-xo))
-    D3 = np.floor(np.hypot(M-yo,1-xo))
-    D4 = np.floor(np.hypot(M-yo,M-xo))
+    D3 = np.floor(np.hypot(N-yo,1-xo))
+    D4 = np.floor(np.hypot(N-yo,M-xo))
     D = int(np.floor(np.max([D1,D2,D3,D4])))
     # initialize rasp and binCount
     rasp = np.zeros(D)
@@ -94,6 +94,8 @@ def peak_quality_factor(s, fwhm):
         pqf (float): peak quality factor
     """
     
+    if fwhm <= 0:
+        return 0.0
     # find the maximum value
     max_val = np.max(s)
     # calculate the PQF
