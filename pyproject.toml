@@ -10,7 +10,14 @@ requires-python = ">=3.8"
 dependencies = [
     "numpy",
     "matplotlib",
-    "scipy"
+    "scipy",
+    "scikit-image"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pillow"
 ]
 
 [build-system]
@@ -19,4 +26,3 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 packages = ["surfacetools"]
-
