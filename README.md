@@ -91,6 +91,28 @@ The general workflow of this script is as follows:<br>
 11. Curve fitting of the most prominent peak in the `rasp` to extract the feature size.
 12. Visualization of the results output to `figures/`.
 
+## Dev Notes
+### Refactor Branch Status (refactor)
+
+This section summarizes ongoing refactoring work in the `refactor` branch. The goal is to reduce duplication across test-case scripts and centralize reusable analysis and plotting logic in `surfacetools`.
+
+#### Done
+- Introduced a shared characteristic-length pipeline in `surfacetools/charlen.py`, with config parsing, analysis, and a CLI entry point (`python -m surfacetools.charlen --config path.json`).
+- Added plotting helpers in `surfacetools/plotting.py` and used them from the pipeline.
+- Added a minimal JSON schema for configs in `surfacetools/charlen_schema.json`.
+- Migrated the cnc-xg pilot script to use the shared pipeline (`test_cases/experimental_surface_images/cnc-xg_biaxial_nanowrinkled/src/characteristic_length.py`).
+- Replaced remaining `_wrinklelib.py` imports in tracked scripts with `surfacetools` equivalents.
+- Consolidated synthetic image generators in `surfacetools/surface_generators.py` and updated synthetic tests (chevron, vertical lines, porous images) to use them.
+
+#### In progress / left to do
+- Migrate the remaining characteristic-length scripts to use the shared pipeline, then remove unused per-script duplicates.
+- Decide whether to refactor or archive the `dev/*` scripts that still use local workflows.
+- Add or update docs for `charlen` CLI usage and config examples in this README.
+
+#### Testing status
+- Smoke test completed on the porous pipeline under `py313`.
+- Remaining scripts have not been re-run post-refactor; re-run at least one experimental test case per dataset to confirm parity.
+
 ---
 
 ## Validation by Synthetic Images
@@ -132,33 +154,9 @@ The jigsaw and fragmented jigsaw images were made using Photopea at https://www.
 #### Fragmented tiles (tessellation fragmented) test results:
 ![Tessellation fragmented](test_cases/synthetic_images/tessellation_fragmented/figures/tessellation_fragmented_summary.png)
 
-## Experimental Test Cases
-
 ---
 
-## Refactor Branch Status (refactor)
-
-This section summarizes ongoing refactoring work in the `refactor` branch. The goal is to reduce duplication across test-case scripts and centralize reusable analysis and plotting logic in `surfacetools`.
-
-### Done
-- Introduced a shared characteristic-length pipeline in `surfacetools/charlen.py`, with config parsing, analysis, and a CLI entry point (`python -m surfacetools.charlen --config path.json`).
-- Added plotting helpers in `surfacetools/plotting.py` and used them from the pipeline.
-- Added a minimal JSON schema for configs in `surfacetools/charlen_schema.json`.
-- Migrated the cnc-xg pilot script to use the shared pipeline (`test_cases/experimental_surface_images/cnc-xg_biaxial_nanowrinkled/src/characteristic_length.py`).
-- Replaced remaining `_wrinklelib.py` imports in tracked scripts with `surfacetools` equivalents.
-- Consolidated synthetic image generators in `surfacetools/surface_generators.py` and updated synthetic tests (chevron, vertical lines, porous images) to use them.
-
-### In progress / left to do
-- Migrate the remaining characteristic-length scripts to use the shared pipeline, then remove unused per-script duplicates.
-- Decide whether to refactor or archive the `dev/*` scripts that still use local workflows.
-- Add or update docs for `charlen` CLI usage and config examples in this README.
-
-### Testing status
-- Smoke test completed on the porous pipeline under `py313`.
-- Remaining scripts have not been re-run post-refactor; re-run at least one experimental test case per dataset to confirm parity.
-
-
-
+## Experimental Test Cases
 
 ### `cnc-poegma_biaxial_nanowrinkled/`
 
